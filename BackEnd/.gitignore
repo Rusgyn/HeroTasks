@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# TypeScript build output
+dist/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp
+
+# Coverage reports (if you ever use testing tools)
+coverage/
+
+# Optional: Temporary database files
+*.sqlite
+*.db
