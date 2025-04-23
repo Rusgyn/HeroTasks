@@ -22,11 +22,14 @@ app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
-app.get('/', (_req, res) => {
+app.get('/HeroTasks', (_req, res) => {
   res.send('HeroTasks API is running!');
+});
+app.get('/HeroTasks/Hey', (_req, res) => {
+  res.send('Hey, HeroTasks API is running!');
 });
 
 // Server Start
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Thank you for using the App. The Server is running on http://localhost:${PORT}`);
 });
