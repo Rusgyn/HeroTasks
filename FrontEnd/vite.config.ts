@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   
-  base: '/HeroTasks/', // This is the base URL for the app. It is used when building the app for production. The default is '/' and it will direct to the proxy /HeroTasks
+  //base: '/HeroTasks', // This is the base URL for the app. It is used when building the app for production. The default is '/' and it will direct to the proxy /HeroTasks
   plugins: [react()],
   server: {
     host: '0.0.0.0', // This allow external access, This is useful for testing on different devices within the same network or for allowing others on the same network to access the development server.

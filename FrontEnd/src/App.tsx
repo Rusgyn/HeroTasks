@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Session from './components/Session';
 import './App.css'
 
 const App = () => {
 
   return (
-    <>
-    <Session />
-    </>
-  )
+    <Router>
+
+      <div>
+        <Routes>
+          <Route path='/login' element={<Session />} />
+        </Routes>
+      </div>
+
+    </Router>   
+  );
 
 }
 
