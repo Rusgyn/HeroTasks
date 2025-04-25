@@ -1,20 +1,33 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Session = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!username || !password) {
-      alert('Please fill in your username and password');
-      return;
-    }
+  
+    try {
+      const response = await axios.post('/HeroTasks/login', 
+        { username, password }
+      );
+      console.log("Session Response is: ", response);
 
-    alert('Login button clicked');
-    console.log('The Login Request:', { u: username, p: password });
+      if (response.status === 200) {
+        navigate('/user-home');
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('An error occurred. Please try again.');
+      } 
+    }
+    
     setUsername('');
     setPassword('');
   };
