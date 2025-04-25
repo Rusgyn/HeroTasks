@@ -3,6 +3,7 @@ import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
 import db from "./Database/db";
 import dotenv from "dotenv";
+import axios from "axios";
 
 const app = express();
 const PORT = 3001;
@@ -22,12 +23,31 @@ app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
-app.get('/HeroTasks', (_req, res) => {
-  res.send('HeroTasks API is running!');
+/* User API routes */
+app.get('/', (_req, res) => {
+  console.log('You reach the HeroTasks backend');
+  res.send('Hi, HeroTasks API is running!');
 });
 app.get('/HeroTasks/Hey', (_req, res) => {
   res.send('Hey, HeroTasks API is running!');
 });
+
+
+/** Session **/
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  console.log("Server. Login info: ", req.body);
+  console.log("=== END ===");
+
+  if (!username || !password) {
+    res.status(400).json({ error: 'Please fill in your username and password' });
+    console.log('Server. Please fill in your username and password');
+    return;
+  };
+
+  console.log('Server. Login button clicked');
+
+})
 
 // Server Start
 app.listen(PORT, () => {
