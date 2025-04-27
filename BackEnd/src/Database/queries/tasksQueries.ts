@@ -14,7 +14,7 @@ const getAllTasks = async() : Promise<Task[]> => {
 const getTaskByHero = async(hero: string): Promise<Task | undefined> => {
   try {
     const result = await db.query('SELECT * FROM tasks WHERE hero_name = $1;', [hero.toLowerCase()]);
-    
+
     if (result.rows.length === 0) {
       console.error(`Queries. Hero ${hero} is not in our galaxy.`);
       return undefined;
@@ -26,4 +26,10 @@ const getTaskByHero = async(hero: string): Promise<Task | undefined> => {
     console.error('Queries. Error fetching our list of task by our hero: ', error);
     throw error;
   }
-}
+};
+
+// const addTaskByHero = async(task: string) : Promise<Task> => {
+//   try {
+//     const result = await db.query('INSERT INTO tasks () VALUES ($1, $2) RETURNING *;', []);
+//   }
+// }
