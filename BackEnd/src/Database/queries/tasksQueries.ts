@@ -37,7 +37,7 @@ const getAllTasksBySuperhero = async (superhero: string): Promise<Task[]> => {
 };
 
 
-const addTaskBySuperhero = async (taskInput: newTaskInput): Promise<Task | undefined> => {
+const addTaskBySuperhero = async (taskInput: newTaskInput): Promise<Task> => {
   try {
     const { superhero_name, superpower } = taskInput;
     //Find the superhero id as per superhero name
@@ -45,7 +45,6 @@ const addTaskBySuperhero = async (taskInput: newTaskInput): Promise<Task | undef
 
     if (heroIdResult.rows.length === 0) {
       throw new Error (`Superhero with name "${superhero_name}" not found.`);
-      return undefined;
     };
 
     const superhero_id = heroIdResult.rows[0].id;
