@@ -15,10 +15,10 @@ const getAllUsers = async(): Promise<User[]> => {
 
 const getUserByEmail = async(email: string): Promise<User> => {
   try {
-    const result = await db.query('SELECY * FROM users WHERE email = $1;', [email.toLowerCase()]);
+    const result = await db.query('SELECT * FROM users WHERE email = $1;', [email.toLowerCase()]);
     return result.rows[0] as User;
   } catch (error) {
-    console.error('Queries. Error fetching admin user by email/username: ', error);
+    console.error('Queries. Error fetching user by email/username: ', error);
     throw error;
   }
 };
