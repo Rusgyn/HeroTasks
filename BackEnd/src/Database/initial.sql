@@ -12,8 +12,8 @@ CREATE TABLE users (
 );
 
 -- Create superheros table
-DROP TABLE IF EXISTS superheros CASCADE;
-CREATE TABLE superheros (
+DROP TABLE IF EXISTS superheroes CASCADE;
+CREATE TABLE superheroes (
   id SERIAL PRIMARY KEY,
   superhero_name VARCHAR(100),
   strength NUMERIC(5,2) DEFAULT 0, -- strength represent the star every completed chores/tasks
@@ -30,8 +30,7 @@ CREATE TABLE tasks (
   completed BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  superhero_id INTEGER REFERENCES superheros(id) ON DELETE CASCADE,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+  superhero_id INTEGER REFERENCES superheroes(id) ON DELETE CASCADE
 );
 
 -- NOTE:
