@@ -15,7 +15,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS superheroes CASCADE;
 CREATE TABLE superheroes (
   id SERIAL PRIMARY KEY,
-  superhero_name VARCHAR(100),
+  superhero_name VARCHAR(100) UNIQUE NOT NULL,
   strength NUMERIC(5,2) DEFAULT 0, -- strength represent the star every completed chores/tasks
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,7 +26,7 @@ CREATE TABLE superheroes (
 DROP TABLE IF EXISTS tasks CASCADE;
 CREATE TABLE tasks (
   id SERIAL PRIMARY KEY,
-  superpower VARCHAR(255), -- tasks or the chores name 'Water the plant'
+  superpower VARCHAR(255) NOT NULL, -- tasks or the chores name 'Water the plant'
   completed BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
