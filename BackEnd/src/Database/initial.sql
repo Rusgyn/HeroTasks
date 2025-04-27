@@ -17,6 +17,8 @@ CREATE TABLE superheros (
   id SERIAL PRIMARY KEY,
   superhero_name VARCHAR(100),
   strength NUMERIC(5,2) DEFAULT 0, -- strength represent the star every completed chores/tasks
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 
