@@ -1,8 +1,10 @@
 interface Task {
-  id: number;
-  hero_name: string;
-  title: string;
+  id?: number;
+  superpower: string;
   completed: boolean;
+  created_at: Date;
+  updated_at: Date;
+  superhero_id: number;
 };
 
 export default Task;

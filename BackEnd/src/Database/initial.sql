@@ -11,17 +11,27 @@ CREATE TABLE users (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create tasks table
-DROP TABLE IF EXISTS tasks CASCADE;
-CREATE TABLE tasks (
+-- Create superheros table
+DROP TABLE IF EXISTS superheroes CASCADE;
+CREATE TABLE superheroes (
   id SERIAL PRIMARY KEY,
-  hero_name VARCHAR(100),
-  title VARCHAR(255),
-  completed BOOLEAN DEFAULT FALSE,
+  superhero_name VARCHAR(100) UNIQUE NOT NULL,
+  strength NUMERIC(5,2) DEFAULT 0, -- strength represent the star every completed chores/tasks
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Create tasks table
+DROP TABLE IF EXISTS tasks CASCADE;
+CREATE TABLE tasks (
+  id SERIAL PRIMARY KEY,
+  superpower VARCHAR(255) NOT NULL, -- tasks or the chores name 'Water the plant'
+  completed BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  superhero_id INTEGER REFERENCES superheroes(id) ON DELETE CASCADE
+);
+
 -- NOTE:
--- You can run this script using the following command: psql -U your_user -d your_database -f your_file_path
+-- Run this script, command is: psql -U your_user -d your_database -f your_file_path
