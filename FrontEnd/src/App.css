@@ -1,10 +1,26 @@
 #root {
-  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  margin: 30px 10px 10px 10px;
+  width: 100vw;
+  height: 100vh;
+
+  /* min-width: 100vw;
+  min-height: 100vh; */
+
+
+  /* max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 2rem; */
+
+
+  /* margin-top: 150px;
+  margin-bottom: 150px;
+  margin-right: 150px;
+  margin-left: 150px; */
 }
 
+/* 
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -39,4 +55,4 @@
 
 .read-the-docs {
   color: #888;
-}
+} */

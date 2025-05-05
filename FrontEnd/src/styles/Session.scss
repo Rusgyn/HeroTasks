@@ -1,0 +1,168 @@
+.session_page {
+  height: 80vh;
+}
+
+.session {
+  display: flex;
+  flex-direction: row;
+  justify-content:center;
+  align-items: baseline;
+  color:burlywood;
+  margin-top: 5rem;
+  height: 80%;
+ 
+};
+
+.session_notes {
+  display: flex;
+  flex-direction: column;
+  margin-right: 7rem;
+}
+
+h1 {
+  font-size: 50px;
+  // font-weight: bolder;
+  text-shadow: #fc0 1px 0 5px; /* color | offset-x | offset-y | blur-radius */
+}
+
+.session_login {
+  border-radius: 0.5rem;
+  border-style: solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgb(218, 162, 32);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  color: rgb(112, 22, 112);
+  min-height: 35vh;
+  min-width: 15vw;
+};
+
+.session_login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+  margin: auto;
+};
+
+label {
+  display: flex;
+  padding: 0.5rem;
+}
+
+input {
+  display: flex;
+  padding: 0.5rem;
+  width: 18rem;
+  height: 2rem;
+  background-color: whitesmoke;
+  color: rgb(112, 22, 112);
+  font-size: 1.2rem;
+  border: none;
+}
+
+.input:active {
+  border-color: rgb(112, 22, 112);
+}
+
+.session_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.session_btn__login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  width: 5rem;
+  height: 2rem;
+  margin-right: 1rem;
+  color: whitesmoke;
+  background:rgb(112, 22, 112);
+  border: none;
+  // transform: all 0.4s ease;
+};
+
+.session_btn__login:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(to right, rgb(112, 22, 112), orange);
+}
+
+.session_btn__back {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  width: 5rem;
+  height: 2rem;
+  color: whitesmoke;
+  background-color: rgb(112, 22, 112);
+  border: none;
+};
+
+.session_btn__back:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(to right, orange, rgb(112, 22, 112));
+};
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.85rem;
+  border-top: 1px solid;
+  border-color: gray;
+}
+
+span {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+};
+
+.session_footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: none;
+  border-bottom: none;
+  border-top-style: double;
+  width: 80vw;
+  margin: 15rem auto;
+  color: yellowgreen;
+  text-decoration: none;
+}
+
+.session_footer_a_1 {
+  color: yellowgreen;
+  text-decoration: none;
+}
+
+.session_footer_a_2 {
+  color: orange;
+  text-decoration: none;
+}
+
+
+@media only screen and (max-width: 900px) {
+
+  .session {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .session_notes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 0;
+  }
+
+}
