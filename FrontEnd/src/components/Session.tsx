@@ -7,7 +7,7 @@ const Session = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [_error, setError] = useState('');
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,7 +38,7 @@ const Session = () => {
       <div className="session">
         <div className="session_notes">
           <h1>HeroTasks</h1>
-          <h2>Empower your little heroes to complete task, build habits, and grow stonger everyday</h2>
+          <h2>Empower your little heroes to complete task, build habits, and grow stronger everyday</h2>
         </div>
       
         <div className="session_login">
@@ -92,7 +92,11 @@ const Session = () => {
 
       <div className="session_footer">
         <span className="session_footer_a">
-          <a className="session_footer_a_1" href="/register">Sign-up | </a> <a className="session_footer_a_2" href="/login">login | </a> <a className="session_footer_a_1" href="/forgot-password">Reset Password | </a> <a className="session_footer_a_2" href="http://google.com">Google |</a>
+          <a className="session_footer_a_1" href="/register">Sign-up </a> |
+          <a className="session_footer_a_2" href="/login"> login </a> | 
+          <a className="session_footer_a_1" href="/forgot-password"> Reset Password </a> | 
+          <a className="session_footer_a_2" href="/help"> Contact us </a> | 
+          <a className="session_footer_a_1" href="http://google.com"> Google</a>
         </span>
 
       </div>
