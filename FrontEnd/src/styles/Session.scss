@@ -10,8 +10,7 @@
   color:burlywood;
   margin-top: 5rem;
   height: 80%;
- 
-};
+}
 
 .session_notes {
   display: flex;
@@ -38,7 +37,7 @@ h1 {
   color: rgb(112, 22, 112);
   min-height: 35vh;
   min-width: 15vw;
-};
+}
 
 .session_login__form {
   display: flex;
@@ -46,7 +45,7 @@ h1 {
   align-items: center;
   padding-top: 1rem;
   margin: auto;
-};
+}
 
 label {
   display: flex;
@@ -64,7 +63,7 @@ input {
   border: none;
 }
 
-.input:active {
+input:active {
   border-color: rgb(112, 22, 112);
 }
 
@@ -88,13 +87,12 @@ input {
   color: whitesmoke;
   background:rgb(112, 22, 112);
   border: none;
-  // transform: all 0.4s ease;
-};
+}
 
 .session_btn__login:hover {
   transform: translateY(-5px);
   background: linear-gradient(to right, rgb(112, 22, 112), orange);
-};
+}
 
 .session_btn__back {
   display: flex;
@@ -106,12 +104,12 @@ input {
   color: whitesmoke;
   background-color: rgb(112, 22, 112);
   border: none;
-};
+}
 
 .session_btn__back:hover {
   transform: translateY(-5px);
   background: linear-gradient(to right, orange, rgb(112, 22, 112));
-};
+}
 
 footer {
   display: flex;
@@ -120,12 +118,12 @@ footer {
   font-size: 0.85rem;
   border-top: 1px solid;
   border-color: gray;
-};
+}
 
 span {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-};
+}
 
 .session_footer {
   display: flex;
@@ -138,17 +136,17 @@ span {
   margin: 15rem auto;
   color: burlywood;
   text-decoration: none;
-};
+}
 
 .session_footer_a_1 {
   color: yellowgreen;
   text-decoration: none;
-};
+}
 
 .session_footer_a_2 {
   color: orange;
   text-decoration: none;
-};
+}
 
 
 
@@ -165,10 +163,9 @@ span {
 //     align-items: center;
 //     margin-right: 0;
 //   }
-
 // }
 
-@media only screen and (min-height: 600px) and (max-height: 1020px) {
+@media only screen and (max-width: 500px) and (min-height: 600px) and (max-height: 1020px) {
 
   .session {
     display: flex;
@@ -190,7 +187,7 @@ span {
 
 }
 
-@media only screen and (min-height: 600px) and (max-height: 750px) {
+@media only screen and (max-width: 500px) and (min-height: 600px) and (max-height: 750px) {
 
   h2 {
     font-size: 15px;
@@ -202,7 +199,7 @@ span {
     font-size: 0.5rem;
     min-height: 35vh;
     min-width: 15vw;
-  };
+  }
   
   label {
     padding: 0.25rem;
@@ -233,7 +230,11 @@ span {
     width: 2.5rem;
     height: 1rem;
     font-size: 0.5rem;
-  };
+  }
+
+  footer {
+    font-size: 0.5rem;
+  }
 
   .session_footer {
     display: none;
@@ -243,8 +244,6 @@ span {
 
 @media only screen and (max-width: 500px) and (max-height: 599px) {
 
-
-  // ===
   .session_login {
     border-radius: 0.5rem;
     padding: 1rem;
@@ -255,14 +254,11 @@ span {
   
   .session_login__form {
     padding-top: 0.5rem;
-  };
+  }
   
   label {
     padding: 0.25rem;
   }
-
-
-  // ====
   
   input {
     padding: 0.25rem;
@@ -282,18 +278,33 @@ span {
     height: 1rem;
     margin-right: 0.5rem;
     font-size: 0.5rem;;
-  };
+  }
 
   .session_btn__back {
     padding: 0.5rem;
     width: 2.5rem;
     height: 1rem;
     font-size: 0.5rem;
-  };
+  }
+
+  footer {
+    font-size: 0.5rem;
+  }
 
   .session_notes,
   .session_footer {
     display: none;
   }
+}
 
-};
+@media only screen and (max-width: 450px) {
+  .session_page {
+    display: none;
+  }
+}
+
+@media only screen and (max-height: 300px) {
+  .session_page {
+    display: none;
+  }
+}
