@@ -38,14 +38,14 @@ const Session = () => {
       <div className="session">
         <div className="session_notes">
           <h1>HeroTasks</h1>
-          <h2>Empower your little heroes to complete task, build habits, and grow stronger everyday</h2>
+          Empower your little heroes to complete task, build habits, and grow stronger everyday
         </div>
       
         <div className="session_login">
           
           <form onSubmit={handleLogin} className="session_login__form">
             <h2>Superhero</h2>
-            <div>
+            {/* <div> */}
               <label htmlFor="username">      
                 <input type="text"
                   id="username"
@@ -74,7 +74,7 @@ const Session = () => {
                 </button>
               </div>
 
-            </div>
+            {/* </div> */}
           </form>
 
           <footer>
