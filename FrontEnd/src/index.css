@@ -1,8 +1,9 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* line-height: 1.5; */
   font-weight: 400;
-  background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(67, 5, 105));
+  /* background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(67, 5, 105)); */
+  background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(83, 11, 129));
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
