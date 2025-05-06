@@ -35,50 +35,44 @@ const Session = () => {
 
   return (
     <div className="session_page">
+
       <div className="session">
         <div className="session_notes">
           <h1>HeroTasks</h1>
           Empower your little heroes to complete task, build habits, and grow stronger everyday
         </div>
-      
         <div className="session_login">
-          
           <form onSubmit={handleLogin} className="session_login__form">
             <h2>Superhero</h2>
-            {/* <div> */}
-              <label htmlFor="username">      
-                <input type="text"
-                  id="username"
-                  name="username"
-                  placeholder="Email address"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </label>
-              <label htmlFor="password">   
-                <input type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </label>
+            <label htmlFor="username">      
+              <input type="text"
+                id="username"
+                name="username"
+                placeholder="Email address"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </label>
+            <label htmlFor="password">   
+              <input type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </label>
 
-              <div className="session_btn">
-                <button className="session_btn__login" type="submit">Login</button>
-                <button className="session_btn__back"
-                  type='button'
-                  value="back"
-                  onClick={() => {navigate(-1)}}> Back {/* Go back to prev page */}
-                </button>
-              </div>
-
-            {/* </div> */}
+            <div className="session_btn">
+              <button className="session_btn__login" type="submit">Login</button>
+              <button className="session_btn__back"
+                type='button'
+                value="back"
+                onClick={() => {navigate(-1)}}> Back {/* Go back to prev page */}
+              </button>
+            </div>
           </form>
-
           <div className="session_login__footer">
-          {/* <footer> */}
             <span>
             Don't have an account? <a href="/register">Register here</a>
             <br/>
@@ -86,13 +80,11 @@ const Session = () => {
             <br/>
             Need help? <a href="/help">Contact us</a>
             </span>    
-          {/* </footer> */}
           </div>
         </div>
       </div>
 
       <footer>
-      {/* <div className="session_footer"> */}
         <span className="session_footer_a">
           <a className="session_footer_a_1" href="/register">Sign-up </a> |
           <a className="session_footer_a_2" href="/login"> login </a> | 
@@ -100,14 +92,11 @@ const Session = () => {
           <a className="session_footer_a_2" href="/help"> Contact us </a> | 
           <a className="session_footer_a_1" href="http://google.com"> Google</a>
         </span>
-
       </footer>
-      {/* </div> */}
       
     </div>
-
-
-    
   )
-}
+  
+};
+
 export default Session;
