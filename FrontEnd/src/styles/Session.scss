@@ -153,9 +153,12 @@ span {
 
   width: 100vw;
   height: 30vh;
-  background-color: rgb(133, 93, 133);
+  // background-color: rgb(131, 33, 131);
   margin: 0;
   padding: 0;
+
+  background-color: rgb(94, 28, 110);//#cd00e0;
+  background-image: url(http://www.transparenttextures.com/patterns/xv.png);
   
 }
 
@@ -165,7 +168,7 @@ span {
 }
 
 .session_footer_a_2 {
-  color: orange;
+  color: rgb(255, 140, 0);
   text-decoration: none;
 }
 
