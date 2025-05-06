@@ -77,7 +77,8 @@ const Session = () => {
             {/* </div> */}
           </form>
 
-          <footer>
+          <div className="session_login__footer">
+          {/* <footer> */}
             <span>
             Don't have an account? <a href="/register">Register here</a>
             <br/>
@@ -85,12 +86,13 @@ const Session = () => {
             <br/>
             Need help? <a href="/help">Contact us</a>
             </span>    
-          </footer>
+          {/* </footer> */}
+          </div>
         </div>
       </div>
 
-
-      <div className="session_footer">
+      <footer>
+      {/* <div className="session_footer"> */}
         <span className="session_footer_a">
           <a className="session_footer_a_1" href="/register">Sign-up </a> |
           <a className="session_footer_a_2" href="/login"> login </a> | 
@@ -99,7 +101,8 @@ const Session = () => {
           <a className="session_footer_a_1" href="http://google.com"> Google</a>
         </span>
 
-      </div>
+      </footer>
+      {/* </div> */}
       
     </div>
 

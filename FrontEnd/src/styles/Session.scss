@@ -30,7 +30,7 @@
   font-size: 25px;
   //margin-right: 7rem;
 
-  margin-right: 2rem;
+  margin-right: 3rem;
 }
 
 h1 {
@@ -125,7 +125,7 @@ input:active {
   background: linear-gradient(to right, orange, rgb(112, 22, 112));
 }
 
-footer {
+.session_login__footer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,7 +139,7 @@ span {
   margin-bottom: 0.5rem;
 }
 
-.session_footer {
+footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -152,12 +152,12 @@ span {
   //margin: 15rem auto;
 
   width: 100vw;
-  height: 30vh;
+  height: 25vh;
   // background-color: rgb(131, 33, 131);
   margin: 0;
   padding: 0;
 
-  background-color: rgb(94, 28, 110);//#cd00e0;
+  background-color: rgb(94, 28, 110);
   background-image: url(http://www.transparenttextures.com/patterns/xv.png);
   
 }
