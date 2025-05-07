@@ -165,10 +165,54 @@ footer {
   }
 }
 
+/* Mobile devices media screen */
 @media only screen and (max-width: 430px) and (max-height: 935px) {
 
   .session {
-    margin: 0.5rem 1rem;
+    margin: 0.5rem 2rem;
+  }
+
+  .session_notes {
+    font-size: 15px;
+    margin-right: 0;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+  .session_login {
+    padding: 0;
+  }
+
+  .session_login__form {
+    padding: 0;
+  }
+
+  .session_btn {
+    margin: 1.5rem;
+  }
+
+  input {
+    font-size: 1rem;
+    height: 1.5rem;
+  }
+
+  footer {
+    font-size: 0.8rem;
+    height: 20vh;
+  }
+
+}
+
+/* Samsung Galaxy S8 */
+@media only screen and (width: 360px) and (height: 740px) {
+
+  .session_page {
+    margin-top: 0;
+  }
+  .session {
+    margin: 0.5rem 2rem;
   }
 
   .session_notes {
@@ -189,22 +233,64 @@ footer {
   }
 
   .session_btn {
-    margin: 1rem;
+    margin: 1.5rem;
   }
 
   input {
     font-size: 1rem;
     height: 1rem;
+    width: 13rem;
   }
 
   footer {
     font-size: 0.8rem;
+    height: 15vh;
   }
-
-
 
 }
 
+
+
+/* Surface Duo Media screen */
+@media only screen and (width: 540px) and (height: 720px) {
+
+  .session_page {
+    margin-top: 0;
+  }
+
+  .session {
+    margin: 0 3rem 2.5rem 3rem;
+  }
+
+  .session_notes {
+    font-size: 20px;
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .session_login__form {
+   padding: 0;
+  }
+
+  .session_btn {
+    margin: 1.5rem;
+  }
+
+  input {
+    font-size: 1rem;
+    height: 1.5rem;
+  }
+
+  footer {
+    font-size: 1rem;
+    height: 15vh;
+  }
+
+}
 
 
 
