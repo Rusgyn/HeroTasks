@@ -165,14 +165,57 @@ footer {
   }
 }
 
-@media only screen and (max-width: 450px) {
-  .session_page {
-    display: none;
+@media only screen and (max-width: 430px) and (max-height: 935px) {
+
+  .session {
+    margin: 0.5rem 1rem;
   }
+
+  .session_notes {
+    font-size: 15px;
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+  .session_login {
+    padding: 0;
+  }
+
+  .session_login__form {
+    padding: 0;
+  }
+
+  .session_btn {
+    margin: 1rem;
+  }
+
+  input {
+    font-size: 1rem;
+    height: 1rem;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+
+
+
 }
 
-@media only screen and (max-height: 250px) {
-  .session_page {
-    display: none;
-  }
-}
+
+
+
+// @media only screen and (max-width: 450px) {
+//   .session_page {
+//     display: none;
+//   }
+// }
+
+// @media only screen and (max-height: 250px) {
+//   .session_page {
+//     display: none;
+//   }
+// }
