@@ -1,26 +1,31 @@
+// Load environment variables
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config(
   {
     path: path.resolve(__dirname, '../.env')
   }
-); //handles dotenv for databasing. Above format will ensure that db is loaded before anything and get the correct values.
+); //Above format will ensure that db is loaded before anything and get the correct values.
 
+//Node.js and library
 import express from "express";
 import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
-import db from './Database/db';
 import axios from "axios";
 import session from "express-session"; //maintain user state
-/* DB Queries */
+
+//Internal Modules and DB Queries */
+import db from './Database/db';
 import userQueries from "./Database/queries/usersQueries";
 import superheroQueries from "./Database/queries/superheroesQueries";
 import taskQueries from "./Database/queries/tasksQueries";
-/* Types */
+
+//Type imports
 import User from "./types/userTypes";
 import { Superhero, NewSuperheroInput } from "./types/superheroTypes";
 import { Task, NewTaskInput } from "./types/taskTypes";
 
+/* Express Setup */
 const app = express();
 const PORT = 3001;
 
@@ -40,12 +45,12 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 db.query("SELECT * FROM users WHERE id = 1;")
   .then((response) => console.log("DB Test, user table found: ", response.rows))
   .catch((error) => console.error("DT Test, error querying users table:", error));
-  
+
 db.query('SELECT current_database();')
   .then(res => console.log('✅ Connected to DB:', res.rows[0]))
   .catch(err => console.error('❌ Error checking current DB:', err));
 
-/* User API routes */
+/* Routes */
 app.get('/', (_req, res) => {
   console.log('You reach the HeroTasks backend');
   res.send('Hi, HeroTasks API is running!');
@@ -71,7 +76,7 @@ app.post('/login', (req, res) => {
 
 })
 
-// Server Start
+/* Server Start */
 app.listen(PORT, () => {
   console.log(`Thank you for using the App. The Server is running on http://localhost:${PORT}`);
 });
