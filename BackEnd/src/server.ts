@@ -2,14 +2,20 @@ import express from "express";
 import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
 import db from "./Database/db";
+import path from "path";
 import dotenv from "dotenv";
 import axios from "axios";
+import session from "express-session"; //maintain user state
 
 const app = express();
 const PORT = 3001;
 
-//handles dotenv for databasing. Loaded at the start
-dotenv.config();
+//handles dotenv for databasing. Load .env from a file.
+dotenv.config(
+  {
+    path: path.resolve(__dirname, '../.env')
+  }
+);
 
 //Middleware
 //CORS middleware. Should be added before any other routes or middleware this ensures that the CORS headers are properly set in the response before any other logic 
