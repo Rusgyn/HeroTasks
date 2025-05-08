@@ -8,7 +8,7 @@ dotenv.config(
 ); //Above format will ensure that db is loaded before anything and get the correct values.
 
 //Node.js and library
-import express from "express";
+import express, { Request, Response } from "express";
 import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
 import axios from "axios";
@@ -42,13 +42,13 @@ app.use(express.json()); // Parse JSON payloads.
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 /* DB Test - Development */
-db.query("SELECT * FROM users WHERE id = 1;")
+db.query('SELECT current_database();')
+  .then(response => console.log('✅ Connected to DB:', response.rows[0]))
+  .catch(error => console.error('❌ Error checking current DB:', error));
+
+  db.query("SELECT * FROM users WHERE email = 'jane.smith@test.com';")
   .then((response) => console.log("DB Test, user table found: ", response.rows))
   .catch((error) => console.error("DT Test, error querying users table:", error));
-
-db.query('SELECT current_database();')
-  .then(res => console.log('✅ Connected to DB:', res.rows[0]))
-  .catch(err => console.error('❌ Error checking current DB:', err));
 
 /* Routes */
 app.get('/', (_req, res) => {
@@ -61,20 +61,32 @@ app.get('/HeroTasks/Hey', (_req, res) => {
 
 
 /** Session **/
-app.post('/login', (req, res) => {
+app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
-  console.log("Server. Login info: ", req.body);
+  console.log("Server Side. User login info: ", req.body);
   console.log("=== END ===");
 
   if (!username || !password) {
+    console.log('Server Side. Please fill in your username and password');
     res.status(400).json({ error: 'Please fill in your username and password' });
-    console.log('Server. Please fill in your username and password');
     return;
-  };
-
+  }
+  
   console.log('Server. Login button clicked');
 
-})
+  //Check is user exist by username
+  //YES = Check the password. NO = send 401. Invalid credential
+  // Username & Password = Okay => save session
+  // Username/ Password = !Okay => send 401 Invalid credential
+
+  // Add error catch when ID is not present => send 500 Internal server e
+
+});
+
+//Create a logout route
+// destroy the session
+//clear the cookie
+//redirect to Home Page
 
 /* Server Start */
 app.listen(PORT, () => {
