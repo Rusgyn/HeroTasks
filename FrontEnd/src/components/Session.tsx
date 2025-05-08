@@ -19,7 +19,7 @@ const Session = () => {
       console.log("Session Response is: ", response);
 
       if (response.status === 200) {
-        navigate('/');
+        navigate('/'); //Home page
       }
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {
