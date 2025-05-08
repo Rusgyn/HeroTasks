@@ -13,6 +13,7 @@ import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
 import axios from "axios";
 import session from "express-session"; //maintain user state
+import bcrypt from 'bcryptjs';
 
 //Internal Modules and DB Queries */
 import db from './Database/db';
@@ -24,6 +25,7 @@ import taskQueries from "./Database/queries/tasksQueries";
 import User from "./types/userTypes";
 import { Superhero, NewSuperheroInput } from "./types/superheroTypes";
 import { Task, NewTaskInput } from "./types/taskTypes";
+import { error } from "console";
 
 /* Express Setup */
 const app = express();
@@ -59,7 +61,6 @@ app.get('/HeroTasks/Hey', (_req, res) => {
   res.send('Hey, HeroTasks API is running!');
 });
 
-
 /** Session **/
 app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
@@ -74,13 +75,50 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
   
   console.log('Server. Login button clicked');
 
+  try {
+    const isUserExist = await userQueries.getUserByEmail(username);
+    console.log("Server side. isUserExit data: ", isUserExist);
+    console.log("=== END ===");
+
+    if(!isUserExist) {
+      console.log('Server Side. User not found with email: ', username);
+      res.status(401).json({ error: 'Invalid credentials!' });
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, isUserExist.password_digest);
+
+    if (!isPasswordValid) {
+      console.log('Password is incorrect for email: ', username);
+      res.status(401).json({ error: 'Invalid credentials!' });
+      return;
+    }
+
+    if (isUserExist && isPasswordValid) {
+      const userId = isUserExist.id;
+      const userEmail = isUserExist.email;
+
+      if (userId !== undefined) {
+        req.session.loggedUser = { id: userId, username: userEmail };
+        console.log("Server Side. LoggedUser is: ", req.session.loggedUser);
+        res.status(500).json({ message: 'Login successful'})
+      } else {
+        console.error('server Side. User ID is undefined.');
+        res.status(500).json({ error: 'Internal Server error.'});
+        return;
+      }
+    }
+  } catch (error) {
+    console.log("Server Side. Error when attempting to log in: ", error);
+    res.status(500).json({ error: 'Internal Server error' });
+  }
+
   //Check is user exist by username
   //YES = Check the password. NO = send 401. Invalid credential
   // Username & Password = Okay => save session
   // Username/ Password = !Okay => send 401 Invalid credential
 
   // Add error catch when ID is not present => send 500 Internal server e
-
 });
 
 //Create a logout route
