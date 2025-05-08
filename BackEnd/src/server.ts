@@ -9,10 +9,10 @@ dotenv.config(
 
 //Node.js and library
 import express, { Request, Response } from "express";
+import session from "express-session"; //maintain user state
 import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
 import axios from "axios";
-import session from "express-session"; //maintain user state
 import bcrypt from 'bcryptjs';
 
 //Internal Modules and DB Queries */
@@ -51,6 +51,27 @@ db.query('SELECT current_database();')
   db.query("SELECT * FROM users WHERE email = 'jane.smith@test.com';")
   .then((response) => console.log("DB Test, user table found: ", response.rows))
   .catch((error) => console.error("DT Test, error querying users table:", error));
+
+/* Session Configuration */ 
+//**Always place express-session after express.json() and express.urlencoded() middleware for session handling to work properly.
+const sessionSecret = process.env.DB_SESSION_SECRET
+if (sessionSecret) {
+  app.use(
+    session({
+      secret: sessionSecret as string,
+      resave: false, //avoid saving session if not modified
+      saveUninitialized: false, //prevent creating session until stored
+      cookie: {
+        httpOnly: true, //prevent client-side scripts from accessing the cookie
+        secure: false, //update to true during production, https
+        maxAge: 1000 * 60 * 60, // 1hr session
+      }
+    })
+  )
+} else {
+  console.log("Server side. DB_SESSION_SECRET is unset in .env");
+  process.exit(1); //Terminate the app.
+};
 
 /* Routes */
 app.get('/', (_req, res) => {
@@ -97,11 +118,10 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
     if (isUserExist && isPasswordValid) {
       const userId = isUserExist.id;
       const userEmail = isUserExist.email;
-
+      console.log("Server Side. The password is correct");
       if (userId !== undefined) {
         req.session.loggedUser = { id: userId, username: userEmail };
-        console.log("Server Side. LoggedUser is: ", req.session.loggedUser);
-        res.status(500).json({ message: 'Login successful'})
+        res.status(200).json({ message: 'Login successful'})
       } else {
         console.error('server Side. User ID is undefined.');
         res.status(500).json({ error: 'Internal Server error.'});
@@ -112,13 +132,6 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
     console.log("Server Side. Error when attempting to log in: ", error);
     res.status(500).json({ error: 'Internal Server error' });
   }
-
-  //Check is user exist by username
-  //YES = Check the password. NO = send 401. Invalid credential
-  // Username & Password = Okay => save session
-  // Username/ Password = !Okay => send 401 Invalid credential
-
-  // Add error catch when ID is not present => send 500 Internal server e
 });
 
 //Create a logout route
