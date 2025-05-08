@@ -66,6 +66,13 @@ input:active {
   border-color: rgb(112, 22, 112);
 }
 
+.session_login_error {
+  color: red;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
 .session_btn {
   display: flex;
   flex-direction: row;
