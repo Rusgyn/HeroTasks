@@ -1,0 +1,16 @@
+.board_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  //min-height: 100vh;
+  margin-top: 3rem;
+}
+
+.board {
+  display: flex;
+  color:burlywood;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5rem 10rem;
+}
