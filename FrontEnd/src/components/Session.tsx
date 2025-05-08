@@ -14,12 +14,12 @@ const Session = () => {
   
     try {
       const response = await axios.post('/HeroTasks/login', 
-        { username, password }
+        { username, password }, { withCredentials: true }
       );
       console.log("Session Response is: ", response);
 
       if (response.status === 200) {
-        navigate('/user-home');
+        navigate('/'); //Home page
       }
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {

@@ -1,10 +1,10 @@
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('Captain_Obvious', 1);
+  VALUES('captain_obvious', 1);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('Sgt_Jane', 1);
+  VALUES('sgt_jane', 1);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('Detective_Benson', 1);
+  VALUES('detective_benson', 1);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('Spider_Kid', 2);
+  VALUES('spider_kid', 2);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('Awesome_Glen', 2);
+  VALUES('awesome_glen', 2);

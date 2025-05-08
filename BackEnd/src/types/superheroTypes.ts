@@ -1,4 +1,4 @@
-interface Superhero {
+export interface Superhero {
   id?: number;
   superhero_name: string;
   strength: number;
@@ -7,4 +7,6 @@ interface Superhero {
   user_id: number;
 };
 
-export default Superhero;
+export interface NewSuperheroInput {
+  superhero_name: string;
+};

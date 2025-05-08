@@ -1,4 +1,4 @@
-interface Task {
+export interface Task {
   id?: number;
   superpower: string;
   completed: boolean;
@@ -7,4 +7,7 @@ interface Task {
   superhero_id: number;
 };
 
-export default Task;
+export interface NewTaskInput {
+  superpower: string;
+  superhero_name: string;
+};
