@@ -17,8 +17,8 @@ const getAllTasksBySuperhero = async (superhero: string): Promise<Task[]> => {
     const query = `
       SELECT tasks.*
       FROM tasks
-      INNER JOIN superheros ON tasks.superhero_id = superheros.id
-      WHERE superheros.superhero_name = $1;
+      INNER JOIN superheroes ON tasks.superhero_id = superheroes.id
+      WHERE superheroes.superhero_name = $1;
     `;
 
     const result = await db.query(query, [superhero]);
