@@ -1,3 +1,20 @@
+// .board_page {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   align-items: center;
+//   //min-height: 100vh;
+//   margin-top: 3rem;
+// }
+
+// .board {
+//   display: flex;
+//   color:burlywood;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   margin: 5rem 10rem;
+// }
+
 .board_page {
   display: flex;
   flex-direction: column;
@@ -8,9 +25,74 @@
 }
 
 .board {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  //   display: flex;
+//   color:burlywood;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   margin: 5rem 10rem;
+}
+
+.board__hero_grid {
   display: flex;
-  color:burlywood;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 5rem 10rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.board__hero_card {
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 260px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  h2 {
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+  }
+
+  p {
+    margin: 0.5rem 0;
+    color: #4a5568;
+  }
+
+  .board__no_task {
+    font-style: italic;
+    color: #a0aec0;
+  }
+
+  .board__task_list {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      padding: 0.5rem;
+      border-bottom: 1px solid #edf2f7;
+      color: #2d3748;
+
+      &.task-completed {
+        text-decoration: line-through;
+        color: #38a169; // Green for completed
+      }
+    }
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #718096;
 }
