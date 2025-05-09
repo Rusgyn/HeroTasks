@@ -1,6 +1,6 @@
 import db from '../db';
-import Task from '../../types/taskTypes';
-import newTaskInput from '../../types/newTaskTypes';
+import { Task } from '../../types/taskTypes';
+import { NewTaskInput } from '../../types/taskTypes';
 
 const getAllTasks = async() : Promise<Task[]> => {
   try{
@@ -37,7 +37,7 @@ const getAllTasksBySuperhero = async (superhero: string): Promise<Task[]> => {
 };
 
 
-const addTaskBySuperhero = async (taskInput: newTaskInput): Promise<Task> => {
+const addTaskBySuperhero = async (taskInput: NewTaskInput): Promise<Task> => {
   try {
     const { superhero_name, superpower } = taskInput;
     //Find the superhero id as per superhero name

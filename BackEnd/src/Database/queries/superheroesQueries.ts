@@ -1,6 +1,6 @@
 import db from '../db';
-import Superhero from '../../types/superheroTypes';
-import NewSuperheroInput from '../../types/newSuperheroTypes';
+import { Superhero } from '../../types/superheroTypes';
+import { NewSuperheroInput } from '../../types/superheroTypes';
 
 // Get all superheroes
 const getAllSuperheroes = async() : Promise<Superhero[]> => {
