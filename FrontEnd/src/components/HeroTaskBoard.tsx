@@ -25,6 +25,30 @@ const HeroTaskBoard = () => {
     fetchHeroesData();
   }, []);
 
+  const handleTaskToggle = async (heroId: number, taskId: number) => {
+    try {
+      setSuperheroes((prevHeroes) =>
+        prevHeroes.map((hero) =>
+          hero.id === heroId
+            ? {
+                ...hero,
+                tasks: hero.tasks.map((task) =>
+                  task.id === taskId
+                    ? { ...task, completed: !task.completed }
+                    : task
+                ),
+              }
+            : hero
+        )
+      );
+  
+      // Send PUT request to update task status on server
+      await axios.put(`/HeroTasks/tasks/${taskId}/toggle`);
+    } catch (error) {
+      console.error("Failed to toggle task completion:", error);
+    }
+  };
+
   if (loading) return <div className="loading"> Loading ... </div>;
 
   return (
