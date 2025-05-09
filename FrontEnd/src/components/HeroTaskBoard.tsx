@@ -13,7 +13,7 @@ const HeroTaskBoard = () => {
     const fetchHeroesData = async() => {
       try {
         const response = await axios.get('/HeroTasks/superheroes-with-tasks');
-        console.log("Hero DashBoard. The Superheroes Data: ", response.data);
+        console.log("Hero DashBoard. The Superheroes Data: ", response);
         setSuperheroes(response.data);
       } catch (error) {
         console.error("Hero Dashboard. Error fetching data: ", error);
@@ -38,7 +38,7 @@ const HeroTaskBoard = () => {
             superheroes.map((hero) => (
               <div key={hero.id} className="board__hero_card">
                 <h2>{hero.superhero_name}</h2>
-                <p><strong>⭐ Strength:</strong> {hero.strength}</p>
+                <p><strong>⭐ Strength:</strong> { hero.strength }</p>
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
                     {hero.tasks.map((task) => (
