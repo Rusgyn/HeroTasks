@@ -64,29 +64,45 @@ const addTaskBySuperhero = async (taskInput: NewTaskInput): Promise<Task> => {
   }
 };
 
-const updateTaskCompleted = async (taskId: number) : Promise<Task> => {
-  try {
-    const result = await db.query(
-      `UPDATE tasks
-        SET completed = TRUE
-        updated_at = CURRENT TIMESTAMP
-        WHERE id = $1 RETURNING *;`, [taskId]);
+// const updateTaskCompleted = async (taskId: number) : Promise<Task> => {
+//   try {
+//     const result = await db.query(
+//       `UPDATE tasks
+//         SET completed = TRUE
+//         updated_at = CURRENT TIMESTAMP
+//         WHERE id = $1 RETURNING *;`, [taskId]);
 
-    if (result.rows[0].length === 0) {
-      throw new Error(`Task with id ${taskId} not found.`);
-    };
+//     if (result.rows[0].length === 0) {
+//       throw new Error(`Task with id ${taskId} not found.`);
+//     };
 
-    return result.rows[0] as Task;
+//     return result.rows[0] as Task;
 
-  } catch (error) {
-    console.error('Queries. Error updating task completion: ', error);
-    throw error;
-  }
+//   } catch (error) {
+//     console.error('Queries. Error updating task completion: ', error);
+//     throw error;
+//   }
+// };
+
+// Get task by ID
+const getTaskById = async (id: number): Promise<Task | null> => {
+  const result = await db.query('SELECT * FROM tasks WHERE id = $1', [id]);
+  return result.rows[0] || null;
+};
+
+// Update task completion
+const updateTaskCompletion = async (id: number, completed: boolean): Promise<Task> => {
+  const result = await db.query(
+    'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
+    [completed, id]
+  );
+  return result.rows[0];
 };
 
 export default {
   getAllTasks,
   getAllTasksBySuperhero,
   addTaskBySuperhero,
-  updateTaskCompleted
+  getTaskById,
+  updateTaskCompletion
 }
