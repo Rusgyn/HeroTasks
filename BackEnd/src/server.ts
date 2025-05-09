@@ -164,6 +164,30 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
   }
 });
 
+//Dashboard: Update the task completion. Toggle
+app.put('/HeroTasks/tasks/:id/toggle', async (req: Request, res: Response): Promise<void> => {
+  const taskId = parseInt(req.params.id);
+
+  try {
+    // Get the current task
+    const task = await taskQueries.getTaskById(taskId);
+    if (!task) {
+      console.log("Server Side. Task not found.")
+      res.status(404).json({ error: 'Task not found' });
+      return;
+    }
+
+    // Toggle the `completed` value
+    const updatedTask = await taskQueries.updateTaskCompletion(taskId, !task.completed);
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    console.error("Error toggling task completion:", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
 /* Server Start */
 app.listen(PORT, () => {
   console.log(`Thank you for using the App. The Server is running on http://localhost:${PORT}`);
