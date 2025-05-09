@@ -29,13 +29,37 @@ const HeroTaskBoard = () => {
 
   return (
     <div className="board_page">
-
       <div className="board">
-        <h1> HeroTaskBoard Component!</h1>
+        <h1>Hero Task Board</h1>
+        <div className="board__hero_grid">
+          {superheroes.length === 0 ? (
+            <p>No superheroes or tasks found.</p>
+          ) : (
+            superheroes.map((hero) => (
+              <div key={hero.id} className="board__hero_card">
+                <h2>{hero.superhero_name}</h2>
+                <p><strong>⭐ Strength:</strong> {hero.strength}</p>
+                {hero.tasks.length > 0 ? (
+                  <ul className="board__task_list">
+                    {hero.tasks.map((task) => (
+                      <li
+                        key={task.id}
+                        className={task.completed ? 'task-completed' : ''}
+                      >
+                        {task.superpower}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="board__no_task">No tasks assigned.</p>
+                )}
+              </div>
+            ))
+          )}
+        </div>
       </div>
-
     </div>
-  )
+  );
 };
 
 export default HeroTaskBoard;
