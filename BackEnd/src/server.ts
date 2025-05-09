@@ -144,6 +144,7 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {
     const superheroes = await superheroQueries.getAllSuperheroes();
+    console.log("Server side. superheroes from db: ", superheroes);
 
     const superheroesWithTasks = await Promise.all(
       superheroes.map(async (hero) => {
