@@ -83,6 +83,7 @@ app.get('/HeroTasks/Hey', (_req, res) => {
 });
 
 /** Session **/
+//login
 app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   console.log("Server Side. User login info: ", req.body);
@@ -138,6 +139,29 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 // destroy the session
 //clear the cookie
 //redirect to Home Page
+
+//Dashboard: Get all superheroes along with their tasks
+app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const superheroes = await superheroQueries.getAllSuperheroes();
+
+    const superheroesWithTasks = await Promise.all(
+      superheroes.map(async (hero) => {
+        const tasks = await taskQueries.getAllTasksBySuperhero(hero.superhero_name);
+        return {
+          ...hero,
+          tasks
+        };
+      })
+    );
+
+    res.status(200).json(superheroesWithTasks);
+
+  } catch (error) {
+    console.error("Server. Error fetching superheroes with tasks:", error);
+    res.status(500).json({ error: 'Internal server error while fetching dashboard data' });
+  }
+});
 
 /* Server Start */
 app.listen(PORT, () => {
