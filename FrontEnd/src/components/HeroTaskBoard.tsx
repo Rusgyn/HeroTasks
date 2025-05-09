@@ -46,7 +46,14 @@ const HeroTaskBoard = () => {
                         key={task.id}
                         className={task.completed ? 'task-completed' : ''}
                       >
-                        {task.superpower}
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={() => handleTaskToggle(hero.id, task.id)}
+                          />
+                          {task.superpower}
+                        </label>
                       </li>
                     ))}
                   </ul>
