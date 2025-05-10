@@ -91,13 +91,80 @@ const getTaskById = async (id: number): Promise<Task | null> => {
 };
 
 // Update task completion
-const updateTaskCompletion = async (id: number, completed: boolean): Promise<Task> => {
-  const result = await db.query(
-    'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
-    [completed, id]
+// const updateTaskCompletion = async (id: number, completed: boolean): Promise<Task> => {
+//   const result = await db.query(
+//     'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
+//     [completed, id]
+//   );
+//   return result.rows[0];
+// };
+
+const updateTaskCompletion = async (taskId: number, completed: boolean): Promise<void> => { 
+  // 1. Toggle completion
+  await db.query('UPDATE tasks SET completed = $1 WHERE id = $2', [completed, taskId]);
+
+  // 2. Get superhero_id of the updated task
+  const task = await db.query('SELECT superhero_id FROM tasks WHERE id = $1', [taskId]);
+  const superheroId = task.rows[0].superhero_id;
+
+  // 3. Get total tasks for the superhero
+  const totalTasksRes = await db.query(
+    'SELECT COUNT(*) FROM tasks WHERE superhero_id = $1',
+    [superheroId]
   );
-  return result.rows[0];
+  const totalTasks = parseInt(totalTasksRes.rows[0].count, 10);
+
+  // 4. Get completed tasks for the superhero
+  const completedTasksRes = await db.query(
+    'SELECT COUNT(*) FROM tasks WHERE superhero_id = $1 AND completed = TRUE',
+    [superheroId]
+  );
+  const completedTasks = parseInt(completedTasksRes.rows[0].count, 10);
+
+  // 5. Calculate strength
+  const strength = totalTasks > 0 ? completedTasks / totalTasks : 0;
+
+  // 6. Update superhero's strength
+  await db.query(
+    'UPDATE superheroes SET strength = $1 WHERE id = $2',
+    [strength, superheroId]
+  );
+
+  console.log(`Task Query. Updated superhero ${superheroId} strength to ${strength}`);
 };
+
+//   // 1. Update the task's completion status
+//   const updatedTaskRes = await db.query(
+//     'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
+//     [completed, taskId]
+//   );
+//   const updatedTask = updatedTaskRes.rows[0];
+
+//   // 2. Get superhero_name of the task
+//   const superheroName = updatedTask.superhero_name;
+
+//   // 3. Fetch all tasks for this superhero (to recalculate strength)
+//   const tasksRes = await db.query(
+//     'SELECT * FROM tasks WHERE superhero_name = $1',
+//     [superheroName]
+//   );
+//   const allTasks = tasksRes.rows;
+
+//   // 4. Count completed tasks
+//   const completedCount = allTasks.filter(task => task.completed).length;
+
+//   // 5. Compute strength as a fraction (e.g. 0.6 for 3/5), rounded to 2 decimal places
+//   const strength = allTasks.length > 0 ? parseFloat((completedCount / allTasks.length).toFixed(2)) : 0;
+
+//   // 6. Update the strength in superheroes table
+//   await db.query(
+//     'UPDATE superheroes SET strength = $1 WHERE superhero_name = $2',
+//     [strength, superheroName]
+//   );
+
+//   return updatedTask;
+// };
+
 
 export default {
   getAllTasks,

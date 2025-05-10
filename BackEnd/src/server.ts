@@ -165,26 +165,55 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
 });
 
 //Dashboard: Update the task completion. Toggle
-app.put('/HeroTasks/tasks/:id/toggle', async (req: Request, res: Response): Promise<void> => {
-  const taskId = parseInt(req.params.id);
+app.put('/HeroTasks/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
+  const taskId = parseInt(req.params.taskId);
+  if (isNaN(taskId)) {
+    res.status(400).json({ error: 'Invalid task ID' });
+    return;
+  }
 
   try {
-    // Get the current task
+    // 1. Get current task completion status
     const task = await taskQueries.getTaskById(taskId);
     if (!task) {
-      console.log("Server Side. Task not found.")
       res.status(404).json({ error: 'Task not found' });
-      return;
+      return 
     }
 
-    // Toggle the `completed` value
-    const updatedTask = await taskQueries.updateTaskCompletion(taskId, !task.completed);
-    res.status(200).json(updatedTask);
+    // 2. Toggle the status
+    const newCompletedStatus = !task.completed;
+
+    // 3. Update task and recalculate strength
+    await taskQueries.updateTaskCompletion(taskId, newCompletedStatus);
+
+    res.status(200).json({ message: 'Task toggled successfully' });
+
   } catch (error) {
-    console.error("Error toggling task completion:", error);
+    console.error('Error toggling task:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// app.put('/HeroTasks/tasks/:id/toggle', async (req: Request, res: Response): Promise<void> => {
+//   const taskId = parseInt(req.params.id);
+
+//   try {
+//     // Get the current task
+//     const task = await taskQueries.getTaskById(taskId);
+//     if (!task) {
+//       console.log("Server Side. Task not found.")
+//       res.status(404).json({ error: 'Task not found' });
+//       return;
+//     }
+
+//     // Toggle the `completed` value
+//     const updatedTask = await taskQueries.updateTaskCompletion(taskId, !task.completed);
+//     res.status(200).json(updatedTask);
+//   } catch (error) {
+//     console.error("Error toggling task completion:", error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 
 
