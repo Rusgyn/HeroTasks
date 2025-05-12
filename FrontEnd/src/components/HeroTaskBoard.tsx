@@ -69,15 +69,16 @@ const HeroTaskBoard = () => {
                       <li
                         key={task.id}
                         className={task.completed ? 'task-completed' : ''}
-                      >
-                        <label>
+                        onClick={() => handleTaskToggle(hero.id, task.id)}
+                      > {task.superpower}
+                        {/* <label className="board__checkbox">
                           <input
                             type="checkbox"
                             checked={task.completed}
                             onChange={() => handleTaskToggle(hero.id, task.id)}
                           />
-                          {task.superpower}
-                        </label>
+                         {task.superpower}
+                        </label> */}
                       </li>
                     ))}
                   </ul>
