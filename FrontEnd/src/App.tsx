@@ -5,6 +5,7 @@ import Register from './components/Register';
 import Session from './components/Session';
 import PasswordReset from './components/PasswordReset';
 import HeroTaskBoard from './components/HeroTaskBoard';
+import ContactUs from './components/ContactUs';
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           <Route path='/register' element={ <Register />} />
           <Route path='/login' element={<Session />} />
           <Route path='/forgot-password' element={ <PasswordReset />} />
+          <Route path='/help' element={ <ContactUs /> } />
           <Route path='/task-board' element={ <HeroTaskBoard />} />
         </Routes>
       </div>
