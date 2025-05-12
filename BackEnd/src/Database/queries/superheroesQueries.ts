@@ -85,9 +85,53 @@ const updateSuperheroProfile = async (superhero: Superhero): Promise<Superhero> 
   }
 };
 
+// Get the task and strength.
+const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhero> => {
+
+  //Accept superhero's ID
+  //Looks up the superhero profile (superheroes db table)
+  //Also looks up their list of tasks
+  //Combine the hero data and its tasks into one object
+  // Return to FE to display the strength and tasks together in real time.
+  try {
+    // Fetch superhero basic info
+    const heroResult = await db.query(
+      `SELECT id, superhero_name, strength, user_id, created_at, updated_at
+       FROM superheroes
+       WHERE id = $1;`,
+      [heroId]
+    );
+
+    if (heroResult.rows.length === 0) {
+      throw new Error(`Superhero with ID ${heroId} not found.`);
+    }
+
+    const hero = heroResult.rows[0];
+
+    // Fetch tasks for this superhero
+    const tasksResult = await db.query(
+      `SELECT id, superpower, completed, created_at, updated_at
+       FROM tasks
+       WHERE superhero_id = $1;`,
+      [heroId]
+    );
+
+    // Return hero with tasks. Combine superhero data, tasks, then return it.
+    return {
+      ...hero,
+      tasks: tasksResult.rows //adds new property tasks to hero (superheroes db prop)
+    } as Superhero;
+
+  } catch (error) {
+    console.error("Queries. Error fetching superhero with tasks and strength:", error);
+    throw error;
+  }
+};
+
 export default {
   getAllSuperheroes,
   deleteSuperhero,
   addSuperhero,
-  updateSuperheroProfile
+  updateSuperheroProfile,
+  getSuperheroWithTasksAndStrength
 };
