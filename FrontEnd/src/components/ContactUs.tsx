@@ -7,7 +7,7 @@ const ContactUs = () => {
   return (
     <>
       <div className="contact_notes">
-        <h2>Registration</h2>
+        <h2>Contact Us</h2>
         <p> This page is under maintenance. Please come back later.</p>
       </div>
       <button className="contact_btn__back"
