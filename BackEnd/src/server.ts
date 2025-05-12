@@ -165,8 +165,9 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
 });
 
 //Dashboard: Update the task completion. Toggle
-app.put('/HeroTasks/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
+app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
   const taskId = parseInt(req.params.taskId);
+  console.log("Server side. The taskId number: ", taskId);
   if (isNaN(taskId)) {
     res.status(400).json({ error: 'Invalid task ID' });
     return;
