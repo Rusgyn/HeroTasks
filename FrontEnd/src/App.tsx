@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Home from './components/Home';
+//import Home from './components/Home';
 import Session from './components/Session';
 import HeroTaskBoard from './components/HeroTaskBoard';
 
@@ -13,7 +13,7 @@ const App = () => {
       <div>
         <title>HeroTasks</title>
         <Routes>
-          <Route path='/' element={ <Home />} />
+          <Route path='/' element={ <Session />} />
           <Route path='/login' element={<Session />} />
           <Route path='/task-board' element={ <HeroTaskBoard />} />
         </Routes>
