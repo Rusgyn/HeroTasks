@@ -174,6 +174,8 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
       })
     );
 
+    // TO ADD GUARD STATEMENT, VIEW ONLY SUPERHEROS UNDER ACTIVE USER_ID
+
     res.status(200).json(superheroesWithTasks);
 
   } catch (error) {
