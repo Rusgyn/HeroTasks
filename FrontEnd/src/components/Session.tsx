@@ -1,14 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuthSession from "../auth/useAuthSession";
 import '../styles/Session.scss';
 
 const Session = () => {
   const navigate = useNavigate();
+  const { isSessionActive, isLoading } = useAuthSession();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  //Check the session status
+  useEffect(() => {
+    if (!isLoading && isSessionActive) {
+      navigate('/task-board'); // user loggedIn, redirect to hero task board
+    }
+  }, [isSessionActive, isLoading, navigate]);
+
+  if (isLoading) {
+    return null; //spinner component. Shows nothing when cheking is session is active or inactive
+  }
+
+  // Handles the login functionality
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
   
