@@ -7,7 +7,7 @@ const Session = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [_error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -19,13 +19,13 @@ const Session = () => {
       console.log("Session Response is: ", response);
 
       if (response.status === 200) {
-        navigate('/'); //Home page
+        navigate('/task-board'); //Heroes Dashboard
       }
     } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.error) {
-        setError(error.response.data.error);
+      if (error.response && error.response.status === 401) {
+        setErrorMessage(error.response.data.error);;
       } else {
-        setError('An error occurred. Please try again.');
+        setErrorMessage('An error occurred. Please try again.');
       } 
     }
     
@@ -62,6 +62,8 @@ const Session = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </label>
+
+            {errorMessage && <p className="session_login_error">{ errorMessage }</p>}
 
             <div className="session_btn">
               <button className="session_btn__login" type="submit">Login</button>

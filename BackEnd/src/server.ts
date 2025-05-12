@@ -83,6 +83,7 @@ app.get('/HeroTasks/Hey', (_req, res) => {
 });
 
 /** Session **/
+//login
 app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
   console.log("Server Side. User login info: ", req.body);
@@ -139,6 +140,70 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 //clear the cookie
 //redirect to Home Page
 
+//Dashboard: Get all superheroes along with their tasks
+app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const superheroes = await superheroQueries.getAllSuperheroes();
+    console.log("Server side. superheroes from db: ", superheroes);
+
+    const superheroesWithTasks = await Promise.all(
+      superheroes.map(async (hero) => {
+        const tasks = await taskQueries.getAllTasksBySuperhero(hero.superhero_name);
+        return {
+          ...hero,
+          tasks
+        };
+      })
+    );
+
+    res.status(200).json(superheroesWithTasks);
+
+  } catch (error) {
+    console.error("Server. Error fetching superheroes with tasks:", error);
+    res.status(500).json({ error: 'Internal server error while fetching dashboard data' });
+  }
+});
+
+//Dashboard: Update the task completion. Toggle
+app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
+  const taskId = parseInt(req.params.taskId);
+  console.log("Server side. Receive the taskId number: ", taskId);
+  if (isNaN(taskId)) {
+    res.status(400).json({ error: 'Invalid task ID' });
+    return;
+  }
+
+  try {
+    // 1. Get current task completion status
+    const task = await taskQueries.getTaskById(taskId);
+    if (!task) {
+      res.status(404).json({ error: 'Task not found' });
+      return 
+    }
+
+    // 2. Toggle the status
+    const newCompletedStatus = !task.completed;
+
+    // 3. Update task and recalculate strength
+    await taskQueries.updateTaskCompletion(taskId, newCompletedStatus);
+
+    res.status(200).json({ message: 'Task toggled successfully' });
+
+  } catch (error) {
+    console.error('Error toggling task:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//Dashboard: Fetch the affected hero data
+app.get('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
+  const heroId = parseInt(req.params.id);
+  console.log("Server side. Receive the heroId with number: ", heroId);
+  const hero = await superheroQueries.getSuperheroWithTasksAndStrength(heroId); 
+  res.json(hero);
+}) 
+
+// ===========================
 /* Server Start */
 app.listen(PORT, () => {
   console.log(`Thank you for using the App. The Server is running on http://localhost:${PORT}`);

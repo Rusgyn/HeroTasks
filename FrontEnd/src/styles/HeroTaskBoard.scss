@@ -1,0 +1,114 @@
+.board_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  //background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(83, 11, 129));
+  //background-color: green;
+  // width: 100%;
+  // height: 100%;
+  //max-height: 100vh;
+  //margin: 3rem 2rem 0 2rem;
+  min-height: 100vh;
+}
+
+.board {
+  display: flex;
+  //background-color: #fc0;
+  //max-width: 1200px;
+  margin: 2rem;
+  text-align: center;
+
+  color:burlywood;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1 {
+  display: flex;
+  font-size: 50px;
+  text-shadow: #fc0 1px 0 5px; /* color | offset-x | offset-y | blur-radius */
+}
+
+.board__hero_grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items:stretch;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.board__hero_card {
+  display: flex;
+  flex-direction: column;
+  //align-items:flex-start;
+  //flex-wrap: wrap;
+  justify-content:flex-start;
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 260px;
+  height: auto; //
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  h2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    color:chocolate;
+  }
+
+  p {
+    margin: 0.5rem 0;
+    color: #4a5568;
+  }
+
+  .board__no_task {
+    font-style: italic;
+    color: #a0aec0;
+  }
+
+  .board__task_list {
+    display: flex; //
+    flex-direction: column;//
+    //flex-wrap: wrap;//
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      // justify-content: ;
+      //flex-wrap: wrap;
+      padding: 0.5rem;
+      border-bottom: 1px solid #edf2f7;
+      color: #2d3748;
+      cursor: pointer;
+
+      &.task-completed {
+        text-decoration: line-through;
+        color: #38a169; // Green for completed
+      }
+    }
+  }
+
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #718096;
+}

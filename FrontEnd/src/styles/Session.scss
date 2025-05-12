@@ -66,47 +66,55 @@ input:active {
   border-color: rgb(112, 22, 112);
 }
 
+.session_login_error {
+  color: red;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
 .session_btn {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   margin: 2rem;
-}
 
-.session_btn__login {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1rem;
-  width: 5rem;
-  height: 2rem;
-  margin-right: 1rem;
-  color: whitesmoke;
-  background:rgb(112, 22, 112);
-  border: none;
-}
-
-.session_btn__login:hover {
-  transform: translateY(-5px);
-  background: linear-gradient(to right, rgb(112, 22, 112), orange);
-}
-
-.session_btn__back {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1rem;
-  width: 5rem;
-  height: 2rem;
-  color: whitesmoke;
-  background-color: rgb(112, 22, 112);
-  border: none;
-}
-
-.session_btn__back:hover {
-  transform: translateY(-5px);
-  background: linear-gradient(to right, orange, rgb(112, 22, 112));
+  .session_btn__login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    width: 5rem;
+    height: 2rem;
+    margin-right: 1rem;
+    color: whitesmoke;
+    background:rgb(112, 22, 112);
+    border: none;
+  
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, rgb(112, 22, 112), orange);
+    }
+  }
+  
+  .session_btn__back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    width: 5rem;
+    height: 2rem;
+    color: whitesmoke;
+    background-color: rgb(112, 22, 112);
+    border: none;
+  
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, orange, rgb(112, 22, 112));
+    }
+  }
+  
 }
 
 .session_login__footer {
@@ -116,11 +124,11 @@ input:active {
   font-size: 0.85rem;
   border-top: 1px solid;
   border-color: gray;
-}
 
-span {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  span {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 footer {
@@ -138,17 +146,17 @@ footer {
   // background-color: rgb(131, 33, 131);
   background-color: rgb(94, 28, 110);
   background-image: url(http://www.transparenttextures.com/patterns/xv.png);
+
+  .session_footer_a_1 {
+    color: whitesmoke;
+    text-decoration: none;
+  }
+
+  .session_footer_a_2 {
+    color: rgb(255, 140, 0);
+    text-decoration: none;
+  }
   
-}
-
-.session_footer_a_1 {
-  color: whitesmoke;
-  text-decoration: none;
-}
-
-.session_footer_a_2 {
-  color: rgb(255, 140, 0);
-  text-decoration: none;
 }
 
 @media only screen and (max-width: 670px) {
