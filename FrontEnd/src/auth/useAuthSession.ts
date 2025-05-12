@@ -10,8 +10,8 @@ const useAuthSession = () => {
       try {
         const response = await axios.get('HeroTasks/check-session', {withCredentials: true})
 
-        console.log("Checking session. Reponse is: ", response.data);
-        setIsSessionActive(response.data.loggedIn)
+        console.log("Checking session. Response is: ", response.data);
+        setIsSessionActive(response.data.loggedIn); //loggedIn (boolean) from backend
       } catch (error) {
         console.log("Checking Session. Error validating the session: ", error);
         setIsSessionActive(false);
@@ -22,13 +22,10 @@ const useAuthSession = () => {
     checkSession();
   }, []); //[], runs only once
 
-  if(isLoading) {
-    console.log("Loading....");
-    return null;// null,prevent rendering anything until the session checking is complete.
-  }
+  return { 
+    isSessionActive, isLoading
+  };
 
-  //... TO ADD THE NEXT STEPS WHEN SUCCESSFUL
-
-}
+};
 
 export default useAuthSession;

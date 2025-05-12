@@ -27,6 +27,9 @@ import { Superhero, NewSuperheroInput } from "./types/superheroTypes";
 import { Task, NewTaskInput } from "./types/taskTypes";
 import { error } from "console";
 
+//Utilities import
+import isUserLoggedIn from "./utils/sessionUtils";
+
 /* Express Setup */
 const app = express();
 const PORT = 3001;
@@ -78,11 +81,26 @@ app.get('/', (_req, res) => {
   console.log('You reach the HeroTasks backend');
   res.send('Hi, HeroTasks API is running!');
 });
-app.get('/HeroTasks/Hey', (_req, res) => {
-  res.send('Hey, HeroTasks API is running!');
-});
 
 /** Session **/
+//Authenticate session
+app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
+  console.log("Server side. Checking session ...");
+
+  try { 
+    if (isUserLoggedIn(req.session)) {
+      console.log("Server side. The use is logged in: ", req.session);
+      return res.json( {loggedIn: true} );
+    }
+
+    console.log("Server side. No active session. Redirecting to login page.")
+    res.json( {loggedIn: false} );
+  } catch (error) {
+    console.error ('Server side. Error checking the sessions');
+    return res.status(500).json( {error: 'Internal Server Error'} );
+  };
+});
+
 //login
 app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
