@@ -88,12 +88,19 @@ app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
   console.log("Server side. Checking session ...");
 
   try { 
-    // ...
+    if (isUserLoggedIn(req.session)) {
+      console.log("Server side. The use is logged in: ", req.session);
+      return res.json( {loggedIn: true} );
+    }
+
+    console.log("Server side. No active session. Redirecting to login page.")
+    res.json( {loggedIn: false} );
   } catch (error) {
-
+    console.error ('Server side. Error checking the sessions');
+    return res.status(500).json( {error: 'Internal Server Error'} );
   };
-
 });
+
 //login
 app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
