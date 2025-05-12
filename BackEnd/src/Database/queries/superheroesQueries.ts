@@ -3,9 +3,9 @@ import { Superhero } from '../../types/superheroTypes';
 import { NewSuperheroInput } from '../../types/superheroTypes';
 
 // Get all superheroes
-const getAllSuperheroes = async() : Promise<Superhero[]> => {
+const getAllSuperheroes = async(userId: number) : Promise<Superhero[]> => {
   try {
-    const result = await db.query('SELECT * FROM superheroes;');
+    const result = await db.query('SELECT * FROM superheroes WHERE user_id = $1;', [userId] );
     return result.rows as Superhero[];
   } catch (error) {
     console.error('Queries. Error fetching superheroes: ', error);

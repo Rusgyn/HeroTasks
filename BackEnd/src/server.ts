@@ -161,7 +161,13 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 //Dashboard: Get all superheroes along with their tasks
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {
-    const superheroes = await superheroQueries.getAllSuperheroes();
+    const userId = req.session.loggedUser?.id
+    if (!userId) {
+      res.status(401).json({ error: 'Unauthorized: No user logged in' });
+      return;
+    }
+
+    const superheroes = await superheroQueries.getAllSuperheroes(userId);
     console.log("Server side. superheroes from db: ", superheroes);
 
     const superheroesWithTasks = await Promise.all(
