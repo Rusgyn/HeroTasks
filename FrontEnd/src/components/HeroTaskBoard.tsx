@@ -44,8 +44,16 @@ const HeroTaskBoard = () => {
   
       // Send PUT request to update task status on server
       await axios.put(`/HeroTasks/tasks/${taskId}/toggle`);
+      //To update heroes details after successful toggle. Send req to backend.
+      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+
+      //This update the affected hero in state.
+      setSuperheroes((prevHeroes) => 
+        prevHeroes.map((hero) => hero.id === heroId ? updatedHero.data : hero)
+      )
+
     } catch (error) {
-      console.error("Failed to toggle task completion:", error);
+      console.error("Dashboard. Failed to toggle task completion:", error);
     }
   };
 
