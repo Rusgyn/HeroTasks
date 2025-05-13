@@ -76,6 +76,10 @@ const HeroTaskBoard = () => {
     }
   };
 
+  const handleAddTaskNavigation = () => {
+    navigate('/add-task'); 
+  };
+
   if (loading) return <div className="loading"> Loading ... </div>;
 
   return (
@@ -87,6 +91,12 @@ const HeroTaskBoard = () => {
           type='button'
           value="logout"
           onClick={handleLogoutNavigation}>Logout
+        </button>
+        <button 
+          className="board_btn__new_task"
+          type='button'
+          value="Add Task"
+          onClick={handleAddTaskNavigation}>Add Task
         </button>
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
