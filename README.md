@@ -53,16 +53,22 @@ npm install
 npm run dev
 ```
 
+---
+
 ## 🔐 Authentication
 - Sessions are validated using a useAuthSession custom hook.
 - Routes requiring login are protected using AuthGuard.tsx.
 - If a session is active, the user is redirected to /task-board.
+
+---
 
 ## ✅ Usage
 
 - Login using a superhero account
 - Complete tasks to earn strength
 - Logout when finished
+
+---
 
 ## 📁 Project Structure
 HeroTasks/
@@ -86,9 +92,14 @@ HeroTasks/
 │   ├── .env               # Environment variables
 │   └── server.ts          # Main Express server
 
+---
+
 ## 📄 License
 
 MIT
+
+---
+
 
 ## 🙋‍♀️ Contributing
 Contributions are welcome! Please fork the repository and open a pull request. For major changes, open an issue first to discuss.
