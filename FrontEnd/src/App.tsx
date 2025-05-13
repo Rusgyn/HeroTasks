@@ -7,6 +7,7 @@ import PasswordReset from './components/PasswordReset';
 import HeroTaskBoard from './components/HeroTaskBoard';
 import ContactUs from './components/ContactUs';
 import AuthGuard from './auth/AuthGuard';
+import AddTask from './components/AddTask';
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
           {/* Requires Session. Protected route in one wrapper */}
           <Route element={ <AuthGuard /> } >
             <Route path='/task-board' element={ <HeroTaskBoard />} />
+            <Route path='/add-task' element={ <AddTask /> } />
           </Route>
           
         </Routes>
