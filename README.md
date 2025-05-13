@@ -71,21 +71,19 @@ HeroTasks/
 │   ├── src/
 │   │   ├── auth/          # useAuthSession + AuthGuard
 │   │   ├── components/    # Reusable UI components
-│   │   ├── styles/        # Pages styling
-│   │   └── types/         # types
+│   │   ├── styles/        # Styling files
+│   │   └── types/         # Typescript custom type definitions
 │   │   └── App.tsx        # App entry and routing
 │
 ├── BackEnd/
 │   ├── src/
-│   │   ├── Database/      # DB connection
-│   │   │ ├── queries/     # Reusable UI components
-│   │   │ ├── seeds/     # Reusable UI components
-│   │   │ ├── db.ts     # Reusable UI components
-│   │   ├── types/        # Pages styling
-│   │   └── utils/         # types
-│   ├── server.ts          # Express route handlers
-│   ├── .env                # Logic for API endpoints
-│   ├── database/          # SQL scripts and DB connection
+│   │   ├── Database/      # SQL queries, and DB connection
+│   │   │ ├── queries/     # Reusable DB queries
+│   │   │ ├── seeds/       # Pre DB data
+│   │   │ ├── db.ts        # Pool db connection
+│   │   ├── types/         # Typescript custom type definitions
+│   │   └── utils/         # Logic reusable helper functions
+│   ├── .env               # Environment variables
 │   └── server.ts          # Main Express server
 
 ## 📄 License
