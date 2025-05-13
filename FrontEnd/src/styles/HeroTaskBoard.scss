@@ -23,6 +23,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  .board_btn__logout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    width: 5rem;
+    height: 2rem;
+    color: whitesmoke;
+    background-color: rgb(112, 22, 112);
+    border: none;
+
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, orange, rgb(112, 22, 112));
+    }
+  }
 }
 
 h1 {
