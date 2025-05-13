@@ -153,6 +153,22 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+//Logout Route
+app.post('/logout', async (req: Request, res: Response): Promise<any> => {
+  console.log('Logout route hit');
+  console.log('Session data:', req.session);
+  console.log("====END====")
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.clearCookie('connect.sid')
+      res.status(200).json({ message: 'Logout successful!' });
+    }
+  });
+});
+
 //Create a logout route
 // destroy the session
 //clear the cookie
@@ -179,8 +195,6 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
         };
       })
     );
-
-    // TO ADD GUARD STATEMENT, VIEW ONLY SUPERHEROS UNDER ACTIVE USER_ID
 
     res.status(200).json(superheroesWithTasks);
 

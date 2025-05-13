@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Superhero } from '../types/Superhero';
 import '../styles/HeroTaskBoard.scss';
+import { useNavigate } from "react-router-dom";
 
 
 const HeroTaskBoard = () => {
 
+  const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,12 +59,35 @@ const HeroTaskBoard = () => {
     }
   };
 
+  const handleLogoutNavigation = async () => {
+    try {
+      console.log("Dashboard. Sending Logout Request");
+      const response = await axios.post('/HeroTasks/logout', {}, {withCredentials: true});
+      // {} the request body, which is empty in this case. Without "withCredentials: true", the browser will not include cookies, and the backend won’t recognize the session.
+
+      console.log("Dashboard. Logout response: ", response);
+
+      if (response.status === 200) {
+        navigate('/')
+      }
+
+    } catch (error) {
+      console.error('Error logging out: ', error);
+    }
+  };
+
   if (loading) return <div className="loading"> Loading ... </div>;
 
   return (
     <div className="board_page">
       <div className="board">
         <h1>Hero Task Board</h1>
+        <button 
+          className="board_btn__logout"
+          type='button'
+          value="logout"
+          onClick={handleLogoutNavigation}>Logout
+        </button>
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
             <p>No superheroes or tasks found.</p>
