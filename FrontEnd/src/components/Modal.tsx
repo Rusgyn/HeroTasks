@@ -1,5 +1,5 @@
 import React from 'react';
-import './Modal.css';
+import '../styles/Modal.scss';
 
 interface ModalProps {
   show: boolean;
@@ -7,17 +7,38 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
+const Modal = ({ show, onClose, children }: ModalProps) => {
   if (!show) return null;
 
   return (
     <div className="modal-overlay">
       <div className="modal-box">
-        <button className="modal-close" onClick={onClose}>Close</button>
+        <button className="modal-close" onClick={onClose}>×</button>
         {children}
       </div>
     </div>
   );
 };
 
-export default Modal;
+const Header: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="modal-header">{children}</div>
+);
+
+const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="modal-body">{children}</div>
+);
+
+const Footer: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="modal-footer">{children}</div>
+);
+
+// Attach subcomponents
+Modal.Header = Header;
+Modal.Body = Body;
+Modal.Footer = Footer;
+
+export default Modal as React.FC<ModalProps> & {
+  Header: typeof Header;
+  Body: typeof Body;
+  Footer: typeof Footer;
+};
