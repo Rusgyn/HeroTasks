@@ -169,11 +169,6 @@ app.post('/logout', async (req: Request, res: Response): Promise<any> => {
   });
 });
 
-//Create a logout route
-// destroy the session
-//clear the cookie
-//redirect to Home Page
-
 //Dashboard: Get all superheroes along with their tasks
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -203,6 +198,13 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
     res.status(500).json({ error: 'Internal server error while fetching dashboard data' });
   }
 });
+
+//Add Task
+app.post('add-task', async (req: Request, res: Response): Promise<void> => {
+  console.log("Server Side. Adding new task");
+  const { newTask } = req.body;
+  
+})
 
 //Dashboard: Update the task completion. Toggle
 app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
