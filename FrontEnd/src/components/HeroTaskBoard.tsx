@@ -3,9 +3,8 @@ import axios from "axios";
 import { Superhero } from '../types/Superhero';
 import '../styles/HeroTaskBoard.scss';
 import { useNavigate } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { Form } from "react-bootstrap";
+import Modal from './Modal';
+import FormTask from "./FormTask";
 
 
 const HeroTaskBoard = () => {
@@ -13,7 +12,7 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalShow, setModalShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchHeroesData = async() => {
@@ -31,8 +30,8 @@ const HeroTaskBoard = () => {
     fetchHeroesData();
   }, []);
 
-  const handleModalClose = () => setModalShow(false);
-  const handleModalShow = () => setModalShow(true);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const handleTaskToggle = async (heroId: number, taskId: number) => {
     try {
@@ -106,65 +105,33 @@ const HeroTaskBoard = () => {
           onClick={handleAddTaskNavigation}>Add Task
         </button> */}
 
-        {/* ======= REACT BOOSTRAP ========== */}
+        {/* ==== MANUAL MODAL ==== */}
 
-        {/* <Button variant="primary" onClick={handleModalShow}>
-          Add Task
-        </Button>
+        <div style={{ padding: '2rem' }}>
+          <button onClick={handleShowModal}>Add Task</button>
+          <Modal 
+            show={showModal}
+            onClose={handleCloseModal}
+          >
+            <Modal.Header>
+              <Modal.Title>Add Task</Modal.Title>
+            </Modal.Header>
 
-        <Modal
-          show={modalShow}
-          onHide={handleModalClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Add Task Modal</Modal.Title>
-          </Modal.Header>
+            <Modal.Body>
+              <FormTask onSubmit={(task) => {
+                console.log('New Task: ', task);
+                handleCloseModal();
+              }} />
 
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Superhero Name: </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="name"
-                  autoFocus
-                />
-              </Form.Group>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlTextarea1"
-              >
-                <Form.Label>Task</Form.Label>
-                <Form.Control as="textarea" rows={2} />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleModalClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleModalClose}>
-              Save
-            </Button>
-          </Modal.Footer>
-        </Modal> */}
+            </Modal.Body>
 
-          {/* <Modal.Body>
-            I will not close if you click outside me. Do not even try to press
-            escape key.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleModalClose}>
-              Close
-            </Button>
-            <Button variant="primary">Add</Button>
-          </Modal.Footer>
-        </Modal> */}
+            <Modal.Footer>
+              <button onClick={handleCloseModal}>Close</button>
+            </Modal.Footer>
 
+          </Modal>
+        </div>
 
-        {/* ======= */}
 
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
