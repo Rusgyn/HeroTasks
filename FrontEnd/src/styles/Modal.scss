@@ -46,6 +46,28 @@
   margin-bottom: 1rem; 
 }
 
-.modal-footer { 
-  text-align: right; 
+.modal-footer {
+  margin-top: 3rem;;
+  text-align: right;
+  
+  button {
+    width: 6rem;
+    height: 2.5rem;
+    color: whitesmoke;
+    background-color: rgb(134, 37, 134);
+    border-style: outset;
+    border-color: rgb(134, 37, 134);
+
+    &:hover {
+      background: linear-gradient(to right, rgb(170, 0, 255), rgb(230, 132, 230));
+      color: whitesmoke;
+      font-weight: bolder;
+    }
+
+    &:active {
+      border-style: inset;
+      background: rgb(134, 37, 134);
+      color: goldenrod;
+    }
+  }
 }
