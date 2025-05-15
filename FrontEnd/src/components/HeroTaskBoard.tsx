@@ -106,9 +106,9 @@ const HeroTaskBoard = () => {
           onClick={handleAddTaskNavigation}>Add Task
         </button> */}
 
-        {/* ======= */}
+        {/* ======= REACT BOOSTRAP ========== */}
 
-        <Button variant="primary" onClick={handleModalShow}>
+        {/* <Button variant="primary" onClick={handleModalShow}>
           Add Task
         </Button>
 
@@ -149,7 +149,7 @@ const HeroTaskBoard = () => {
               Save
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
 
           {/* <Modal.Body>
             I will not close if you click outside me. Do not even try to press
