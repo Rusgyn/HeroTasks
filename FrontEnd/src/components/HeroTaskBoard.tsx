@@ -3,6 +3,9 @@ import axios from "axios";
 import { Superhero } from '../types/Superhero';
 import '../styles/HeroTaskBoard.scss';
 import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { Form } from "react-bootstrap";
 
 
 const HeroTaskBoard = () => {
@@ -10,6 +13,7 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     const fetchHeroesData = async() => {
@@ -26,6 +30,9 @@ const HeroTaskBoard = () => {
 
     fetchHeroesData();
   }, []);
+
+  const handleModalClose = () => setModalShow(false);
+  const handleModalShow = () => setModalShow(true);
 
   const handleTaskToggle = async (heroId: number, taskId: number) => {
     try {
@@ -92,12 +99,73 @@ const HeroTaskBoard = () => {
           value="logout"
           onClick={handleLogoutNavigation}>Logout
         </button>
-        <button 
+        {/* <button 
           className="board_btn__new_task"
           type='button'
           value="Add Task"
           onClick={handleAddTaskNavigation}>Add Task
-        </button>
+        </button> */}
+
+        {/* ======= */}
+
+        <Button variant="primary" onClick={handleModalShow}>
+          Add Task
+        </Button>
+
+        <Modal
+          show={modalShow}
+          onHide={handleModalClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Add Task Modal</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Superhero Name: </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="name"
+                  autoFocus
+                />
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlTextarea1"
+              >
+                <Form.Label>Task</Form.Label>
+                <Form.Control as="textarea" rows={2} />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleModalClose}>
+              Save
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+          {/* <Modal.Body>
+            I will not close if you click outside me. Do not even try to press
+            escape key.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalClose}>
+              Close
+            </Button>
+            <Button variant="primary">Add</Button>
+          </Modal.Footer>
+        </Modal> */}
+
+
+        {/* ======= */}
+
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
             <p>No superheroes or tasks found.</p>

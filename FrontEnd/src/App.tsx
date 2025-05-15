@@ -8,6 +8,7 @@ import HeroTaskBoard from './components/HeroTaskBoard';
 import ContactUs from './components/ContactUs';
 import AuthGuard from './auth/AuthGuard';
 import AddTask from './components/AddTask';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
