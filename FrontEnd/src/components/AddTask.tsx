@@ -1,23 +1,9 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthSession from "../auth/useAuthSession";
 import '../styles/AddTask.scss';
 
 
 const AddTask = () => {
   const navigate = useNavigate();
-  const { isSessionActive, isLoading } = useAuthSession();
-
-  //Check the session status
-  useEffect(() => {
-    if (!isLoading && isSessionActive) {
-      navigate('/task-board'); // user loggedIn, redirect to hero task board
-    }
-  }, [isSessionActive, isLoading, navigate]);
-
-  if (isLoading) {
-    return null; //spinner component. Shows nothing when checking is session is active or inactive
-  }
 
   return(
     <>
