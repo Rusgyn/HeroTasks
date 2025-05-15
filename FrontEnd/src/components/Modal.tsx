@@ -24,6 +24,10 @@ const Header: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="modal-header">{children}</div>
 );
 
+const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="modal-title">{children}</div>
+);
+
 const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="modal-body">{children}</div>
 );
@@ -34,11 +38,13 @@ const Footer: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 // Attach subcomponents
 Modal.Header = Header;
+Modal.Title = Title;
 Modal.Body = Body;
 Modal.Footer = Footer;
 
 export default Modal as React.FC<ModalProps> & {
   Header: typeof Header;
+  Title: typeof Title;
   Body: typeof Body;
   Footer: typeof Footer;
 };
