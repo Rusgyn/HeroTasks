@@ -94,11 +94,11 @@ const HeroTaskBoard = () => {
       const newTask = response.data;
       console.log("HeroTaskBoard. The newTask is: ", newTask);
 
-      // Update our Task db, adding the new task to the designated superhero
-      setSuperheroes((prevHeroes) =>
-        prevHeroes.map((hero) => 
-          hero.id === heroId ? {...hero, tasks: [...hero.tasks, newTask]} : hero
-        )
+      //Get the updated list of tasks as per superhero
+      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+
+      setSuperheroes((prevHeroes) => 
+        prevHeroes.map((hero) => hero.id === heroId ? updatedHero.data : hero)
       );
 
     } catch (error) {
