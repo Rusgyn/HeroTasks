@@ -37,32 +37,62 @@ const getAllTasksBySuperhero = async (superhero: string): Promise<Task[]> => {
 };
 
 
-const addTaskBySuperhero = async (taskInput: NewTaskInput): Promise<Task> => {
+const addTaskBySuperhero = async (taskInput: Task): Promise<Task[]> => {
   try {
-    const { superhero_name, superpower } = taskInput;
-    //Find the superhero id as per superhero name
-    const heroIdResult = await db.query('SELECT id FROM superheroes WHERE superhero_name = $1;', [superhero_name.toLowerCase()]);
+    const { superhero_id, superpower } = taskInput;
 
-    if (heroIdResult.rows.length === 0) {
-      throw new Error (`Superhero with name "${superhero_name}" not found.`);
-    };
-
-    const superhero_id = heroIdResult.rows[0].id;
-
-    //Insert the new task linked to the superhero id.
+    //Insert the new task
     const taskResult = await db.query(
       `INSERT INTO tasks (superpower, superhero_id)
        VALUES ($1, $2)
        RETURNING *;`, [superpower, superhero_id]
     );
 
-    return taskResult.rows[0] as Task;
+    //Get all tasks
+    const allTasks = await db.query(
+      `SELECT * FROM tasks WHERE superhero_id = $1 ORDER BY created_at ASC;`,
+      [superhero_id]
+    );
+
+    return allTasks.rows as Task[];
 
   } catch (error) {
     console.error('Queries. Error adding a new task for superhero: ', error);
     throw error;
   }
 };
+
+// =========
+
+
+// const addTaskBySuperhero = async (taskInput: NewTaskInput): Promise<Task> => {
+//   try {
+//     const { superhero_name, superpower } = taskInput;
+//     //Find the superhero id as per superhero name
+//     const heroIdResult = await db.query('SELECT id FROM superheroes WHERE superhero_name = $1;', [superhero_name.toLowerCase()]);
+
+//     if (heroIdResult.rows.length === 0) {
+//       throw new Error (`Superhero with name "${superhero_name}" not found.`);
+//     };
+
+//     const superhero_id = heroIdResult.rows[0].id;
+
+//     //Insert the new task linked to the superhero id.
+//     const taskResult = await db.query(
+//       `INSERT INTO tasks (superpower, superhero_id)
+//        VALUES ($1, $2)
+//        RETURNING *;`, [superpower, superhero_id]
+//     );
+
+//     return taskResult.rows[0] as Task;
+
+//   } catch (error) {
+//     console.error('Queries. Error adding a new task for superhero: ', error);
+//     throw error;
+//   }
+// };
+
+// ========
 
 // const updateTaskCompleted = async (taskId: number) : Promise<Task> => {
 //   try {
