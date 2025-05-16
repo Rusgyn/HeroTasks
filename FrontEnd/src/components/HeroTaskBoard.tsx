@@ -13,6 +13,7 @@ const HeroTaskBoard = () => {
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchHeroesData = async() => {
@@ -98,49 +99,47 @@ const HeroTaskBoard = () => {
           value="logout"
           onClick={handleLogoutNavigation}>Logout
         </button>
-        {/* <button 
-          className="board_btn__new_task"
-          type='button'
-          value="Add Task"
-          onClick={handleAddTaskNavigation}>Add Task
-        </button> */}
-
-        {/* ==== MANUAL MODAL ==== */}
-
-        <div style={{ padding: '2rem' }}>
-          <button onClick={handleShowModal}>Add Task</button>
-          <Modal 
-            show={showModal}
-            onClose={handleCloseModal}
-          >
-            <Modal.Header>
-              <Modal.Title>Add Task</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <FormTask onSubmit={(task) => {
-                console.log('New Task: ', task);
-                handleCloseModal();
-              }} />
-
-            </Modal.Body>
-
-            <Modal.Footer>
-              <button onClick={handleCloseModal}>Close</button>
-            </Modal.Footer>
-
-          </Modal>
-        </div>
-
-
+        
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
             <p>No superheroes or tasks found.</p>
           ) : (
             superheroes.map((hero) => (
+              
               <div key={hero.id} className="board__hero_card">
                 <h2>{hero.superhero_name}</h2>
                 <p><strong>⭐ Strength:</strong> { hero.strength }</p>
+
+                 {/* ==== MODAL. ADD TASK HERE ==== */}
+
+                <div> 
+                  {/* style={{ padding: '2rem' }} */}
+                  <button onClick={() => setActiveHeroId(hero.id)}>Add Task</button>
+
+                  <Modal 
+                    show={activeHeroId === hero.id}
+                    onClose={() => setActiveHeroId(null)}
+                  >
+                    <Modal.Header>
+                      <Modal.Title>Add Task</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                      <FormTask onSubmit={(task) => {
+                        console.log('New Task for', hero.superhero_name, ':', task);
+                        setActiveHeroId(null);
+                      }} />
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                      <button onClick={() => setActiveHeroId(null)}>Close</button>
+                    </Modal.Footer>
+                  </Modal>
+                
+                </div>
+
+                {/* ========================== */}
+                               
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
                     {hero.tasks.map((task) => (
@@ -164,6 +163,9 @@ const HeroTaskBoard = () => {
                   <p className="board__no_task">No tasks assigned.</p>
                 )}
               </div>
+
+              
+
             ))
           )}
         </div>
