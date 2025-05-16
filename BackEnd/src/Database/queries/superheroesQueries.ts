@@ -3,7 +3,6 @@ import { Superhero } from '../../types/superheroTypes';
 import { NewSuperheroInput } from '../../types/superheroTypes';
 
 // Get all superheroes from database
-
 const getAllSuperheroes = async() : Promise<Superhero[]> => {
   try {
     const result = await db.query('SELECT * FROM superheroes;');
@@ -111,11 +110,6 @@ const updateSuperheroProfile = async (superhero: Superhero): Promise<Superhero> 
 // Get the task and strength.
 const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhero> => {
 
-  //Accept superhero's ID
-  //Looks up the superhero profile (superheroes db table)
-  //Also looks up their list of tasks
-  //Combine the hero data and its tasks into one object
-  // Return to FE to display the strength and tasks together in real time.
   try {
     // Fetch superhero basic info
     const heroResult = await db.query(

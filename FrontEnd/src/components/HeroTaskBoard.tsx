@@ -151,7 +151,7 @@ const HeroTaskBoard = () => {
           )}
         </div>
 
-        {/* ===== MODAL TESTING HERE. Render one modal inside the loop ===== */}
+        {/* ===== MODAL HERE. Render one modal inside the loop ===== */}
 
         {activeHero && (
           <Modal show={true} onClose={() => setActiveHeroId(null)}>
