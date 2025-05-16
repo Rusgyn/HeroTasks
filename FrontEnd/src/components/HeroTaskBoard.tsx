@@ -86,9 +86,10 @@ const HeroTaskBoard = () => {
 
   //Add new task
   const handleAddTask = async (heroId: number, task: { superpower: string }) => {
+    console.log(`HeroTaskBoard. The heroId is "${heroId}", and the new task is "${task.superpower}". ==== END`);
 
     try {
-      const response = await axios.post(`/HeroTasks/superheroes/${heroId}/tasks`, task);
+      const response = await axios.post(`/HeroTasks/superheroes/${heroId}/add-task`, task);
 
       const newTask = response.data;
       console.log("HeroTaskBoard. The newTask is: ", newTask);
