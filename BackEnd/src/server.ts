@@ -169,11 +169,6 @@ app.post('/logout', async (req: Request, res: Response): Promise<any> => {
   });
 });
 
-//Create a logout route
-// destroy the session
-//clear the cookie
-//redirect to Home Page
-
 //Dashboard: Get all superheroes along with their tasks
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -183,7 +178,7 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
       return;
     }
 
-    const superheroes = await superheroQueries.getAllSuperheroes(userId);
+    const superheroes = await superheroQueries.getAllSuperheroesByLoggedUser(userId);
     console.log("Server side. superheroes from db: ", superheroes);
 
     const superheroesWithTasks = await Promise.all(
@@ -202,6 +197,50 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
     console.error("Server. Error fetching superheroes with tasks:", error);
     res.status(500).json({ error: 'Internal server error while fetching dashboard data' });
   }
+});
+
+//Add Task
+app.post('/superheroes/:heroId/add-task', async (req: Request, res: Response): Promise<void> => {
+  const heroId = parseInt(req.params.heroId);
+  const { superpower } = req.body;
+
+  console.log("Server Side. Adding new task. Request Body: => ", req.body);
+  console.log("The params is: ", heroId)
+  console.log(`Server side. Add Task route: ${req.body}. ==== END ====`);
+  
+  // Guard Statement
+  if (isNaN(heroId)) {
+    res.status(400).json({ error: 'Invalid Superhero ID' });
+    return;
+  }
+
+  if (!superpower || typeof superpower !== 'string') {
+    res.status(400).json({ error: 'Invalid or missing superpower field' });
+    return;
+  }
+
+  //Connecting to db to add task
+  try {
+
+    const newTaskInput = {
+      superhero_id: heroId,
+      superpower,
+      completed: false,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }
+
+    const newTask = await taskQueries.addTaskBySuperhero(newTaskInput);
+    console.log("Server side. The new task is: ", newTask);
+
+    res.status(201).json(newTask);
+    return;
+
+  } catch(error) {
+    console.error('Server side. Error adding new task: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  };
+
 });
 
 //Dashboard: Update the task completion. Toggle

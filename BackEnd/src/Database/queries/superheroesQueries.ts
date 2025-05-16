@@ -2,8 +2,30 @@ import db from '../db';
 import { Superhero } from '../../types/superheroTypes';
 import { NewSuperheroInput } from '../../types/superheroTypes';
 
-// Get all superheroes
-const getAllSuperheroes = async(userId: number) : Promise<Superhero[]> => {
+// Get all superheroes from database
+const getAllSuperheroes = async() : Promise<Superhero[]> => {
+  try {
+    const result = await db.query('SELECT * FROM superheroes;');
+    return result.rows as Superhero[];
+  } catch (error) {
+    console.error('Queries. Error fetching superheroes: ', error);
+    throw error;
+  }
+};
+
+// Get all superheroes by logged in user (in session)
+const getAllSuperheroesByLoggedUser = async(userId: number) : Promise<Superhero[]> => {
+  try {
+    const result = await db.query('SELECT * FROM superheroes WHERE user_id = $1;', [userId]);
+    return result.rows as Superhero[];
+  } catch (error) {
+    console.error('Queries. Error fetching superheroes: ', error);
+    throw error;
+  }
+};
+
+// Get Superhero name
+const getSuperheroName = async(userId: number) : Promise<Superhero[]> => {
   try {
     const result = await db.query('SELECT * FROM superheroes WHERE user_id = $1;', [userId] );
     return result.rows as Superhero[];
@@ -88,11 +110,6 @@ const updateSuperheroProfile = async (superhero: Superhero): Promise<Superhero> 
 // Get the task and strength.
 const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhero> => {
 
-  //Accept superhero's ID
-  //Looks up the superhero profile (superheroes db table)
-  //Also looks up their list of tasks
-  //Combine the hero data and its tasks into one object
-  // Return to FE to display the strength and tasks together in real time.
   try {
     // Fetch superhero basic info
     const heroResult = await db.query(
@@ -130,6 +147,8 @@ const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhe
 
 export default {
   getAllSuperheroes,
+  getAllSuperheroesByLoggedUser,
+  getSuperheroName,
   deleteSuperhero,
   addSuperhero,
   updateSuperheroProfile,
