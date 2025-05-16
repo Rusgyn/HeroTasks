@@ -84,6 +84,28 @@ const HeroTaskBoard = () => {
   // Find the active hero object
   const activeHero = superheroes.find(hero => hero.id === activeHeroId);
 
+  //Add new task
+  const handleAddTask = async (heroId: number, task: { superpower: string }) => {
+
+    try {
+      const response = await axios.post(`/HeroTasks/superheroes/${heroId}/tasks`, task);
+
+      const newTask = response.data;
+      console.log("HeroTaskBoard. The newTask is: ", newTask);
+
+      // Update our Task db, adding the new task to the designated superhero
+      setSuperheroes((prevHeroes) =>
+        prevHeroes.map((hero) => 
+          hero.id === heroId ? {...hero, tasks: [...hero.tasks, newTask]} : hero
+        )
+      );
+
+    } catch (error) {
+      console.error("HeroTaskBoard. Errod Adding Task: ", error);
+    }
+
+  };
+
   return (
     <div className="board_page">
       <div className="board">
@@ -137,9 +159,12 @@ const HeroTaskBoard = () => {
             </Modal.Header>
 
             <Modal.Body>
-              <FormTask onSubmit={(task) => {
+              <FormTask onSubmit={async(task) => {
                 console.log('New Task for', activeHero.superhero_name, ':', task);
-                setActiveHeroId(null);
+                if (!activeHero) return;
+
+                await handleAddTask(activeHero.id, task);
+                setActiveHeroId(null); //This will close the modal after the task is added
               }} />
             </Modal.Body>
 
