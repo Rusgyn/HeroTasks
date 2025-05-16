@@ -200,11 +200,28 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
 });
 
 //Add Task
-app.post('add-task', async (req: Request, res: Response): Promise<void> => {
-  console.log("Server Side. Adding new task");
-  const { newTask } = req.body;
-  
-})
+app.post('/superheroes/:heroId/add-task', async (req: Request, res: Response): Promise<void> => {
+  const heroId = parseInt(req.params.heroId);
+
+  console.log("Server Side. Adding new task. Request Body: => ", req.body);
+  console.log("The params is: ", heroId)
+  console.log(`Server side. Add Task route: ${req.body}. ==== END ====`);
+
+  if (isNaN(heroId)) {
+    res.status(400).json({ error: 'Invalid Superhero ID' });
+    return;
+  }
+
+  try {
+
+    //axios request here .....
+
+  } catch(error) {
+    console.error('Server side. Error adding new task: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  };
+
+});
 
 //Dashboard: Update the task completion. Toggle
 app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
