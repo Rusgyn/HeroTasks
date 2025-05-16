@@ -36,7 +36,6 @@ const getAllTasksBySuperhero = async (superhero: string): Promise<Task[]> => {
   }
 };
 
-
 const addTaskBySuperhero = async (taskInput: Task): Promise<Task[]> => {
   try {
     const { superhero_id, superpower } = taskInput;
@@ -102,10 +101,31 @@ const updateTaskCompletion = async (taskId: number, completed: boolean): Promise
   console.log(`Task Query. Updated superhero ${superheroId} strength to ${strength}`);
 };
 
+const deleteTaskById = async (taskId: number) : Promise< { message: string }> => {
+
+  try {
+    const queryString = 'DELETE FROM tasks WHERE id = $1;';
+    const values = [taskId];
+
+    const result = await db.query(queryString, values);
+
+        if (result.rowCount === 0) {
+      return { message: `No task with ID# ${taskId} in the tasks db.` };
+    }
+
+    return { message: `Task with ID# ${taskId} deleted successfully.`};
+
+  } catch(error) {
+    console.error('Error deleting the task. Error - ', error);
+    throw error;
+  }
+};
+
 export default {
   getAllTasks,
   getAllTasksBySuperhero,
   addTaskBySuperhero,
   getTaskById,
-  updateTaskCompletion
+  updateTaskCompletion,
+  deleteTaskById
 }
