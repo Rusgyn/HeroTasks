@@ -2,10 +2,22 @@ import db from '../db';
 import { Superhero } from '../../types/superheroTypes';
 import { NewSuperheroInput } from '../../types/superheroTypes';
 
-// Get all superheroes
+// Get all superheroes from database
+
 const getAllSuperheroes = async() : Promise<Superhero[]> => {
   try {
     const result = await db.query('SELECT * FROM superheroes;');
+    return result.rows as Superhero[];
+  } catch (error) {
+    console.error('Queries. Error fetching superheroes: ', error);
+    throw error;
+  }
+};
+
+// Get all superheroes by logged in user (in session)
+const getAllSuperheroesByLoggedUser = async(userId: number) : Promise<Superhero[]> => {
+  try {
+    const result = await db.query('SELECT * FROM superheroes WHERE user_id = $1;', [userId]);
     return result.rows as Superhero[];
   } catch (error) {
     console.error('Queries. Error fetching superheroes: ', error);
@@ -141,6 +153,7 @@ const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhe
 
 export default {
   getAllSuperheroes,
+  getAllSuperheroesByLoggedUser,
   getSuperheroName,
   deleteSuperhero,
   addSuperhero,
