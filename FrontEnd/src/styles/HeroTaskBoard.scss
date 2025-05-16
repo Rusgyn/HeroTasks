@@ -140,6 +140,39 @@ h1 {
 
 }
 
+.task_add_delete_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  gap: 1rem;
+
+  .task_add_btn {
+    height: 2rem;
+    color: whitesmoke;
+    background:rgb(221, 169, 221);
+    border: none;
+  
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, rgb(112, 22, 112), orange);
+    }
+  }
+
+  .task_delete_btn {
+    height: 2rem;
+    color: whitesmoke;
+    background:rgb(221, 169, 221);
+    border: none;
+  
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, rgb(112, 22, 112), orange);
+    }
+  }
+}
+
 .loading {
   text-align: center;
   padding: 2rem;

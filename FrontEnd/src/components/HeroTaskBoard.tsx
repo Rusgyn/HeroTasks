@@ -128,9 +128,15 @@ const HeroTaskBoard = () => {
                 <h2>{hero.superhero_name}</h2>
                 <p><strong>⭐ Strength:</strong> { hero.strength }</p>
 
-                <button onClick={() => setActiveHeroId(hero.id)}>
-                  ➕ Add Task
-                </button>
+                <div className="task_add_delete_btn">
+                  <button className="task_add_btn" onClick={() => setActiveHeroId(hero.id)}>
+                    ➕ Add Task
+                  </button>
+                    
+                  <button className="task_delete_btn"  onClick={() => setActiveHeroId(hero.id)}>
+                    ➖ Delete Task
+                  </button>
+                </div>
 
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
