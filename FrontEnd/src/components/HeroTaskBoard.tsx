@@ -12,7 +12,6 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -30,9 +29,6 @@ const HeroTaskBoard = () => {
 
     fetchHeroesData();
   }, []);
-
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
 
   const handleTaskToggle = async (heroId: number, taskId: number) => {
     try {
@@ -83,11 +79,10 @@ const HeroTaskBoard = () => {
     }
   };
 
-  const handleAddTaskNavigation = () => {
-    navigate('/add-task'); 
-  };
-
   if (loading) return <div className="loading"> Loading ... </div>;
+
+  // Find the active hero object
+  const activeHero = superheroes.find(hero => hero.id === activeHeroId);
 
   return (
     <div className="board_page">
@@ -110,36 +105,10 @@ const HeroTaskBoard = () => {
                 <h2>{hero.superhero_name}</h2>
                 <p><strong>⭐ Strength:</strong> { hero.strength }</p>
 
-                 {/* ==== MODAL. ADD TASK HERE ==== */}
+                <button onClick={() => setActiveHeroId(hero.id)}>
+                  ➕ Add Task
+                </button>
 
-                <div> 
-                  {/* style={{ padding: '2rem' }} */}
-                  <button onClick={() => setActiveHeroId(hero.id)}>Add Task</button>
-
-                  <Modal 
-                    show={activeHeroId === hero.id}
-                    onClose={() => setActiveHeroId(null)}
-                  >
-                    <Modal.Header>
-                      <Modal.Title>Add Task</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                      <FormTask onSubmit={(task) => {
-                        console.log('New Task for', hero.superhero_name, ':', task);
-                        setActiveHeroId(null);
-                      }} />
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                      <button onClick={() => setActiveHeroId(null)}>Close</button>
-                    </Modal.Footer>
-                  </Modal>
-                
-                </div>
-
-                {/* ========================== */}
-                               
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
                     {hero.tasks.map((task) => (
@@ -148,14 +117,6 @@ const HeroTaskBoard = () => {
                         className={task.completed ? 'task-completed' : ''}
                         onClick={() => handleTaskToggle(hero.id, task.id)}
                       > {task.superpower}
-                        {/* <label className="board__checkbox">
-                          <input
-                            type="checkbox"
-                            checked={task.completed}
-                            onChange={() => handleTaskToggle(hero.id, task.id)}
-                          />
-                         {task.superpower}
-                        </label> */}
                       </li>
                     ))}
                   </ul>
@@ -163,12 +124,32 @@ const HeroTaskBoard = () => {
                   <p className="board__no_task">No tasks assigned.</p>
                 )}
               </div>
-
-              
-
             ))
           )}
         </div>
+
+        {/* ===== MODAL TESTING HERE. Render one modal inside the loop ===== */}
+
+        {activeHero && (
+          <Modal show={true} onClose={() => setActiveHeroId(null)}>
+            <Modal.Header>
+              <Modal.Title>Add Task for Superhero "{activeHero.superhero_name}"</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <FormTask onSubmit={(task) => {
+                console.log('New Task for', activeHero.superhero_name, ':', task);
+                setActiveHeroId(null);
+              }} />
+            </Modal.Body>
+
+            <Modal.Footer>
+              <button onClick={() => setActiveHeroId(null)}>Close</button>
+            </Modal.Footer>
+          </Modal>
+        )}
+
+        {/* ================================ */}
       </div>
     </div>
   );
