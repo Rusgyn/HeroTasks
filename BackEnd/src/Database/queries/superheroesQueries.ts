@@ -3,7 +3,18 @@ import { Superhero } from '../../types/superheroTypes';
 import { NewSuperheroInput } from '../../types/superheroTypes';
 
 // Get all superheroes
-const getAllSuperheroes = async(userId: number) : Promise<Superhero[]> => {
+const getAllSuperheroes = async() : Promise<Superhero[]> => {
+  try {
+    const result = await db.query('SELECT * FROM superheroes;');
+    return result.rows as Superhero[];
+  } catch (error) {
+    console.error('Queries. Error fetching superheroes: ', error);
+    throw error;
+  }
+};
+
+// Get Superhero name
+const getSuperheroName = async(userId: number) : Promise<Superhero[]> => {
   try {
     const result = await db.query('SELECT * FROM superheroes WHERE user_id = $1;', [userId] );
     return result.rows as Superhero[];
@@ -130,6 +141,7 @@ const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhe
 
 export default {
   getAllSuperheroes,
+  getSuperheroName,
   deleteSuperhero,
   addSuperhero,
   updateSuperheroProfile,
