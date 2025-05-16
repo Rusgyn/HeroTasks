@@ -137,16 +137,16 @@ const deleteAllTasksByHero = async (task: Task): Promise<{message: string}> => {
   }
 };
 
-// const deleteAllTasks = async (heroId: number): Promise<{message: string}> => {
+const deleteAllTasks = async(): Promise<{message: string}> => {
 
-//   try {
-//     const result = await db.query('TRUNCATE TABLE tasks RESTART IDENTITY;')
-//     return { message: `Tasks cleared successfully` };
-//   } catch(error) {
-//     console.error('Error deleting the tasks. Error - ', error);
-//     throw error;
-//   }
-// };
+  try {
+    const result = await db.query('TRUNCATE TABLE tasks RESTART IDENTITY;')
+    return { message: `Tasks cleared successfully` };
+  } catch(error) {
+    console.error('Error deleting the tasks. Error - ', error);
+    throw error;
+  }
+};
 
 export default {
   getAllTasks,
@@ -155,5 +155,6 @@ export default {
   getTaskById,
   updateTaskCompletion,
   deleteTaskById,
-  deleteAllTasksByHero
+  deleteAllTasksByHero,
+  deleteAllTasks
 }
