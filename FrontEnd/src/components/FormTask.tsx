@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import '../styles/FormTask.scss'
 
 interface Props {
-  onSubmit: (task: string) => void;
+  onSubmit: (
+    task: { 
+    superpower: string
+    }
+  ) => Promise<void>;
 }
 
 const FormTask: React.FC<Props> = ({ onSubmit }) => {
   const [task, setTask] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(task);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    await onSubmit({superpower: task});
     setTask('');
   };
 
@@ -25,7 +29,7 @@ const FormTask: React.FC<Props> = ({ onSubmit }) => {
         id="task"
         type="text"
         value={task}
-        onChange={(e) => setTask(e.target.value)}
+        onChange={(event) => setTask(event.target.value)}
         placeholder="Type a new task"
         required
       />
