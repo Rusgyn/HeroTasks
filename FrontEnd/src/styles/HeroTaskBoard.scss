@@ -123,8 +123,10 @@ h1 {
 
     li {
       display: flex;
-      flex-direction: column;
-      // justify-content: ;
+      //flex-direction: column;
+
+      flex-direction: row;
+      justify-content: space-between;
       //flex-wrap: wrap;
       padding: 0.5rem;
       border-bottom: 1px solid #edf2f7;
@@ -138,6 +140,58 @@ h1 {
     }
   }
 
+}
+
+.task_add_delete_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  gap: 1rem;
+  
+  .task_add_btn {
+    height: 2rem;
+    color: rgb(112, 22, 112);
+    background:rgb(221, 169, 221);
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, rgb(112, 22, 112), orange);
+      color:bisque;
+    }
+  }
+
+  .task_del_all {
+    height: 2rem;
+    color: rgb(112, 22, 112);
+    background:rgb(221, 169, 221);
+    border: none;
+    cursor: pointer;
+  
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(to right, rgb(112, 22, 112), orange);
+    }
+  }
+}
+
+.task_delete_btn {
+  height: 2rem;
+  width : 2rem;
+  color: rgb(112, 22, 112);
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+    // background: linear-gradient(to right, rgb(112, 22, 112), orange);
+    background: rgb(244, 103, 103);
+    color: whitesmoke;
+  }
 }
 
 .loading {
