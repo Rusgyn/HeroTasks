@@ -113,7 +113,7 @@ const deleteTaskById = async (task: Task) : Promise< { message: string }> => {
       return { message: `No task with ID# ${task.id} in the tasks db.` };
     }
 
-    return { message: `Task with ID# ${task.id} deleted successfully.`};
+    return { message: `Task with ID# ${task.id} is deleted successfully.`};
 
   } catch(error) {
     console.error('Error deleting the task. Error - ', error);
@@ -124,7 +124,7 @@ const deleteTaskById = async (task: Task) : Promise< { message: string }> => {
 const deleteAllTasksByHero = async (task: Task): Promise<{message: string}> => {
 
   try {
-    const result = await db.query('DELETE * FROM tasks WHERE superhero_id = $1 RETURN *;', [task.superhero_id])
+    const result = await db.query('DELETE FROM tasks WHERE superhero_id = $1 RETURN *;', [task.superhero_id])
     
     if (result.rowCount === 0) {
       return { message: `No task with ID# ${task.superhero_id} in the tasks db.` };
