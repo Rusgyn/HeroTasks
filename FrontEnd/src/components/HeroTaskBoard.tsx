@@ -83,6 +83,7 @@ const HeroTaskBoard = () => {
 
   // Find the active hero object
   const activeHero = superheroes.find(hero => hero.id === activeHeroId);
+  console.log("HeroTaskBoard. The activeHero is: => ", activeHero);
 
   //Add new task
   const handleAddTask = async (heroId: number, task: { superpower: string }) => {
@@ -102,10 +103,25 @@ const HeroTaskBoard = () => {
       );
 
     } catch (error) {
-      console.error("HeroTaskBoard. Errod Adding Task: ", error);
+      console.error("HeroTaskBoard. Error Adding Task: ", error);
     }
 
   };
+
+  //Delete Superhero Task
+  const handleDeleteTask = async (taskId: number) => {
+    try {
+      const response = await axios.delete(`/HeroTasks/tasks/${taskId}`);
+      console.log("Delete Task: ", response.data);
+
+      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
+        console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
+        setSuperheroes(updatedTasks.data);
+
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
+    }
+  }
 
   return (
     <div className="board_page">
@@ -132,21 +148,40 @@ const HeroTaskBoard = () => {
                   <button className="task_add_btn" onClick={() => setActiveHeroId(hero.id)}>
                     ➕ Add Task
                   </button>
-                    
-                  <button className="task_delete_btn"  onClick={() => setActiveHeroId(hero.id)}>
-                    ➖ Delete Task
+
+                  <button className="task_add_btn" onClick={() => setActiveHeroId(hero.id)}>
+                    ➖ Del All Tasks
                   </button>
                 </div>
 
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
                     {hero.tasks.map((task) => (
+                      
                       <li
                         key={task.id}
-                        className={task.completed ? 'task-completed' : ''}
-                        onClick={() => handleTaskToggle(hero.id, task.id)}
-                      > {task.superpower}
+                        className={`board__task_item ${task.completed ? 'task-completed' : ''}`}
+                      >
+                        <span onClick={() => handleTaskToggle(hero.id, task.id)}>
+                          {task.superpower}
+                        </span>
+
+                        <button
+                          className="task_delete_btn"
+                          onClick={() => handleDeleteTask(task.id)}
+                          title="Delete task"
+                        >
+                         ⓧ
+                        </button>
                       </li>
+                      // <li
+                      //  ➖
+                      //   key={task.id}
+                      //   className={task.completed ? 'task-completed' : ''}
+                      //   onClick={() => handleTaskToggle(hero.id, task.id)}
+                      // > 
+                      //   {task.superpower}
+                      // </li>
                     ))}
                   </ul>
                 ) : (
