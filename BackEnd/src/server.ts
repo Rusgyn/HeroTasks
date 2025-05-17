@@ -283,9 +283,37 @@ app.get('/superheroes/:id', async (req: Request, res: Response): Promise<void> =
 });
 
 //Delete Task (individual)
-app.delete('/tasks/:taskId', async (req: Request, res: Response): Promise<void> => {
+app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
+  const taskId = parseInt(req.params.id);
+  console.log("Server Side. Delete Route. Receive the taskId => ", taskId);
 
-  //PENDING.... delete task
+  // Guard Statement
+  if (isNaN(taskId)) {
+    res.status(400).json({ error: 'Invalid Task ID' });
+    return;
+  }
+
+  // Use DB queries to delete the task
+  try {
+    const task = await taskQueries.getTaskById(taskId);
+    console.log("Server Side. Delete. The getTask returns: => ", task);
+
+    if (!task) {
+      res.status(404).json({ error: 'Task not found' });
+      return;
+    }
+
+    const delTask = await taskQueries.deleteTaskById(task);
+    console.log("Server Side. The delTask is => ", delTask);
+    console.log("Server side. Deletion successful. Sending response...");
+    console.log("==== Delete Route END ====")
+    res.status(200).json({ message: delTask.message });
+    return;
+
+  } catch (error) {
+    console.error('Server side. Error deleting task:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 
 });
 

@@ -110,6 +110,7 @@ const HeroTaskBoard = () => {
 
   //Delete Superhero Task
   const handleDeleteTask = async (taskId: number) => {
+    console.log("HeroTaskBoard. the taskId is: ", taskId);
     try {
       const response = await axios.delete(`/HeroTasks/tasks/${taskId}`);
       console.log("Delete Task: ", response.data);
