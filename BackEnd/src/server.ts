@@ -280,7 +280,14 @@ app.get('/superheroes/:id', async (req: Request, res: Response): Promise<void> =
   console.log("Server side. Receive the heroId with number: ", heroId);
   const hero = await superheroQueries.getSuperheroWithTasksAndStrength(heroId); 
   res.json(hero);
-}) 
+});
+
+//Delete Task (individual)
+app.delete('/tasks/:taskId', async (req: Request, res: Response): Promise<void> => {
+
+  //PENDING.... delete task
+
+});
 
 // ===========================
 /* Server Start */
