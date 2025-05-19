@@ -117,8 +117,8 @@ const HeroTaskBoard = () => {
       console.log("Delete Task: ", response.data);
 
       const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
-        console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
-        setSuperheroes(updatedTasks.data);
+      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
+      setSuperheroes(updatedTasks.data);
 
     } catch (error) {
       console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
@@ -127,7 +127,19 @@ const HeroTaskBoard = () => {
 
   //Delete Superhero All Tasks
   const handleDeleteAllTask = async (heroId: number) => {
-    alert("Delete All Task button is click!")
+    alert("Delete All Task button is click!");
+
+    try {
+      const response = await axios.delete(`/HeroTasks/superheroes/${heroId}/delete-all-tasks`);
+      console.log("Delete All Task: ", response.data)
+
+      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
+      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
+      setSuperheroes(updatedTasks.data);
+
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
+    }
   }
 
   return (
@@ -240,7 +252,6 @@ const HeroTaskBoard = () => {
 
               {modalPurpose === 'delete-confirm' && (
                 <button 
-                className="del_confirm_btn"
                 onClick={async () => {
                   if (!activeHero) return;
                   await handleDeleteAllTask(activeHero.id);

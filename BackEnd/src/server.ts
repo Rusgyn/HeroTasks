@@ -317,6 +317,15 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
 
 });
 
+//Delete Superhero All Task
+app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Response): Promise<void> => {
+  const heroId = parseInt(req.params.id);
+  
+  console.log(`Server Side. Delete All Tasks. Superhero Id: ${heroId} === END ===`)
+
+});
+
+
 // ===========================
 /* Server Start */
 app.listen(PORT, () => {
