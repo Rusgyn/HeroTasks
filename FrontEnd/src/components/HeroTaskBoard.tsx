@@ -127,8 +127,7 @@ const HeroTaskBoard = () => {
 
   //Delete Superhero All Tasks
   const handleDeleteAllTask = async (heroId: number) => {
-    alert("Delete All Task button is click!");
-
+    
     try {
       const response = await axios.delete(`/HeroTasks/superheroes/${heroId}/delete-all-tasks`);
       console.log("Delete All Task: ", response.data)
@@ -138,7 +137,7 @@ const HeroTaskBoard = () => {
       setSuperheroes(updatedTasks.data);
 
     } catch (error) {
-      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
+      console.error("HeroTaskBoard. Error Deleting Task: ", error);
     }
   }
 
