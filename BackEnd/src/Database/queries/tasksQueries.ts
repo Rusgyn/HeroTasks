@@ -121,13 +121,17 @@ const deleteTaskById = async (task: Task) : Promise< { message: string }> => {
   }
 };
 
-const deleteAllTasksByHero = async (task: Task): Promise<{message: string}> => {
+const deleteAllTasksByHero = async (heroID: number): Promise<{message: string}> => {
+
+  console.log("TaskQueries. DeleteAll Task. Hero ID is: ", heroID);
 
   try {
-    const result = await db.query('DELETE FROM tasks WHERE superhero_id = $1 RETURN *;', [task.superhero_id])
+    const result = await db.query('DELETE FROM tasks WHERE superhero_id = $1;', [heroID]);
+
+    console.log("Delete all DB query result is: ", result);
     
     if (result.rowCount === 0) {
-      return { message: `No task with ID# ${task.superhero_id} in the tasks db.` };
+      return { message: `No task with ID# ${heroID} in the tasks db.` };
     }
 
     return { message: `All tasks were deleted successfully.`};
