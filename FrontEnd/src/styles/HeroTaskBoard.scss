@@ -150,21 +150,25 @@ h1 {
   margin: 0.5rem;
   gap: 1rem;
   
-  .task_add_btn {
-    height: 2rem;
+  .task_add_btn,
+  .task_del_all_task_btn {
+    height: 1.5rem;
     color: rgb(112, 22, 112);
-    background:rgb(221, 169, 221);
-    border: none;
-    border-radius: 0.3rem;
+    background: inherit;
+    //background:rgb(221, 169, 221);
+    border-color:rgb(112, 22, 112);
+    //border-radius: 0.3rem;
     cursor: pointer;
   
     &:hover {
-      transform: translateY(-5px);
+     // transform: translateY(-5px);
       background: linear-gradient(to right, rgb(112, 22, 112), orange);
       color:bisque;
+      border: none;
     }
   }
 
+  
   .task_del_all {
     height: 2rem;
     color: rgb(112, 22, 112);

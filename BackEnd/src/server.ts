@@ -317,6 +317,31 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
 
 });
 
+//Delete Superhero All Task
+app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Response): Promise<void> => {
+  const heroId = parseInt(req.params.id);
+
+  console.log(`Server Side. Delete All Tasks. Superhero Id: ${heroId} === END ===`)
+
+  // Guard Statement
+  if (isNaN(heroId)) {
+    res.status(400).json({ error: 'Invalid Task ID' });
+    return;
+  }
+
+  try {
+    const delAllTask = await taskQueries.deleteAllTasksByHero(heroId);
+    res.status(200).json({ message: delAllTask.message });
+    return;
+
+  } catch (error) {
+    console.error('Server side. Error deleting task:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+});
+
+
 // ===========================
 /* Server Start */
 app.listen(PORT, () => {
