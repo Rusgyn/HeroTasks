@@ -161,7 +161,7 @@ const HeroTaskBoard = () => {
                     ➕ Add Task
                   </button>
                   <button 
-                  className="task_add_btn"
+                  className="task_del_all_task_btn"
                   onClick={() => {
                     setActiveHeroId(hero.id);
                     setModalPurpose('delete-confirm');
