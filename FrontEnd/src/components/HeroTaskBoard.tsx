@@ -152,19 +152,20 @@ const HeroTaskBoard = () => {
                 <p><strong>⭐ Strength:</strong> { hero.strength }</p>
 
                 <div className="task_add_delete_btn">
-                  <button className="task_add_btn" 
-                    onClick={() => {
-                      setActiveHeroId(hero.id);
-                      setModalPurpose('add-task');
-                    }}>
+                  <button 
+                  className="task_add_btn" 
+                  onClick={() => {
+                    setActiveHeroId(hero.id);
+                    setModalPurpose('add-task');
+                  }}>
                     ➕ Add Task
                   </button>
-
-                  <button className="task_add_btn"
-                    onClick={() => {
-                      setActiveHeroId(hero.id);
-                      setModalPurpose('delete-confirm');
-                    }}>
+                  <button 
+                  className="task_add_btn"
+                  onClick={() => {
+                    setActiveHeroId(hero.id);
+                    setModalPurpose('delete-confirm');
+                  }}>
                     ➖ Del All Tasks
                   </button>
                 </div>
@@ -227,7 +228,7 @@ const HeroTaskBoard = () => {
                   }}
                 />
               ) : (
-                <p>{`Click the 'Delete' button if you wish to delete all "${activeHero.superhero_name}" missions`}</p>
+                <p>{`Click the 'Delete' if you wish to proceed.`}</p>
               )}
             </Modal.Body>
 
@@ -238,7 +239,9 @@ const HeroTaskBoard = () => {
               }}>Close</button>
 
               {modalPurpose === 'delete-confirm' && (
-                <button onClick={async () => {
+                <button 
+                className="del_confirm_btn"
+                onClick={async () => {
                   if (!activeHero) return;
                   await handleDeleteAllTask(activeHero.id);
                   setActiveHeroId(null);
