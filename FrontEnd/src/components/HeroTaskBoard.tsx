@@ -12,6 +12,7 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | null>(null);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -122,6 +123,11 @@ const HeroTaskBoard = () => {
     } catch (error) {
       console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
     }
+  };
+
+  //Delete Superhero All Tasks
+  const handleDeleteAllTask = async (heroId: number) => {
+    alert("Delete All Task button is click!")
   }
 
   return (
@@ -146,11 +152,19 @@ const HeroTaskBoard = () => {
                 <p><strong>⭐ Strength:</strong> { hero.strength }</p>
 
                 <div className="task_add_delete_btn">
-                  <button className="task_add_btn" onClick={() => setActiveHeroId(hero.id)}>
+                  <button className="task_add_btn" 
+                    onClick={() => {
+                      setActiveHeroId(hero.id);
+                      setModalPurpose('add-task');
+                    }}>
                     ➕ Add Task
                   </button>
 
-                  <button className="task_add_btn" onClick={() => setActiveHeroId(hero.id)}>
+                  <button className="task_add_btn"
+                    onClick={() => {
+                      setActiveHeroId(hero.id);
+                      setModalPurpose('delete-confirm');
+                    }}>
                     ➖ Del All Tasks
                   </button>
                 </div>
@@ -175,14 +189,6 @@ const HeroTaskBoard = () => {
                          ⓧ
                         </button>
                       </li>
-                      // <li
-                      //  ➖
-                      //   key={task.id}
-                      //   className={task.completed ? 'task-completed' : ''}
-                      //   onClick={() => handleTaskToggle(hero.id, task.id)}
-                      // > 
-                      //   {task.superpower}
-                      // </li>
                     ))}
                   </ul>
                 ) : (
@@ -195,24 +201,52 @@ const HeroTaskBoard = () => {
 
         {/* ===== MODAL HERE. Render one modal inside the loop ===== */}
 
-        {activeHero && (
-          <Modal show={true} onClose={() => setActiveHeroId(null)}>
+        {activeHero && modalPurpose && (
+          <Modal show={true} onClose={() => {
+            setActiveHeroId(null);
+            setModalPurpose(null);
+          }}>
             <Modal.Header>
-              <Modal.Title>Add Task for Superhero "{activeHero.superhero_name}"</Modal.Title>
+              <Modal.Title>
+                {modalPurpose === 'add-task'
+                  ? `Add Task for Superhero "${activeHero.superhero_name}"`
+                  : `Delete All Tasks for "${activeHero.superhero_name}"`}
+              </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-              <FormTask onSubmit={async(task) => {
-                console.log('New Task for', activeHero.superhero_name, ':', task);
-                if (!activeHero) return;
+              {modalPurpose === 'add-task' ? (
+                <FormTask
+                  onSubmit={async (task) => {
+                    console.log('New Task for', activeHero.superhero_name, ':', task);
+                    if (!activeHero) return;
+                    await handleAddTask(activeHero.id, task);
+                    setActiveHeroId(null);  //This will close the modal after the task is added
 
-                await handleAddTask(activeHero.id, task);
-                setActiveHeroId(null); //This will close the modal after the task is added
-              }} />
+                    setModalPurpose(null);
+                  }}
+                />
+              ) : (
+                <p>{`Click the 'Delete' button if you wish to delete all "${activeHero.superhero_name}" missions`}</p>
+              )}
             </Modal.Body>
 
             <Modal.Footer>
-              <button onClick={() => setActiveHeroId(null)}>Close</button>
+              <button onClick={() => {
+                setActiveHeroId(null);
+                setModalPurpose(null);
+              }}>Close</button>
+
+              {modalPurpose === 'delete-confirm' && (
+                <button onClick={async () => {
+                  if (!activeHero) return;
+                  await handleDeleteAllTask(activeHero.id);
+                  setActiveHeroId(null);
+                  setModalPurpose(null);
+                }}>
+                  Delete
+                </button>
+              )}
             </Modal.Footer>
           </Modal>
         )}
