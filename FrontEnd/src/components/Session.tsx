@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthSession from "../auth/useAuthSession";
 import Modal from './Modal';
+import Register from "./Register";
+import PasswordReset from "./PasswordReset";
+import ContactUs from "./ContactUs";
 import '../styles/Session.scss';
 
 const Session = () => {
@@ -125,7 +128,17 @@ const Session = () => {
                   {modalPurpose === 'help' && 'Need Help?'}
                 </Modal.Title>
               </Modal.Header>
-              </Modal>
+
+              <Modal.Body>
+                {modalPurpose === 'register' && (
+                  <Register />
+                )};
+                {modalPurpose === 'forgot-password' && (<PasswordReset />)}
+                {modalPurpose === 'help' && (<ContactUs />)}
+
+              </Modal.Body>
+
+            </Modal>
           )}
           
           {/* ==================== */}
