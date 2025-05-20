@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthSession from "../auth/useAuthSession";
+import Modal from './Modal';
 import '../styles/Session.scss';
 
 const Session = () => {
@@ -10,6 +11,8 @@ const Session = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [modalPurpose, setModalPurpose] = useState<'register' | 'forgot-password' | 'help' | null>(null);
+
 
   //Check the session status
   useEffect(() => {
@@ -90,13 +93,42 @@ const Session = () => {
           </form>
           <div className="session_login__footer">
             <span>
-            Don't have an account? <a href="/register">Register here</a>
+            Don't have an account? <a href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              setModalPurpose('register');
+            }}> Register here </a>
             <br/>
-            Forgot your password? <a href="/forgot-password">Reset it here</a>
+            Forgot your password? <a href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              setModalPurpose('forgot-password');
+            }}>Reset it here</a>
             <br/>
-            Need help? <a href="/help">Contact us</a>
+            Need help? <a href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              setModalPurpose('help');
+            }}>Contact us</a>
             </span>    
           </div>
+
+          {/* ======== MODAL HERE =========== */}
+          {modalPurpose && (
+            <Modal show={true} onClose={() => {
+              setModalPurpose(null);
+            }}>
+              <Modal.Header>
+                <Modal.Title>
+                  {modalPurpose === 'register' && 'Register a new account'}
+                  {modalPurpose === 'forgot-password' && 'Reset Password'}
+                  {modalPurpose === 'help' && 'Need Help?'}
+                </Modal.Title>
+              </Modal.Header>
+              </Modal>
+          )}
+          
+          {/* ==================== */}
         </div>
       </div>
 
