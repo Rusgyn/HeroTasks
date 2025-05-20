@@ -6,6 +6,7 @@ import Modal from './Modal';
 import Register from "./Register";
 import PasswordReset from "./PasswordReset";
 import ContactUs from "./ContactUs";
+import ContactUsFooter from "./ContactUsFooter";
 import '../styles/Session.scss';
 
 const Session = () => {
@@ -132,11 +133,15 @@ const Session = () => {
               <Modal.Body>
                 {modalPurpose === 'register' && (
                   <Register />
-                )};
+                )}
                 {modalPurpose === 'forgot-password' && (<PasswordReset />)}
-                {modalPurpose === 'help' && (<ContactUs />)}
+                {modalPurpose === 'help' && (<ContactUsFooter />)}
 
               </Modal.Body>
+
+              <Modal.Footer>
+                <button onClick={() => { setModalPurpose(null); }}>Close</button>
+              </Modal.Footer>
 
             </Modal>
           )}
