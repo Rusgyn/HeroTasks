@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import '../styles/FormRegister.scss';
 
 interface Props {
   onSubmit: (
@@ -18,6 +19,7 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
+  const [formErrorMessage, setFormErrorMessage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,24 +27,26 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
     // Guard Statement, ensure a valid email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
-      alert(`\n` +
-      `The email:  "${email}" is not valid.\n` + `\n` +
-      `Please enter a valid email address \n` +
-      `e.g. sample@email.com`);
+      setFormErrorMessage(`⛔️ Registration Error ⛔️` + `\n` +
+        `The email: "${email}" is not valid. Please enter a valid email address. (e.g. sample@email.com)`);
       return;
     }
 
     //Guard Statement, ensure password requirements are meet.
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{7,}$/;
     if (!passwordPattern.test(password)) {
-      alert("\n" + "Password requirements:\n" + "\n" +
-    "• At least 7 characters\n" +
-    "• At least 1 number\n" +
-    "• At least 1 lowercase letter\n" +
-    "• At least 1 uppercase letter\n" +
-    "• At least 1 special character");
+      setFormErrorMessage("⛔️ Registration Error ⛔️\n" + " Password requirements:\n" + 
+        "• At least 7 characters\n" +
+        "• At least 1 number\n" +
+        "• At least 1 lowercase letter\n" +
+        "• At least 1 uppercase letter\n" +
+        "• At least 1 special character");
       return;
     }
+    
+    setFormErrorMessage('');
+
+    //=> Backend route- registration ....
 
     setFirstName('');
     setLastName('');
@@ -52,18 +56,27 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
   };
 
 
-
   const handleCancel =() => {
     setFirstName('');
     setLastName('');
     setEmail('');
     setPassword('');
     setCode('');
+    setFormErrorMessage('');
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="user">Welcome to HeroTasks!</label>
+
+      {formErrorMessage && (
+        <div className="form_register__error">
+          {formErrorMessage.split('\n').map((line, idx) => (
+            <p key={idx}>{line}</p>
+          ))}
+        </div>
+      )}
+
       <input
         id="first_name"
         type="text"
