@@ -67,12 +67,12 @@ const Session = () => {
     console.log(" Registration. The new user data are: ", user);
 
     try {
-      const response = await axios.post(`/HeroTasks/register/${user}`);
+      const response = await axios.post(`/HeroTasks/register/`, user);
 
       const newUser = response.data;
       console.log("Registration. Return new user is: ", newUser);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         navigate('/login');
       }
       
