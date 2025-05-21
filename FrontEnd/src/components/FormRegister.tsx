@@ -67,7 +67,7 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="user">Welcome to HeroTasks!</label>
+      <label htmlFor="user" className="form_register__header">Welcome to HeroTasks!</label>
 
       {formErrorMessage && (
         <div className="form_register__error">
