@@ -5,7 +5,7 @@ import useAuthSession from "../auth/useAuthSession";
 import Modal from './Modal';
 import Register from "./Register";
 import PasswordReset from "./PasswordReset";
-import ContactUs from "./ContactUs";
+import FormRegister from "./FormRegister";
 import ContactUsFooter from "./ContactUsFooter";
 import '../styles/Session.scss';
 
@@ -132,11 +132,14 @@ const Session = () => {
 
               <Modal.Body>
                 {modalPurpose === 'register' && (
-                  <Register />
+                  <FormRegister
+                  onSubmit={async(user) => {
+                    console.log('New User')
+                  }}/>
+                
                 )}
                 {modalPurpose === 'forgot-password' && (<PasswordReset />)}
                 {modalPurpose === 'help' && (<ContactUsFooter />)}
-
               </Modal.Body>
 
               <Modal.Footer>
