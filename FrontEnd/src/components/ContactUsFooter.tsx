@@ -2,11 +2,9 @@ import '../styles/ContactUsFooter.scss'
 
 const ContactUsFooter = () => {
   return (
-    <>
       <div className="contact_notes">
         <h2>ContactUs | HeroTasks</h2>
-        <p>
-          Have a question, found a bug, or just want to say hi? We're here to help!
+        <p>Have a question, found a bug, or just want to say hi? We're here to help!
         </p>
 
         <section className="contact_info">
@@ -21,7 +19,7 @@ const ContactUsFooter = () => {
         </section>
 
       </div>
-    </>
+    
 
   );
 }
