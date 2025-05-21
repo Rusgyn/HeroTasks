@@ -7,6 +7,7 @@ import Register from "./Register";
 import PasswordReset from "./PasswordReset";
 import FormRegister from "./FormRegister";
 import ContactUsFooter from "./ContactUsFooter";
+import ContactUs from "./ContactUs";
 import '../styles/Session.scss';
 
 const Session = () => {
