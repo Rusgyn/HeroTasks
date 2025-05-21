@@ -19,6 +19,10 @@
   max-width: 500px;
   width: 90%;
   position: relative;
+
+  // Testing. Auto custom scrolling when media viewable size is adjusted.
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal-close {
