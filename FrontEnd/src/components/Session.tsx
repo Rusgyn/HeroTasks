@@ -55,6 +55,33 @@ const Session = () => {
     setPassword('');
   };
 
+  //Handles new user registration
+  const handleRegistration = async( user: {
+      first_name: string,
+      last_name: string,
+      email: string,
+      password_digest: string,
+      code: string, 
+    } ) => {
+
+    console.log(" Registration. The new user data are: ", user);
+
+    try {
+      const response = await axios.post(`/HeroTasks/register/${user}`);
+
+      const newUser = response.data;
+      console.log("Registration. Return new user is: ", newUser);
+
+      if (response.status === 200) {
+        navigate('/login');
+      }
+      
+    } catch (error) {
+      console.error("Registration. Error adding new user: ", error);
+    }
+
+  }; 
+
   return (
     <div className="session_page">
 
@@ -135,7 +162,9 @@ const Session = () => {
                 {modalPurpose === 'register' && (
                   <FormRegister
                   onSubmit={async(user) => {
-                    console.log('New User')
+                    console.log('New User');
+                    await handleRegistration(user)
+                    setModalPurpose(null);
                   }}/>
                 
                 )}

@@ -46,7 +46,14 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
     
     setFormErrorMessage('');
 
-    //=> Backend route- registration ....
+    //Process the registration
+    await onSubmit({
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password_digest: password,
+      code: code,
+    });
 
     setFirstName('');
     setLastName('');
