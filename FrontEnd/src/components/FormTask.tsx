@@ -14,7 +14,10 @@ const FormTask: React.FC<Props> = ({ onSubmit }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await onSubmit({superpower: task});
+
+    const newTask = task.trim();
+
+    await onSubmit({superpower: newTask});
     setTask('');
   };
 
