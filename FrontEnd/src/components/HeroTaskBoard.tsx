@@ -141,6 +141,12 @@ const HeroTaskBoard = () => {
     }
   }
 
+  //Add New Superhero
+  const handleAddSuperhero = async () => {
+    // userId: number, superhero: { superhero_name: string }
+    alert(" handleAddSuperhero button is clicked");
+  }
+
   return (
     <div className="board_page">
       <div className="board">
@@ -150,6 +156,13 @@ const HeroTaskBoard = () => {
           type='button'
           value="logout"
           onClick={handleLogoutNavigation}>Logout
+        </button>
+
+        <button 
+          className="board_btn__add_superhero"
+          type='button'
+          value="newSuperhero"
+          onClick={handleAddSuperhero}>Add Superhero
         </button>
         
         <div className="board__hero_grid">
