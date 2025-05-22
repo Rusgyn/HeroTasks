@@ -20,12 +20,27 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
   const [code, setCode] = useState('');
   const [formErrorMessage, setFormErrorMessage] = useState('');
 
+  // Reusable state reset function 
+  const resetFormFields = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setCode('');
+    setFormErrorMessage('');
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    const newFirstName = firstName.trim();
+    const newLastName = lastName.trim();
+    const newEmail = email.trim();
+
+
     // Guard Statement, ensure a valid email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
+    if (!emailPattern.test(newEmail)) {
       setFormErrorMessage(`⛔️ Registration Error ⛔️` + `\n` +
         `The email: "${email}" is not valid. Please enter a valid email address. (e.g. sample@email.com)`);
       return;
@@ -47,28 +62,18 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
 
     //Process the registration
     await onSubmit({
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
+      first_name: newFirstName,
+      last_name: newLastName,
+      email: newEmail,
       password: password,
       code: code,
     });
 
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setCode('');
+    resetFormFields();
   };
 
-
   const handleCancel =() => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setCode('');
-    setFormErrorMessage('');
+    resetFormFields();
   }
 
   return (
