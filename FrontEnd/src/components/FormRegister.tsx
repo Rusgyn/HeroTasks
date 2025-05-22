@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import '../styles/FormRegister.scss';
 
 interface Props {
@@ -29,6 +29,11 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
     setCode('');
     setFormErrorMessage('');
   };
+
+  useEffect(() => {
+    // Reset the form every time the component mounts or remounts
+    resetFormFields();
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -146,7 +151,7 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
       />
       <div className='form_register__btn'>
         <button type="submit" >Add</button>
-        <button type="submit" onClick={handleCancel} >Cancel</button>
+        <button type="button" onClick={handleCancel} >Cancel</button>
       </div>
 
     </form>
