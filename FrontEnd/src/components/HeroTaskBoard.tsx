@@ -5,6 +5,7 @@ import '../styles/HeroTaskBoard.scss';
 import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
 import FormTask from "./FormTask";
+import FormAddSuperhero from "./FormSuperhero";
 
 
 const HeroTaskBoard = () => {
@@ -12,7 +13,7 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | null>(null);
+  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | 'add-superhero' | null>(null);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -142,9 +143,9 @@ const HeroTaskBoard = () => {
   }
 
   //Add New Superhero
-  const handleAddSuperhero = async () => {
-    // userId: number, superhero: { superhero_name: string }
-    alert(" handleAddSuperhero button is clicked");
+  const handleAddSuperhero = async ( superhero: { superhero_name: string}) => {
+    
+    alert(`handleAddSuperhero button is clicked. The entry "${superhero.superhero_name}"`);
   }
 
   return (
@@ -161,8 +162,7 @@ const HeroTaskBoard = () => {
         <button 
           className="board_btn__add_superhero"
           type='button'
-          value="newSuperhero"
-          onClick={handleAddSuperhero}>Add Superhero
+          onClick={() => setModalPurpose('add-superhero')}> Add Superhero
         </button>
         
         <div className="board__hero_grid">
@@ -226,21 +226,25 @@ const HeroTaskBoard = () => {
 
         {/* ===== MODAL HERE. Render one modal inside the loop ===== */}
 
-        {activeHero && modalPurpose && (
+        {modalPurpose && (
           <Modal show={true} onClose={() => {
             setActiveHeroId(null);
             setModalPurpose(null);
           }}>
             <Modal.Header>
               <Modal.Title>
-                {modalPurpose === 'add-task'
-                  ? `Add Task for Superhero "${activeHero.superhero_name}"`
-                  : `Delete All Tasks for "${activeHero.superhero_name}"`}
+                {
+                  {
+                    'add-task': `Add Task for Superhero "${activeHero?.superhero_name}"`,
+                    'delete-confirm': `Delete All Tasks for "${activeHero?.superhero_name}"`,
+                    'add-superhero': 'Add New Superhero'
+                  } [modalPurpose]
+                }
               </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-              {modalPurpose === 'add-task' ? (
+              {modalPurpose === 'add-task' && activeHero && (
                 <FormTask
                   onSubmit={async (task) => {
                     console.log('New Task for', activeHero.superhero_name, ':', task);
@@ -251,9 +255,15 @@ const HeroTaskBoard = () => {
                     setModalPurpose(null);
                   }}
                 />
-              ) : (
-                <p>{`Click the 'Delete' if you wish to proceed.`}</p>
               )}
+              {modalPurpose === 'delete-confirm' && activeHero && (<p>{`Click the 'Delete' if you wish to proceed.`}</p>)}
+              {modalPurpose === 'add-superhero' && (
+                <FormAddSuperhero onSubmit={async(superhero) => {
+                  console.log("New Candidate, New Superhero: ", superhero);
+                  await handleAddSuperhero(superhero)
+                  setModalPurpose(null);
+                }} />                
+              )}          
             </Modal.Body>
 
             <Modal.Footer>
@@ -262,7 +272,7 @@ const HeroTaskBoard = () => {
                 setModalPurpose(null);
               }}>Close</button>
 
-              {modalPurpose === 'delete-confirm' && (
+              {modalPurpose === 'delete-confirm' && activeHero && (
                 <button 
                 onClick={async () => {
                   if (!activeHero) return;
