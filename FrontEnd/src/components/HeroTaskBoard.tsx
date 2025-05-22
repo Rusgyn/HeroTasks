@@ -144,8 +144,15 @@ const HeroTaskBoard = () => {
 
   //Add New Superhero
   const handleAddSuperhero = async ( superhero: { superhero_name: string}) => {
-    
-    alert(`handleAddSuperhero button is clicked. The entry "${superhero.superhero_name}"`);
+    try {
+      const response = await axios.post('/HeroTasks/superheroes', superhero);
+      console.log("New Superhero added: ", response.data);
+
+      const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
+      setSuperheroes(updatedHeroes.data);
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Adding New Superhero: ", error);
+    }
   }
 
   return (

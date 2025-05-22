@@ -208,6 +208,12 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 
 } )
 
+//New Superhero
+app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
+
+}
+);
+
 //Dashboard: Get all superheroes along with their tasks
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {
