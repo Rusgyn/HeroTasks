@@ -60,7 +60,7 @@ const Session = () => {
       first_name: string,
       last_name: string,
       email: string,
-      password_digest: string,
+      password: string,
       code: string, 
     } ) => {
 
@@ -78,6 +78,7 @@ const Session = () => {
       
     } catch (error) {
       console.error("Registration. Error adding new user: ", error);
+      setErrorMessage('An error occurred. Please try again.');
     }
 
   }; 

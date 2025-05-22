@@ -7,10 +7,9 @@ interface Props {
       first_name: string,
       last_name: string,
       email: string,
-      password_digest: string,
+      password: string,
       code: string,
     }
-
   ) => Promise<void>;
 }
 const FormRegister: React.FC<Props> = ({ onSubmit }) => {
@@ -51,7 +50,7 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
       first_name: firstName,
       last_name: lastName,
       email: email,
-      password_digest: password,
+      password: password,
       code: code,
     });
 
