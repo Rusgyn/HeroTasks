@@ -169,6 +169,45 @@ app.post('/logout', async (req: Request, res: Response): Promise<any> => {
   });
 });
 
+//Registration route
+app.post('/register', async (req: Request, res: Response): Promise<void> => {
+  console.log("Server Side. Registration. Req Body: ", req.body);
+  const { first_name, last_name, email, password, code } = req.body;
+
+  try {
+    //Guard Statement. Check if user already exist.
+    const isUserExist = await userQueries.getUserByEmail(email);
+
+    if (isUserExist) {
+      console.log('User already exists for email:', email);
+      res.status(400).json({ error: 'User already exists!' });
+      return;
+    }
+
+    // newUser as the users types
+    const newUser: User = {
+      first_name,
+      last_name,
+      email,
+      password_digest: password,
+      code,
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+
+    const addNewUser = await userQueries.addUser(newUser);
+    console.log("Server side. New user added: ", addNewUser);
+    res.status(201).json(addNewUser);
+    return;
+
+  } catch (error) {
+    console.error('Error registering user: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+    return;
+  };
+
+} )
+
 //Dashboard: Get all superheroes along with their tasks
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {

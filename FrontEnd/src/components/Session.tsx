@@ -2,6 +2,12 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthSession from "../auth/useAuthSession";
+import Modal from './Modal';
+import Register from "./Register";
+import PasswordReset from "./PasswordReset";
+import FormRegister from "./FormRegister";
+import ContactUsFooter from "./ContactUsFooter";
+import ContactUs from "./ContactUs";
 import '../styles/Session.scss';
 
 const Session = () => {
@@ -10,6 +16,8 @@ const Session = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [modalPurpose, setModalPurpose] = useState<'register' | 'forgot-password' | 'help' | null>(null);
+
 
   //Check the session status
   useEffect(() => {
@@ -46,6 +54,34 @@ const Session = () => {
     setUsername('');
     setPassword('');
   };
+
+  //Handles new user registration
+  const handleRegistration = async( user: {
+      first_name: string,
+      last_name: string,
+      email: string,
+      password: string,
+      code: string, 
+    } ) => {
+
+    console.log(" Registration. The new user data are: ", user);
+
+    try {
+      const response = await axios.post(`/HeroTasks/register/`, user);
+
+      const newUser = response.data;
+      console.log("Registration. Return new user is: ", newUser);
+
+      if (response.status === 201) {
+        navigate('/login');
+      }
+      
+    } catch (error) {
+      console.error("Registration. Error adding new user: ", error);
+      setErrorMessage('An error occurred. Please try again.');
+    }
+
+  }; 
 
   return (
     <div className="session_page">
@@ -90,13 +126,61 @@ const Session = () => {
           </form>
           <div className="session_login__footer">
             <span>
-            Don't have an account? <a href="/register">Register here</a>
+            Don't have an account? <a href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              setModalPurpose('register');
+            }}> Register here </a>
             <br/>
-            Forgot your password? <a href="/forgot-password">Reset it here</a>
+            Forgot your password? <a href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              setModalPurpose('forgot-password');
+            }}>Reset it here</a>
             <br/>
-            Need help? <a href="/help">Contact us</a>
+            Need help? <a href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              setModalPurpose('help');
+            }}>Contact us</a>
             </span>    
           </div>
+
+          {/* ======== MODAL HERE =========== */}
+          {modalPurpose && (
+            <Modal show={true} onClose={() => {
+              setModalPurpose(null);
+            }}>
+              <Modal.Header>
+                <Modal.Title>
+                  {modalPurpose === 'register' && 'Register a new account'}
+                  {modalPurpose === 'forgot-password' && 'Reset Password'}
+                  {modalPurpose === 'help' && 'Need Help?'}
+                </Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                {modalPurpose === 'register' && (
+                  <FormRegister
+                  onSubmit={async(user) => {
+                    console.log('New User');
+                    await handleRegistration(user)
+                    setModalPurpose(null);
+                  }}/>
+                
+                )}
+                {modalPurpose === 'forgot-password' && (<PasswordReset />)}
+                {modalPurpose === 'help' && (<ContactUsFooter />)}
+              </Modal.Body>
+
+              <Modal.Footer>
+                <button onClick={() => { setModalPurpose(null); }}>Close</button>
+              </Modal.Footer>
+
+            </Modal>
+          )}
+          
+          {/* ==================== */}
         </div>
       </div>
 

@@ -1,15 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import '../styles/ContactUs.scss';
+import '../styles/ContactUsFooter.scss'
 
-const ContactUs = () => {
-  const navigate = useNavigate();
-
+const ContactUsFooter = () => {
   return (
-    <div className="contact_modal__wrapper">
-      <h2>Contact Us | HeroTasks</h2>
-
+    <div className="contact_notes">
+      <h2>ContactUs | HeroTasks</h2>
       <p>
-        Have a question, found a bug, or just want to say hi? We're here to help!
+      Have a question, found a bug, or just want to say hi? We're here to help!
       </p>
 
       <p>
@@ -58,11 +54,8 @@ const ContactUs = () => {
         </p>
       </section>
 
-      <button className="contact_btn__back" type="button" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
     </div>
   );
-};
+}
 
-export default ContactUs;
+export default ContactUsFooter;

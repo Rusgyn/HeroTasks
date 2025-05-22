@@ -4,7 +4,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.576);
+  background-color: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0.3rem);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,38 +14,56 @@
 
 .modal-box {
   background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(83, 11, 129));
-  padding: 2rem;
-  border-radius: 8px;
+  //padding: 2rem;
+  //border-radius: 8px;
   max-width: 500px;
   width: 90%;
   position: relative;
+
+  // Testing. Auto custom scrolling when media viewable size is adjusted.
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal-close {
   position: absolute;
-  top: 8px;
+  //top: 8px;
   right: 12px;
-  color: burlywood;
+  color: rgb(112, 22, 112);
   font-size: 1.5rem;
   background: transparent;
   border: none;
   cursor: pointer;
+  padding-right: 1rem;
 }
 
-.modal-title {
-  text-align: left;
-  position: absolute;
-  top: 8px;
-  color: rgb(219, 151, 216);
-  font-size: 1rem;
-  background: transparent;
-  border: none;
-  margin-bottom: 2rem; 
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  background-color:  rgb(218, 162, 32);
+  //gap: 1rem;
+  justify-content: space-between;
+  //padding-top: 2rem;
+
+  .modal-title {
+    text-align: left;
+   // position: absolute;
+    //top: 8px;
+    color: rgb(112, 22, 112);
+    font-size: 1rem bolder;
+    //background-color: burlywood;
+    border: none;
+    padding-left: 2rem;
+    //margin-bottom: 2rem; 
+  }
+
 }
+
 
 .modal-body { 
   margin-top: 2rem;
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
+  padding: 2rem;
 }
 
 .modal-footer {
@@ -52,7 +71,8 @@
   flex-direction: row;
   gap: 1rem;
   justify-content: flex-end;
-  padding-top: 2rem;
+  //padding-top: 2rem;
+  padding: 2rem;
   
   button {
     width: 6rem;
