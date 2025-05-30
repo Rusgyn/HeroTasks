@@ -45,7 +45,7 @@ const Session = () => {
       }
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
-        setErrorMessage(error.response.data.error);;
+        setErrorMessage(error.response.data.error);
       } else {
         setErrorMessage('An error occurred. Please try again.');
       } 
