@@ -183,6 +183,12 @@ const HeroTaskBoard = () => {
           type='button'
           onClick={() => setModalPurpose('add-superhero')}> Add Superhero
         </button>
+
+        <button
+          className="board_btn__del_superhero"
+          type="button"
+          onClick={() => alert("Delete Superhero button is clicked!")}> Del Superhero
+        </button>
         
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
