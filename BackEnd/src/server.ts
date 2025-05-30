@@ -386,8 +386,6 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
 
     const delTask = await taskQueries.deleteTaskById(task);
     console.log("Server Side. The delTask is => ", delTask);
-    console.log("Server side. Deletion successful. Sending response...");
-    console.log("==== Delete Route END ====")
     res.status(200).json({ message: delTask.message });
     return;
 
