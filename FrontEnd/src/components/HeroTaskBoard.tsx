@@ -13,6 +13,7 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
   const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | 'add-superhero' | null>(null);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
@@ -150,9 +151,19 @@ const HeroTaskBoard = () => {
       console.log("New Superhero added: ", response.data);
 
       const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
+      
       setSuperheroes(updatedHeroes.data);
-    } catch (error) {
-      console.error("HeroTaskBoard. Error Adding New Superhero: ", error);
+      setErrorMessage('');
+      return true;
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        setErrorMessage('An error occurred. Please try again.');
+      }
+
+      return false;
+      
     }
   }
 
@@ -270,9 +281,15 @@ const HeroTaskBoard = () => {
                   key={modalPurpose}
                   onSubmit={async(superhero) => {
                     console.log("Modal.New Candidate, New Superhero: ", superhero);
-                    await handleAddSuperhero(superhero);
-                    setModalPurpose(null);
-                  }} />       
+                    
+                    const success = await handleAddSuperhero(superhero);
+
+                    if (success) {
+                      setModalPurpose(null);
+                    }                    
+                  }}
+                  errorMessage={errorMessage}
+                />       
               )}          
             </Modal.Body>
 

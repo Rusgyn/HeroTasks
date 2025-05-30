@@ -51,10 +51,6 @@ db.query('SELECT current_database();')
   .then(response => console.log('✅ Connected to DB:', response.rows[0]))
   .catch(error => console.error('❌ Error checking current DB:', error));
 
-  db.query("SELECT * FROM users WHERE email = 'jane.smith@test.com';")
-  .then((response) => console.log("DB Test, user table found: ", response.rows))
-  .catch((error) => console.error("DT Test, error querying users table:", error));
-
 /* Session Configuration */ 
 //**Always place express-session after express.json() and express.urlencoded() middleware for session handling to work properly.
 const sessionSecret = process.env.DB_SESSION_SECRET
@@ -89,7 +85,7 @@ app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
 
   try { 
     if (isUserLoggedIn(req.session)) {
-      console.log("Server side. The use is logged in: ", req.session);
+      console.log("Server side. The user is logged in: ", req.session);
       return res.json( {loggedIn: true} );
     }
 
@@ -386,8 +382,6 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
 
     const delTask = await taskQueries.deleteTaskById(task);
     console.log("Server Side. The delTask is => ", delTask);
-    console.log("Server side. Deletion successful. Sending response...");
-    console.log("==== Delete Route END ====")
     res.status(200).json({ message: delTask.message });
     return;
 

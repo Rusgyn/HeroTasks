@@ -139,6 +139,32 @@ const deleteTaskById = async (task: Task) : Promise< { message: string }> => {
       return { message: `No task with ID# ${task.id} in the tasks db.` };
     }
 
+    // Update Strength
+    // 1. Get total tasks for the superhero
+    const totalTasksRes = await db.query(
+      'SELECT COUNT(*) FROM tasks WHERE superhero_id = $1',
+      [task.superhero_id]
+    );
+    const totalTasks = parseInt(totalTasksRes.rows[0].count, 10);
+
+    // 2. Get completed tasks for the superhero
+    const completedTasksRes = await db.query(
+      'SELECT COUNT(*) FROM tasks WHERE superhero_id = $1 AND completed = TRUE',
+      [task.superhero_id]
+    );
+    const completedTasks = parseInt(completedTasksRes.rows[0].count, 10);
+
+    // 3. Calculate strength
+    const strength = totalTasks > 0 ? completedTasks / totalTasks : 0;
+
+    // 4. Update superhero's strength
+    await db.query(
+      'UPDATE superheroes SET strength = $1 WHERE id = $2',
+      [strength, task.superhero_id]
+    );
+
+    //==============
+
     return { message: `Task with ID# ${task.id} is deleted successfully.`};
 
   } catch(error) {

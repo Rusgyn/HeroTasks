@@ -6,9 +6,10 @@ interface Props {
       superhero_name: string
     }
   ) => Promise<void>;
+  errorMessage?: string;
 }
 
-const FormAddSuperhero: React.FC<Props> = ({ onSubmit }) => {
+const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
   const [heroName, setHeroName] = useState('');
   const [formErrorMessage, setFormErrorMessage] = useState('');
 
@@ -44,14 +45,23 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit }) => {
   return(
     <form onSubmit={handleSubmit}>
       <label htmlFor="superhero" className="form_add_superhero__header">Add New Superhero</label>
-
+{/* 
       {formErrorMessage && (
         <div className="form_add_superhero___error">
           {formErrorMessage.split('\n').map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}
         </div>
+      )} */}
+
+      {(formErrorMessage || errorMessage) && (
+        <div className="form_add_superhero___error">
+          {(formErrorMessage || errorMessage)?.split('\n').map((line, idx) => (
+            <p key={idx}>{line}</p>
+          ))}
+        </div>
       )}
+
 
       <input
         id="superhero_name"
