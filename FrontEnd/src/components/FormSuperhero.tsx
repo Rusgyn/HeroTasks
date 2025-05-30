@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 interface Props {
   onSubmit: (
@@ -12,10 +12,20 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit }) => {
   const [heroName, setHeroName] = useState('');
   const [formErrorMessage, setFormErrorMessage] = useState('');
 
+  const resetFormFields = () => {
+    setHeroName('');
+    setFormErrorMessage('');
+  };
+
+  useEffect(() => {
+    // Reset the form every time the component mounts or remounts
+    resetFormFields();
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const newHeroName = heroName.trim(); 
+    const newHeroName = heroName.trim().toLocaleLowerCase(); 
 
     if (!newHeroName) {
       setFormErrorMessage(`Please type our new Superhero's name!`);
@@ -24,13 +34,11 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit }) => {
 
     setFormErrorMessage('');
     await onSubmit({ superhero_name: newHeroName});
-
-    setHeroName('');
+    resetFormFields();
   }
 
   const handleCancel = () => {
-    setHeroName('');
-    setFormErrorMessage('');
+    resetFormFields();
   }
 
   return(
@@ -52,13 +60,12 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit }) => {
         value={heroName}
         onChange={(event) => setHeroName(event.target.value)}
         placeholder="Superhero Name"
-        required
         autoFocus
       />
 
       <div className='form_add_superhero__btn'>
         <button type="submit" >Add</button>
-        <button type="submit" onClick={handleCancel} >Cancel</button>
+        <button type="button" onClick={handleCancel} >Cancel</button>
       </div>
 
     </form>
