@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
 import FormTask from "./FormTask";
 import FormAddSuperhero from "./FormSuperhero";
+import FormDeleteSuperhero from "./FormDeleteSuperhero";
 
 
 const HeroTaskBoard = () => {
@@ -167,6 +168,10 @@ const HeroTaskBoard = () => {
     }
   }
 
+  const handleDelSuperhero = () => {
+    navigate('/eliminate-superhero')
+  }
+
   return (
     <div className="board_page">
       <div className="board">
@@ -187,7 +192,8 @@ const HeroTaskBoard = () => {
         <button
           className="board_btn__del_superhero"
           type="button"
-          onClick={() => alert("Delete Superhero button is clicked!")}> Del Superhero
+          onClick ={handleDelSuperhero}
+        > Eliminate Superhero
         </button>
         
         <div className="board__hero_grid">
