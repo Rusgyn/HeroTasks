@@ -35,6 +35,19 @@ const getSuperheroName = async(userId: number) : Promise<Superhero[]> => {
   }
 };
 
+//Get Superhero name by name
+const getSuperheroByName = async(hero: string) : Promise<Superhero[] > => {
+  
+  try {
+    const result = await db.query('SELECT * FROM superheroes WHERE superhero_name = $1;', [hero] );
+
+    return result.rows;
+  } catch (error) {
+    console.error('Queries. Error fetching superhero Name: ', error);
+    throw error;
+  }
+};
+
 // Delete superhero
 const deleteSuperhero = async(superheroName: string) : Promise<Superhero> => {
   try {
@@ -53,11 +66,12 @@ const deleteSuperhero = async(superheroName: string) : Promise<Superhero> => {
 };
 
 // Add new superhero
-const addSuperhero = async (superheroInput: NewSuperheroInput, session: any): Promise<Superhero | undefined> => {
+const addSuperhero = async (superheroInput: Superhero): Promise<Superhero | undefined> => {
+  console.log("The query received the data: => ", superheroInput);
+  
   try {
-    const { superhero_name } = superheroInput;
-    const user_id = session.user.id;
-
+    const { superhero_name, user_id} = superheroInput;
+   
     const result = await db.query(
       `INSERT INTO superheroes (superhero_name, user_id)
        VALUES ($1, $2)
@@ -147,6 +161,7 @@ const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhe
 
 export default {
   getAllSuperheroes,
+  getSuperheroByName,
   getAllSuperheroesByLoggedUser,
   getSuperheroName,
   deleteSuperhero,
