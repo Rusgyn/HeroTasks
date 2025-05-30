@@ -144,6 +144,7 @@ const HeroTaskBoard = () => {
 
   //Add New Superhero
   const handleAddSuperhero = async ( superhero: { superhero_name: string}) => {
+    console.log("handleAddSuperhero is clicked. Sending to backend ....", superhero);
     try {
       const response = await axios.post('/HeroTasks/superheroes', superhero);
       console.log("New Superhero added: ", response.data);
@@ -265,11 +266,13 @@ const HeroTaskBoard = () => {
               )}
               {modalPurpose === 'delete-confirm' && activeHero && (<p>{`Click the 'Delete' if you wish to proceed.`}</p>)}
               {modalPurpose === 'add-superhero' && (
-                <FormAddSuperhero onSubmit={async(superhero) => {
-                  console.log("New Candidate, New Superhero: ", superhero);
-                  await handleAddSuperhero(superhero)
-                  setModalPurpose(null);
-                }} />                
+                <FormAddSuperhero 
+                  key={modalPurpose}
+                  onSubmit={async(superhero) => {
+                    console.log("Modal.New Candidate, New Superhero: ", superhero);
+                    await handleAddSuperhero(superhero);
+                    setModalPurpose(null);
+                  }} />       
               )}          
             </Modal.Body>
 
