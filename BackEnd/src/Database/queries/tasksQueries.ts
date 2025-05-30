@@ -128,6 +128,8 @@ const deleteAllTasksByHero = async (heroID: number): Promise<{message: string}> 
   try {
     const result = await db.query('DELETE FROM tasks WHERE superhero_id = $1;', [heroID]);
 
+    await db.query('UPDATE superheroes SET strength = 0 WHERE id = $1;', [heroID]);
+
     console.log("Delete all DB query result is: ", result);
     
     if (result.rowCount === 0) {
