@@ -208,6 +208,48 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 
 } )
 
+//New Superhero
+app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
+  console.log(`Server Side. New superhero req body is ${req.body.superhero_name} === END ===`);
+  const { superhero_name } = req.body
+
+  try {
+    console.log("Data to query is: => ", superhero_name)
+    const isSuperheroExist = await superheroQueries.getSuperheroByName(superhero_name);
+
+    if(isSuperheroExist.length > 0) {
+      console.log('Superhero already exists:', superhero_name);
+      res.status(400).json({ error: 'Superhero already exists!' });
+      return;
+    }
+
+    const user_id = req.session.loggedUser?.id;
+
+    if (typeof user_id !== 'number') {
+      res.status(401).json({ error: 'Unauthorized: No user logged in' });
+      return;
+    }
+
+    const newSuperhero: Superhero = {
+      superhero_name,
+      strength: 0,
+      created_at: new Date(),
+      updated_at: new Date(),
+      user_id: user_id
+    };
+
+    console.log(`The newSuperhero info: => ${newSuperhero.superhero_name} and ${newSuperhero.user_id} ==== END ==== `);
+
+    const addNewSuperhero = await superheroQueries.addSuperhero(newSuperhero);
+    console.log("server Side. New SUperhero added: ", addNewSuperhero);
+    res.status(201).json(addNewSuperhero);
+  } catch (error) {
+    console.error('Error registering user: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  };
+}
+);
+
 //Dashboard: Get all superheroes along with their tasks
 app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {

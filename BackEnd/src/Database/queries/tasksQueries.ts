@@ -47,6 +47,32 @@ const addTaskBySuperhero = async (taskInput: Task): Promise<Task[]> => {
        RETURNING *;`, [superpower, superhero_id]
     );
 
+// ====
+    //** Update the strength with the new task
+    // 3. Get total tasks for the superhero
+    const totalTasksRes = await db.query(
+      'SELECT COUNT(*) FROM tasks WHERE superhero_id = $1',
+      [superhero_id]
+    );
+    const totalTasks = parseInt(totalTasksRes.rows[0].count, 10);
+
+    // 4. Get completed tasks for the superhero
+    const completedTasksRes = await db.query(
+      'SELECT COUNT(*) FROM tasks WHERE superhero_id = $1 AND completed = TRUE',
+      [superhero_id]
+    );
+    const completedTasks = parseInt(completedTasksRes.rows[0].count, 10);
+
+    // 5. Calculate strength
+    const strength = totalTasks > 0 ? completedTasks / totalTasks : 0;
+
+    // 6. Update superhero's strength
+    await db.query(
+      'UPDATE superheroes SET strength = $1 WHERE id = $2',
+      [strength, superhero_id]
+    );
+
+// ====
     //Get all tasks
     const allTasks = await db.query(
       `SELECT * FROM tasks WHERE superhero_id = $1 ORDER BY created_at ASC;`,
@@ -127,6 +153,8 @@ const deleteAllTasksByHero = async (heroID: number): Promise<{message: string}> 
 
   try {
     const result = await db.query('DELETE FROM tasks WHERE superhero_id = $1;', [heroID]);
+
+    await db.query('UPDATE superheroes SET strength = 0 WHERE id = $1;', [heroID]);
 
     console.log("Delete all DB query result is: ", result);
     

@@ -5,6 +5,7 @@ import '../styles/HeroTaskBoard.scss';
 import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
 import FormTask from "./FormTask";
+import FormAddSuperhero from "./FormSuperhero";
 
 
 const HeroTaskBoard = () => {
@@ -12,7 +13,7 @@ const HeroTaskBoard = () => {
   const navigate = useNavigate();
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | null>(null);
+  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | 'add-superhero' | null>(null);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -141,6 +142,20 @@ const HeroTaskBoard = () => {
     }
   }
 
+  //Add New Superhero
+  const handleAddSuperhero = async ( superhero: { superhero_name: string}) => {
+    console.log("handleAddSuperhero is clicked. Sending to backend ....", superhero);
+    try {
+      const response = await axios.post('/HeroTasks/superheroes', superhero);
+      console.log("New Superhero added: ", response.data);
+
+      const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
+      setSuperheroes(updatedHeroes.data);
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Adding New Superhero: ", error);
+    }
+  }
+
   return (
     <div className="board_page">
       <div className="board">
@@ -150,6 +165,12 @@ const HeroTaskBoard = () => {
           type='button'
           value="logout"
           onClick={handleLogoutNavigation}>Logout
+        </button>
+
+        <button 
+          className="board_btn__add_superhero"
+          type='button'
+          onClick={() => setModalPurpose('add-superhero')}> Add Superhero
         </button>
         
         <div className="board__hero_grid">
@@ -213,21 +234,25 @@ const HeroTaskBoard = () => {
 
         {/* ===== MODAL HERE. Render one modal inside the loop ===== */}
 
-        {activeHero && modalPurpose && (
+        {modalPurpose && (
           <Modal show={true} onClose={() => {
             setActiveHeroId(null);
             setModalPurpose(null);
           }}>
             <Modal.Header>
               <Modal.Title>
-                {modalPurpose === 'add-task'
-                  ? `Add Task for Superhero "${activeHero.superhero_name}"`
-                  : `Delete All Tasks for "${activeHero.superhero_name}"`}
+                {
+                  {
+                    'add-task': `Add Task for Superhero "${activeHero?.superhero_name}"`,
+                    'delete-confirm': `Delete All Tasks for "${activeHero?.superhero_name}"`,
+                    'add-superhero': 'Add New Superhero'
+                  } [modalPurpose]
+                }
               </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-              {modalPurpose === 'add-task' ? (
+              {modalPurpose === 'add-task' && activeHero && (
                 <FormTask
                   onSubmit={async (task) => {
                     console.log('New Task for', activeHero.superhero_name, ':', task);
@@ -238,9 +263,17 @@ const HeroTaskBoard = () => {
                     setModalPurpose(null);
                   }}
                 />
-              ) : (
-                <p>{`Click the 'Delete' if you wish to proceed.`}</p>
               )}
+              {modalPurpose === 'delete-confirm' && activeHero && (<p>{`Click the 'Delete' if you wish to proceed.`}</p>)}
+              {modalPurpose === 'add-superhero' && (
+                <FormAddSuperhero 
+                  key={modalPurpose}
+                  onSubmit={async(superhero) => {
+                    console.log("Modal.New Candidate, New Superhero: ", superhero);
+                    await handleAddSuperhero(superhero);
+                    setModalPurpose(null);
+                  }} />       
+              )}          
             </Modal.Body>
 
             <Modal.Footer>
@@ -249,7 +282,7 @@ const HeroTaskBoard = () => {
                 setModalPurpose(null);
               }}>Close</button>
 
-              {modalPurpose === 'delete-confirm' && (
+              {modalPurpose === 'delete-confirm' && activeHero && (
                 <button 
                 onClick={async () => {
                   if (!activeHero) return;
