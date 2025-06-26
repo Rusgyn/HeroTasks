@@ -8,7 +8,7 @@ import HeroTaskBoard from './components/HeroTaskBoard';
 import ContactUs from './components/ContactUs';
 import AuthGuard from './auth/AuthGuard';
 import AddTask from './components/AddTask';
-import FormDeleteSuperhero from './components/FormDeleteSuperhero';
+
 
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
         <Routes>
 
           {/* No session required. Public route */}
-          <Route path='/' element={ <Home />} />
+          <Route path='/' element={ <Session />} />
           <Route path='/register' element={ <Register />} />
           <Route path='/login' element={<Session />} />
           <Route path='/forgot-password' element={ <PasswordReset />} />
@@ -30,7 +30,6 @@ const App = () => {
           <Route element={ <AuthGuard /> } >
             <Route path='/task-board' element={ <HeroTaskBoard />} />
             <Route path='/add-task' element={ <AddTask /> } />
-            <Route path='/eliminate-superhero' element={ <FormDeleteSuperhero /> } />
           </Route>
           
         </Routes>
