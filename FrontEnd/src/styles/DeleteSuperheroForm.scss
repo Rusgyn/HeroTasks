@@ -1,0 +1,47 @@
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+  font-weight: bold;
+  color:burlywood;
+}
+
+.del_superhero__select {
+
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  
+  select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: rgb(112, 22, 112);
+  }
+
+  .del_superhero__select_btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color:rgb(218, 162, 32);
+    color: rgb(112, 22, 112);
+    font-weight: bolder;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-start;
+
+    &:hover {
+      background: linear-gradient(to right, rgb(112, 22, 112), orange);
+      color: whitesmoke;
+      transform: none !important;
+    }
+  }
+
+}
+

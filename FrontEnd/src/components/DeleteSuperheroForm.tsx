@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Superhero } from '../types/Superhero';
+import '../styles/DeleteSuperheroForm.scss';
 
 interface Props {
   onSubmit: (heroId: number) => Promise<void>;
@@ -37,31 +38,37 @@ const DeleteSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage, refresh 
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="superhero-select">Select Superhero to Eliminate:</label>
+      <label htmlFor="superhero-select">Choose a Superhero to Remove from the Mission:</label>
       <br />
-      {loading ? (
-        <p>Loading superheroes...</p>
-      ) : (
-        <select
-          id="superhero-select"
-          value={selectedHeroId ?? ''}
-          onChange={(event) => setSelectedHeroId(Number(event.target.value))}
-        >
-          <option value="" disabled>Select a superhero</option>
-          {heroes.map((hero) => (
-            <option key={hero.id} value={hero.id}>
-              {hero.superhero_name}
-            </option>
-          ))}
-        </select>
-      )}
-      <br /><br />
-      <button type="submit" disabled={selectedHeroId === null}>
-        Eliminate
-      </button>
+
+      <div className="del_superhero__select">
+
+        {loading ? (
+          <p>Loading superheroes...</p>
+        ) : (
+          <select
+            id="superhero-select"
+            value={selectedHeroId ?? ''}
+            onChange={(event) => setSelectedHeroId(Number(event.target.value))}
+          >
+            <option value="" disabled>Select a superhero</option>
+            {heroes.map((hero) => (
+              <option key={hero.id} value={hero.id}>
+                {hero.superhero_name}
+              </option>
+            ))}
+          </select>
+        )}
+        <button className="del_superhero__select_btn" type="submit" disabled={selectedHeroId === null}>
+          Eliminate
+        </button>
+
+      </div>
+
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </form>
   );
+  
 };
 
 export default DeleteSuperheroForm;
