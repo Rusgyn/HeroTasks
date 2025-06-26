@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
 import FormTask from "./FormTask";
 import FormAddSuperhero from "./FormSuperhero";
-import FormDeleteSuperhero from "./FormDeleteSuperhero";
+import DeleteSuperheroForm from "./DeleteSuperheroForm";
 
 
 const HeroTaskBoard = () => {
@@ -168,9 +168,24 @@ const HeroTaskBoard = () => {
     }
   }
 
-  const handleDelSuperhero = () => {
-    navigate('/eliminate-superhero')
-  }
+  const handleDelSuperhero = async (heroId: number) => {
+    console.log("handleDelSuperhero is clicked. Sending to backend now ...", heroId);
+
+    try {
+      const response = await axios.delete(`/HeroTasks/superheroes/${heroId}`);
+      console.log("Delete Superhero: ", response.data);
+
+      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
+      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
+      setSuperheroes(updatedTasks.data);
+
+      return true; // This helps setting my modal purpose to null.
+
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
+      return false; 
+    }
+  };
 
   return (
     <div className="board_page">
@@ -307,12 +322,13 @@ const HeroTaskBoard = () => {
               )}
 
               {modalPurpose === 'del-superhero' && (
-                <FormDeleteSuperhero 
+                <DeleteSuperheroForm
                   key={modalPurpose}
-                  onSubmit={async(superhero_name) => {
-                    console.log("Deleting Superhero name: ", superhero_name);
+                  refresh={modalPurpose} //re-run the useEffect
+                  onSubmit={async(heroId) => {
+                    console.log("Deleting Superhero name: ", heroId);
 
-                    const success = await handleDelSuperhero(superhero_name);
+                    const success = await handleDelSuperhero(heroId);
 
                     if(success) {
                       setModalPurpose(null);

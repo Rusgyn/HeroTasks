@@ -422,8 +422,8 @@ app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Respon
 app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
   
   const heroId = parseInt(req.params.id);
-  
-  console.log("server side. Delete Superhero. Receive the heroId with number: => ", heroId);
+  console.log("===== DELETE SUPERHERO ROUTE =====")
+  console.log("Receive the heroId to be deleted, with number: => ", heroId);
 
   // Guard Statement
   if (isNaN(heroId)) {
@@ -446,7 +446,7 @@ app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void
     return;
   }
 
-  if (userInSession !== loggedUserIdByHero) {
+  if (userInSession !== loggedUserIdByHero.user_id) {
     res.status(404).json({ error: 'You have no access to this Superhero'});
     return;
   }
@@ -458,7 +458,7 @@ app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void
     return;
 
   } catch (error) {
-    console.error('Server side. Error deleting task:', error);
+    console.error('Line 461. Server side. Error deleting the Superhero:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
     
