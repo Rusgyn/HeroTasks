@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import '../styles/AddSuperheroForm.scss';
 
 interface Props {
   onSubmit: (
@@ -44,7 +45,7 @@ const AddSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage }) => {
 
   return(
     <form onSubmit={handleSubmit}>
-      <label htmlFor="superhero" className="form_add_superhero__header">Add New Superhero</label>
+      <label htmlFor="superhero" className="form_add_superhero__header">Enlist a New Superhero to Complete the Mission! </label>
 
       {(formErrorMessage || errorMessage) && (
         <div className="form_add_superhero___error">
@@ -65,9 +66,11 @@ const AddSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage }) => {
         autoFocus
       />
 
+      <br />
+
       <div className='form_add_superhero__btn'>
-        <button type="submit" >Add</button>
-        <button type="button" onClick={handleCancel} >Cancel</button>
+        <button className='form_add_superhero__btn_add' type="submit" >Add</button>
+        <button className='form_add_superhero__btn_cancel' type="button" onClick={handleCancel} >Cancel</button>
       </div>
 
     </form>

@@ -191,25 +191,30 @@ const HeroTaskBoard = () => {
     <div className="board_page">
       <div className="board">
         <h1>Hero Task Board</h1>
-        <button 
-          className="board_btn__logout"
-          type='button'
-          value="logout"
-          onClick={handleLogoutNavigation}>Logout
-        </button>
 
-        <button 
-          className="board_btn__add_superhero"
-          type='button'
-          onClick={() => setModalPurpose('add-superhero')}> Add Superhero
-        </button>
+        <div className="board_btn">
+          
+          <button 
+            className="board_btn__add_superhero"
+            type='button'
+            onClick={() => setModalPurpose('add-superhero')}> Add Superhero
+          </button>
 
-        <button
-          className="board_btn__del_superhero"
-          type="button"
-          onClick ={() => setModalPurpose('del-superhero')}> Eliminate Superhero
-        </button>
-        
+          <button
+            className="board_btn__del_superhero"
+            type="button"
+            onClick ={() => setModalPurpose('del-superhero')}> Eliminate Superhero
+          </button>
+
+          <button 
+            className="board_btn__logout"
+            type='button'
+            value="logout"
+            onClick={handleLogoutNavigation}>Logout
+          </button>
+          
+        </div>  
+       
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
             <p>No superheroes or tasks found.</p>
