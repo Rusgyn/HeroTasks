@@ -151,9 +151,11 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 
 //Logout Route
 app.post('/logout', async (req: Request, res: Response): Promise<any> => {
-  console.log('Logout route hit');
-  console.log('Session data:', req.session);
+  console.log('=== Logout route hit ===');
+  //console.log('Session data:', req.session);
+  console.log(`The loggedUser "${req.session.loggedUser?.username}" with id number "${req.session.loggedUser?.id}" is now LOGOUT`)
   console.log("====END====")
+
   req.session.destroy((err) => {
     if (err) {
       console.error('Error destroying session:', err);
@@ -414,6 +416,52 @@ app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Respon
     res.status(500).json({ error: 'Internal server error' });
   }
 
+});
+
+//Delete or Eliminate Superhero
+app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
+  
+  const heroId = parseInt(req.params.id);
+  
+  console.log("server side. Delete Superhero. Receive the heroId with number: => ", heroId);
+
+  // Guard Statement
+  if (isNaN(heroId)) {
+    res.status(400).json({ error: 'Invalid Task ID' });
+    return;
+  }
+
+  const loggedUserIdByHero = await superheroQueries.getLoggedUserByHeroId(heroId);
+  console.log('The LoggedUser ID by Superhero ID: => ', loggedUserIdByHero);
+
+  if (!loggedUserIdByHero) {
+    res.status(404).json({ error: 'The user_id by superhero Id was not found'});
+    return;
+  }
+
+  const userInSession = req.session.loggedUser?.id;
+
+  if (!userInSession) {
+    res.status(404).json({ error: 'No active session'});
+    return;
+  }
+
+  if (userInSession !== loggedUserIdByHero) {
+    res.status(404).json({ error: 'You have no access to this Superhero'});
+    return;
+  }
+
+  try {
+    const delSuperhero = await superheroQueries.deleteSuperheroById(heroId);
+    console.log("Server Side. The delSuperhero is => ", delSuperhero);
+    res.status(200).json({ message: delSuperhero.message });
+    return;
+
+  } catch (error) {
+    console.error('Server side. Error deleting task:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+    
 });
 
 
