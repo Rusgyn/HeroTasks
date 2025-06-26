@@ -9,7 +9,7 @@ interface Props {
   errorMessage?: string;
 }
 
-const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
+const AddSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage }) => {
   const [heroName, setHeroName] = useState('');
   const [formErrorMessage, setFormErrorMessage] = useState('');
 
@@ -75,4 +75,4 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
 
 }
 
-export default FormAddSuperhero;
+export default AddSuperheroForm;

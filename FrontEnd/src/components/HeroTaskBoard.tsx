@@ -5,7 +5,7 @@ import '../styles/HeroTaskBoard.scss';
 import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
 import FormTask from "./FormTask";
-import FormAddSuperhero from "./FormSuperhero";
+import AddSuperheroForm from "./AddSuperheroForm";
 import DeleteSuperheroForm from "./DeleteSuperheroForm";
 
 
@@ -306,7 +306,7 @@ const HeroTaskBoard = () => {
               {modalPurpose === 'delete-confirm' && activeHero && (<p>{`Click the 'Delete' if you wish to proceed.`}</p>)}
 
               {modalPurpose === 'add-superhero' && (
-                <FormAddSuperhero 
+                <AddSuperheroForm 
                   key={modalPurpose}
                   onSubmit={async(superhero) => {
                     console.log("Modal.New Candidate, New Superhero: ", superhero);
