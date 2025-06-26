@@ -212,7 +212,7 @@ const HeroTaskBoard = () => {
             value="logout"
             onClick={handleLogoutNavigation}>Logout
           </button>
-          
+
         </div>  
        
         <div className="board__hero_grid">
@@ -225,24 +225,7 @@ const HeroTaskBoard = () => {
                 <h2>{hero.superhero_name}</h2>
                 <p><strong>⭐ Strength:</strong> { hero.strength }</p>
 
-                <div className="task_add_delete_btn">
-                  <button 
-                  className="task_add_btn" 
-                  onClick={() => {
-                    setActiveHeroId(hero.id);
-                    setModalPurpose('add-task');
-                  }}>
-                    ➕ Add Task
-                  </button>
-                  <button 
-                  className="task_del_all_task_btn"
-                  onClick={() => {
-                    setActiveHeroId(hero.id);
-                    setModalPurpose('delete-confirm');
-                  }}>
-                    ➖ Del All Tasks
-                  </button>
-                </div>
+                {/* X */}
 
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
@@ -269,6 +252,27 @@ const HeroTaskBoard = () => {
                 ) : (
                   <p className="board__no_task">No tasks assigned.</p>
                 )}
+
+
+                <div className="task_add_delete_btn">
+                  <button 
+                  className="task_add_btn" 
+                  onClick={() => {
+                    setActiveHeroId(hero.id);
+                    setModalPurpose('add-task');
+                  }}>
+                    ➕ Add Task
+                  </button>
+                  <button 
+                  className="task_del_all_task_btn"
+                  onClick={() => {
+                    setActiveHeroId(hero.id);
+                    setModalPurpose('delete-confirm');
+                  }}>
+                    ➖ Del All Tasks
+                  </button>
+                </div>
+
               </div>
             ))
           )}
