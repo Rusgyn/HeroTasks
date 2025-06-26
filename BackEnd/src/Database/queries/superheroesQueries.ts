@@ -1,6 +1,7 @@
 import db from '../db';
 import { Superhero } from '../../types/superheroTypes';
 import { NewSuperheroInput } from '../../types/superheroTypes';
+import { setHeapSnapshotNearHeapLimit } from 'v8';
 
 // Get all superheroes from database
 const getAllSuperheroes = async() : Promise<Superhero[]> => {
@@ -47,6 +48,53 @@ const getSuperheroByName = async(hero: string) : Promise<Superhero[] > => {
     throw error;
   }
 };
+
+//===========
+//Get Superhero name by id
+const getSuperheroNameById = async(heroId: number) : Promise<any> => {
+
+  try {
+    const result = await db.query('SELECT superhero_name FROM superheroes WHERE id = $1;', [heroId] );
+
+    return result;
+  } catch (error) {
+    console.error('Queries. Error fetching Superhero by id: ', error);
+    throw error;
+  }
+
+};
+
+//Get user in session by superhero Id
+const getLoggedUserByHeroId = async (heroId: number) : Promise<any> => {
+
+  try {
+    const result = await db.query('SELECT user_id FROM superheroes WHERE id = $1;', [heroId] );
+
+    return result;
+  } catch (error) {
+    console.error('Queries. Error fetching logged user by heroId: ', error);
+    throw error;
+  }
+};
+
+// Delete Superhero by Id
+const deleteSuperheroById = async(heroId: number) : Promise<{ message: string }> => {
+  try {
+    const result = await db.query(`DELETE FROM superheroes WHERE id = $1 RETURNING *;`, [heroId]);
+
+    if (result.rowCount === 0) {
+      return { message: `No Superhero with ID# ${heroId} in the tasks db.`}
+    }
+
+    return { message: `Superhero with ID# ${heroId} is deleted successfully.`};
+
+  } catch (error) {
+    console.error('Queries. Error deleting superhero:', error);
+    throw error;
+  }
+};
+
+//=========
 
 // Delete superhero
 const deleteSuperhero = async(superheroName: string) : Promise<Superhero> => {
@@ -164,6 +212,11 @@ export default {
   getSuperheroByName,
   getAllSuperheroesByLoggedUser,
   getSuperheroName,
+
+  getSuperheroNameById,
+  getLoggedUserByHeroId,
+  deleteSuperheroById,
+
   deleteSuperhero,
   addSuperhero,
   updateSuperheroProfile,
