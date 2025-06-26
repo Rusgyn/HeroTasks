@@ -49,28 +49,13 @@ const getSuperheroByName = async(hero: string) : Promise<Superhero[] > => {
   }
 };
 
-//===========
-//Get Superhero name by id
-const getSuperheroNameById = async(heroId: number) : Promise<any> => {
-
-  try {
-    const result = await db.query('SELECT superhero_name FROM superheroes WHERE id = $1;', [heroId] );
-
-    return result;
-  } catch (error) {
-    console.error('Queries. Error fetching Superhero by id: ', error);
-    throw error;
-  }
-
-};
-
 //Get user in session by superhero Id
 const getLoggedUserByHeroId = async (heroId: number) : Promise<any> => {
 
   try {
     const result = await db.query('SELECT user_id FROM superheroes WHERE id = $1;', [heroId] );
 
-    return result;
+    return result.rows[0]; // {user_id}
   } catch (error) {
     console.error('Queries. Error fetching logged user by heroId: ', error);
     throw error;
@@ -94,10 +79,8 @@ const deleteSuperheroById = async(heroId: number) : Promise<{ message: string }>
   }
 };
 
-//=========
-
 // Delete superhero
-const deleteSuperhero = async(superheroName: string) : Promise<Superhero> => {
+const deleteSuperheroByName = async(superheroName: string) : Promise<Superhero> => {
   try {
     const result = await db.query(`DELETE FROM superheroes WHERE superhero_name = $1 RETURNING *;`, [superheroName.toLowerCase()]);
 
@@ -212,12 +195,9 @@ export default {
   getSuperheroByName,
   getAllSuperheroesByLoggedUser,
   getSuperheroName,
-
-  getSuperheroNameById,
   getLoggedUserByHeroId,
   deleteSuperheroById,
-
-  deleteSuperhero,
+  deleteSuperheroByName,
   addSuperhero,
   updateSuperheroProfile,
   getSuperheroWithTasksAndStrength
