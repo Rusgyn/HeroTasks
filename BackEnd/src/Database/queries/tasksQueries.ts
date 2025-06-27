@@ -12,19 +12,19 @@ const getAllTasks = async() : Promise<Task[]> => {
   }
 };
 
-const getAllTasksBySuperhero = async (superhero: string): Promise<Task[]> => {
+const getAllTasksBySuperhero = async (superheroId: number): Promise<Task[]> => {
   try {
     const query = `
       SELECT tasks.*
       FROM tasks
       INNER JOIN superheroes ON tasks.superhero_id = superheroes.id
-      WHERE superheroes.superhero_name = $1;
+      WHERE superheroes.id = $1;
     `;
 
-    const result = await db.query(query, [superhero]);
+    const result = await db.query(query, [superheroId]);
 
     if (result.rows.length === 0) {
-      console.error(`Queries. Hero ${superhero} is not in our galaxy.`);
+      console.error(`Queries. Hero ${superheroId} is not in our galaxy.`);
       return [];
     }
 

@@ -270,7 +270,10 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
 
     const superheroesWithTasks = await Promise.all(
       superheroes.map(async (hero) => {
-        const tasks = await taskQueries.getAllTasksBySuperhero(hero.superhero_name);
+        if (typeof hero.id !== 'number') {
+          return { ...hero, tasks: [] };
+        }
+        const tasks = await taskQueries.getAllTasksBySuperhero(hero.id);
         return {
           ...hero,
           tasks
