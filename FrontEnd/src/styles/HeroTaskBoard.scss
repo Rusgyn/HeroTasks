@@ -3,12 +3,6 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  //background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(83, 11, 129));
-  //background-color: green;
-  // width: 100%;
-  // height: 100%;
-  //max-height: 100vh;
-  //margin: 3rem 2rem 0 2rem;
   min-height: 100vh;
 }
 
@@ -16,11 +10,12 @@
   display: flex;
   margin: 2rem;
   text-align: center;
-
+  min-width: 95vw;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #230032, #120032);
   color:burlywood;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 
   .board_btn {
 
@@ -94,9 +89,6 @@ h1 {
   justify-content: center;
   gap: 2rem;
   padding: 2rem 1rem;
-  width: 100%; //** PEMDINMG TO ADJUST.. TESTING
-  background: radial-gradient(circle at top left, #310271, #230032);
-  //background: radial-gradient(circle at top left, #2d006a, #120032);
   border-radius: 1rem;
 }
 
@@ -230,7 +222,18 @@ h1 {
         transform: translateY(-2px) scale(1.05);
       }
     }
+
+    .task_del_all_task_btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      background: rgba(160, 120, 160, 0.1);
+      color: gray;
+      border-color: lightgray;
+      box-shadow: none;
+      transform: none;
+    }
   }
+
 }
 
 .loading {

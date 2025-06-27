@@ -225,8 +225,6 @@ const HeroTaskBoard = () => {
                 <h2> ✨ {hero.superhero_name} </h2>
                 <p><strong>⭐ Strength:</strong> { hero.strength } ⭐ </p>
 
-                {/* X */}
-
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
                     {hero.tasks.map((task) => (
@@ -265,6 +263,7 @@ const HeroTaskBoard = () => {
                   </button>
                   <button 
                   className="task_del_all_task_btn"
+                  disabled={hero.tasks.length === 0}
                   onClick={() => {
                     setActiveHeroId(hero.id);
                     setModalPurpose('delete-confirm');
