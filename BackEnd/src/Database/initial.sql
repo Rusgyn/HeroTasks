@@ -11,16 +11,18 @@ CREATE TABLE users (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create superheros table
 DROP TABLE IF EXISTS superheroes CASCADE;
 CREATE TABLE superheroes (
   id SERIAL PRIMARY KEY,
-  superhero_name VARCHAR(100) UNIQUE NOT NULL,
+  superhero_name VARCHAR(100) NOT NULL,
   strength NUMERIC(5,2) DEFAULT 0, -- strength represent the star every completed chores/tasks
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+
+  CONSTRAINT unique_hero_per_user UNIQUE (superhero_name, user_id)
 );
+
 
 -- Create tasks table
 DROP TABLE IF EXISTS tasks CASCADE;
