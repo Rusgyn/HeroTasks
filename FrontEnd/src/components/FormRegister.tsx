@@ -136,14 +136,16 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
           title="Password must be at least 7 characters and include at least: 1 number, 1 lowercase letter, 1 uppercase letter, and 1 special character."
           required
         />
-        <span
-          className="toggle-password"
-          onClick={togglePasswordView}
-          role="button"
-          tabIndex={0}
-        >
-          {showPassword ? "Hide" : "Show"}
-        </span>
+        {password && (
+          <span
+            className="toggle-password"
+            onClick={togglePasswordView}
+            role="button"
+            tabIndex={0}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </span>
+        )}
       </div>
 
       {/* Code must be 4 digits (e.g., "0004") */}
