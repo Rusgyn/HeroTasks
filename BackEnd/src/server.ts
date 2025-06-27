@@ -208,43 +208,51 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 
 //New Superhero
 app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
-  console.log(`Server Side. New superhero req body is ${req.body.superhero_name} === END ===`);
+  console.log("==== ADD NEW SUPERHERO =====");
+  console.log(`1. Server Side. New superhero req body is ${req.body.superhero_name}.`);
   const { superhero_name } = req.body
 
   try {
-    console.log("Data to query is: => ", superhero_name)
-    const isSuperheroExist = await superheroQueries.getSuperheroByName(superhero_name);
+    console.log("2. Data to query is: => ", superhero_name)
+    // 1. Get the active user
+    const userId = req.session.loggedUser?.id;
+    console.log("3. The active user id is: => ", userId)
 
-    if(isSuperheroExist.length > 0) {
-      console.log('Superhero already exists:', superhero_name);
+    if (typeof userId !== 'number') {
+      res.status(401).json({ error: 'Unauthorized: No user logged in' });
+      return;
+    }
+    // 2. Validate the superhero name and the active user. To check if it exist.
+    const isSuperheroExist = await superheroQueries.getSuperheroByNameAndUserId(superhero_name, userId);
+    console.log("4. isSuperheroExist => ", isSuperheroExist);
+
+    if(isSuperheroExist) {
+      console.log('5. Superhero already exists:', superhero_name);
       res.status(400).json({ error: 'Superhero already exists!' });
       return;
     }
 
-    const user_id = req.session.loggedUser?.id;
-
-    if (typeof user_id !== 'number') {
-      res.status(401).json({ error: 'Unauthorized: No user logged in' });
-      return;
-    }
-
+    //3. New Superhero data
     const newSuperhero: Superhero = {
       superhero_name,
       strength: 0,
       created_at: new Date(),
       updated_at: new Date(),
-      user_id: user_id
+      user_id: userId
     };
 
-    console.log(`The newSuperhero info: => ${newSuperhero.superhero_name} and ${newSuperhero.user_id} ==== END ==== `);
+    console.log(`5. The newSuperhero info: => ${newSuperhero} ==== END ==== `);
 
     const addNewSuperhero = await superheroQueries.addSuperhero(newSuperhero);
     console.log("server Side. New SUperhero added: ", addNewSuperhero);
     res.status(201).json(addNewSuperhero);
+
   } catch (error) {
     console.error('Error registering user: ', error);
     res.status(500).json({ error: 'Internal server error' });
   };
+
+   
 }
 );
 
