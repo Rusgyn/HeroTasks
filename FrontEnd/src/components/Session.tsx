@@ -15,6 +15,7 @@ const Session = () => {
   const { isSessionActive, isLoading } = useAuthSession();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [modalPurpose, setModalPurpose] = useState<'register' | 'forgot-password' | 'help' | null>(null);
 
@@ -29,6 +30,11 @@ const Session = () => {
   if (isLoading) {
     return null; //spinner component. Shows nothing when cheking is session is active or inactive
   }
+
+  const togglePasswordView = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   // Handles the login functionality
   const handleLogin = async (event: React.FormEvent) => {
@@ -103,14 +109,28 @@ const Session = () => {
                 onChange={(event) => setUsername(event.target.value)}
               />
             </label>
-            <label htmlFor="password">   
-              <input type="password"
-                id="password"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
+            <label htmlFor="password">
+              <div className="password-input-wrapper">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+                {password && (
+                  <span
+                    className="toggle-password"
+                    onClick={togglePasswordView}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </span>
+                )}
+              </div>
+              
             </label>
 
             {errorMessage && <p className="session_login_error">{ errorMessage }</p>}
