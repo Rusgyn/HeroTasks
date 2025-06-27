@@ -37,12 +37,29 @@ const getSuperheroName = async(userId: number) : Promise<Superhero[]> => {
 };
 
 //Get Superhero name by name
-const getSuperheroByName = async(hero: string) : Promise<Superhero[] > => {
+const getSuperheroByName = async(hero: string) : Promise<Superhero> => {
   
   try {
     const result = await db.query('SELECT * FROM superheroes WHERE superhero_name = $1;', [hero] );
 
-    return result.rows;
+    return result.rows[0];
+  } catch (error) {
+    console.error('Queries. Error fetching superhero Name: ', error);
+    throw error;
+  }
+};
+
+//Get Superhero name by name. TO validate if superhero already exist.
+const getSuperheroByNameAndUserId = async(hero: string, userId: number) : Promise<Superhero | false> => {
+  
+  try {
+    const result = await db.query('SELECT * FROM superheroes WHERE superhero_name = $1 AND user_id = $2 LIMIT 1;', [hero, userId] );
+
+    if (result.rows.length === 0) {
+      return false;
+    }
+
+    return result.rows[0];
   } catch (error) {
     console.error('Queries. Error fetching superhero Name: ', error);
     throw error;
@@ -101,12 +118,13 @@ const addSuperhero = async (superheroInput: Superhero): Promise<Superhero | unde
   console.log("The query received the data: => ", superheroInput);
   
   try {
-    const { superhero_name, user_id} = superheroInput;
-   
+    const { superhero_name, user_id } = superheroInput;
+
     const result = await db.query(
       `INSERT INTO superheroes (superhero_name, user_id)
        VALUES ($1, $2)
-       RETURNING *;`, [superhero_name.toLowerCase(), user_id]
+       RETURNING *;`,
+      [superhero_name.toLowerCase(), user_id]
     );
 
     return result.rows[0] as Superhero;
@@ -193,6 +211,7 @@ const getSuperheroWithTasksAndStrength = async (heroId: number): Promise<Superhe
 export default {
   getAllSuperheroes,
   getSuperheroByName,
+  getSuperheroByNameAndUserId,
   getAllSuperheroesByLoggedUser,
   getSuperheroName,
   getLoggedUserByHeroId,
