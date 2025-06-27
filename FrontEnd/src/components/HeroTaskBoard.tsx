@@ -222,8 +222,8 @@ const HeroTaskBoard = () => {
             superheroes.map((hero) => (
               
               <div key={hero.id} className="board__hero_card">
-                <h2>{hero.superhero_name}</h2>
-                <p><strong>⭐ Strength:</strong> { hero.strength }</p>
+                <h2> ✨ {hero.superhero_name} </h2>
+                <p><strong>⭐ Strength:</strong> { hero.strength } ⭐ </p>
 
                 {/* X */}
 
