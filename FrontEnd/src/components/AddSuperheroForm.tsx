@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import '../styles/AddSuperheroForm.scss';
 
 interface Props {
   onSubmit: (
@@ -9,7 +10,7 @@ interface Props {
   errorMessage?: string;
 }
 
-const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
+const AddSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage }) => {
   const [heroName, setHeroName] = useState('');
   const [formErrorMessage, setFormErrorMessage] = useState('');
 
@@ -44,15 +45,7 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
 
   return(
     <form onSubmit={handleSubmit}>
-      <label htmlFor="superhero" className="form_add_superhero__header">Add New Superhero</label>
-{/* 
-      {formErrorMessage && (
-        <div className="form_add_superhero___error">
-          {formErrorMessage.split('\n').map((line, idx) => (
-            <p key={idx}>{line}</p>
-          ))}
-        </div>
-      )} */}
+      <label htmlFor="superhero" className="form_add_superhero__header">Enlist a New Superhero to Complete the Mission! </label>
 
       {(formErrorMessage || errorMessage) && (
         <div className="form_add_superhero___error">
@@ -73,9 +66,11 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
         autoFocus
       />
 
+      <br />
+
       <div className='form_add_superhero__btn'>
-        <button type="submit" >Add</button>
-        <button type="button" onClick={handleCancel} >Cancel</button>
+        <button className='form_add_superhero__btn_add' type="submit" >Add</button>
+        <button className='form_add_superhero__btn_cancel' type="button" onClick={handleCancel} >Cancel</button>
       </div>
 
     </form>
@@ -83,4 +78,4 @@ const FormAddSuperhero: React.FC<Props> = ({ onSubmit, errorMessage }) => {
 
 }
 
-export default FormAddSuperhero;
+export default AddSuperheroForm;

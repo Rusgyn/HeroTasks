@@ -5,7 +5,8 @@ import '../styles/HeroTaskBoard.scss';
 import { useNavigate } from "react-router-dom";
 import Modal from './Modal';
 import FormTask from "./FormTask";
-import FormAddSuperhero from "./FormSuperhero";
+import AddSuperheroForm from "./AddSuperheroForm";
+import DeleteSuperheroForm from "./DeleteSuperheroForm";
 
 
 const HeroTaskBoard = () => {
@@ -14,7 +15,7 @@ const HeroTaskBoard = () => {
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | 'add-superhero' | null>(null);
+  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | 'add-superhero' | 'del-superhero' | null>(null);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -167,23 +168,53 @@ const HeroTaskBoard = () => {
     }
   }
 
+  const handleDelSuperhero = async (heroId: number) => {
+    console.log("handleDelSuperhero is clicked. Sending to backend now ...", heroId);
+
+    try {
+      const response = await axios.delete(`/HeroTasks/superheroes/${heroId}`);
+      console.log("Delete Superhero: ", response.data);
+
+      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
+      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
+      setSuperheroes(updatedTasks.data);
+
+      return true; // This helps setting my modal purpose to null.
+
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
+      return false; 
+    }
+  };
+
   return (
     <div className="board_page">
       <div className="board">
         <h1>Hero Task Board</h1>
-        <button 
-          className="board_btn__logout"
-          type='button'
-          value="logout"
-          onClick={handleLogoutNavigation}>Logout
-        </button>
 
-        <button 
-          className="board_btn__add_superhero"
-          type='button'
-          onClick={() => setModalPurpose('add-superhero')}> Add Superhero
-        </button>
-        
+        <div className="board_btn">
+          
+          <button 
+            className="board_btn__add_superhero"
+            type='button'
+            onClick={() => setModalPurpose('add-superhero')}> Add Superhero
+          </button>
+
+          <button
+            className="board_btn__del_superhero"
+            type="button"
+            onClick ={() => setModalPurpose('del-superhero')}> Eliminate Superhero
+          </button>
+
+          <button 
+            className="board_btn__logout"
+            type='button'
+            value="logout"
+            onClick={handleLogoutNavigation}>Logout
+          </button>
+
+        </div>  
+       
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
             <p>No superheroes or tasks found.</p>
@@ -191,27 +222,8 @@ const HeroTaskBoard = () => {
             superheroes.map((hero) => (
               
               <div key={hero.id} className="board__hero_card">
-                <h2>{hero.superhero_name}</h2>
-                <p><strong>⭐ Strength:</strong> { hero.strength }</p>
-
-                <div className="task_add_delete_btn">
-                  <button 
-                  className="task_add_btn" 
-                  onClick={() => {
-                    setActiveHeroId(hero.id);
-                    setModalPurpose('add-task');
-                  }}>
-                    ➕ Add Task
-                  </button>
-                  <button 
-                  className="task_del_all_task_btn"
-                  onClick={() => {
-                    setActiveHeroId(hero.id);
-                    setModalPurpose('delete-confirm');
-                  }}>
-                    ➖ Del All Tasks
-                  </button>
-                </div>
+                <h2> ✨ {hero.superhero_name} </h2>
+                <p><strong>⭐ Strength:</strong> { hero.strength } ⭐ </p>
 
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
@@ -238,6 +250,28 @@ const HeroTaskBoard = () => {
                 ) : (
                   <p className="board__no_task">No tasks assigned.</p>
                 )}
+
+
+                <div className="task_add_delete_btn">
+                  <button 
+                  className="task_add_btn" 
+                  onClick={() => {
+                    setActiveHeroId(hero.id);
+                    setModalPurpose('add-task');
+                  }}>
+                    ➕ Add Task
+                  </button>
+                  <button 
+                  className="task_del_all_task_btn"
+                  disabled={hero.tasks.length === 0}
+                  onClick={() => {
+                    setActiveHeroId(hero.id);
+                    setModalPurpose('delete-confirm');
+                  }}>
+                    ➖ Del All Tasks
+                  </button>
+                </div>
+
               </div>
             ))
           )}
@@ -256,7 +290,8 @@ const HeroTaskBoard = () => {
                   {
                     'add-task': `Add Task for Superhero "${activeHero?.superhero_name}"`,
                     'delete-confirm': `Delete All Tasks for "${activeHero?.superhero_name}"`,
-                    'add-superhero': 'Add New Superhero'
+                    'add-superhero': 'Add New Superhero',
+                    'del-superhero': 'Eliminate Superhero'
                   } [modalPurpose]
                 }
               </Modal.Title>
@@ -275,9 +310,11 @@ const HeroTaskBoard = () => {
                   }}
                 />
               )}
+
               {modalPurpose === 'delete-confirm' && activeHero && (<p>{`Click the 'Delete' if you wish to proceed.`}</p>)}
+
               {modalPurpose === 'add-superhero' && (
-                <FormAddSuperhero 
+                <AddSuperheroForm 
                   key={modalPurpose}
                   onSubmit={async(superhero) => {
                     console.log("Modal.New Candidate, New Superhero: ", superhero);
@@ -290,7 +327,25 @@ const HeroTaskBoard = () => {
                   }}
                   errorMessage={errorMessage}
                 />       
-              )}          
+              )}
+
+              {modalPurpose === 'del-superhero' && (
+                <DeleteSuperheroForm
+                  key={modalPurpose}
+                  refresh={modalPurpose} //re-run the useEffect
+                  onSubmit={async(heroId) => {
+                    console.log("Deleting Superhero name: ", heroId);
+
+                    const success = await handleDelSuperhero(heroId);
+
+                    if(success) {
+                      setModalPurpose(null);
+                    }
+
+                  }}
+                  errorMessage={errorMessage}
+                />
+              )}       
             </Modal.Body>
 
             <Modal.Footer>

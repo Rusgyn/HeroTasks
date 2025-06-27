@@ -11,24 +11,21 @@ label {
   color:burlywood;
 }
 
-input[type="text"] {
-  padding: 0.5rem;
-  font-size: 1rem;
-  margin-top: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+.del_superhero__select {
 
-.form_task__btn {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-  gap: 2rem;
+  gap: 1rem;
+  
+  select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: rgb(112, 22, 112);
+  }
 
-  .form_task__btn_add,
-  .form_task__btn_cancel {
+  .del_superhero__select_btn {
     padding: 0.5rem 1rem;
     font-size: 1rem;
     background-color:rgb(218, 162, 32);
@@ -40,11 +37,11 @@ input[type="text"] {
     align-self: flex-start;
 
     &:hover {
-      transform: translateY(-5px);
       background: linear-gradient(to right, rgb(112, 22, 112), orange);
       color: whitesmoke;
+      transform: none !important;
     }
   }
-}
 
+}
 

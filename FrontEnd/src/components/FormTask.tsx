@@ -37,8 +37,8 @@ const FormTask: React.FC<Props> = ({ onSubmit }) => {
         required
       />
       <div className='form_task__btn'>
-        <button type="submit">Add</button>
-        <button onClick={handleCancel} type="button">Cancel</button>
+        <button className="form_task__btn_add" type="submit">Add</button>
+        <button className="form_task__btn_cancel" onClick={handleCancel} type="button">Cancel</button>
       </div>
 
     </form>

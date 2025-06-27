@@ -10,6 +10,7 @@ import AuthGuard from './auth/AuthGuard';
 import AddTask from './components/AddTask';
 
 
+
 const App = () => {
 
   return (
@@ -19,7 +20,7 @@ const App = () => {
         <Routes>
 
           {/* No session required. Public route */}
-          <Route path='/' element={ <Home />} />
+          <Route path='/' element={ <Session />} />
           <Route path='/register' element={ <Register />} />
           <Route path='/login' element={<Session />} />
           <Route path='/forgot-password' element={ <PasswordReset />} />
