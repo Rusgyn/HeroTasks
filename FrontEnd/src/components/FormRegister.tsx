@@ -19,6 +19,7 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [formErrorMessage, setFormErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   // Reusable state reset function 
   const resetFormFields = () => {
@@ -34,6 +35,10 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
     // Reset the form every time the component mounts or remounts
     resetFormFields();
   }, []);
+
+  const togglePasswordView = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -120,16 +125,27 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
         placeholder="Valid email address"
         required
       />
-      <input
-        id="password"
-        type="password"
-        value={password}
-        minLength={7}
-        onChange={(event) => setPassword(event.target.value)}
-        placeholder="Unique Password (min 7 chars)"
-        title="Password must be at least 7 characters and include at least: 1 number, 1 lowercase letter, 1 uppercase letter, and 1 special character."
-        required
-      />
+      <div className="password-input-wrapper">
+        <input
+          id="password"
+          type={showPassword ? "text" : "password"}
+          value={password}
+          minLength={7}
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="Unique Password (min 7 chars)"
+          title="Password must be at least 7 characters and include at least: 1 number, 1 lowercase letter, 1 uppercase letter, and 1 special character."
+          required
+        />
+        <span
+          className="toggle-password"
+          onClick={togglePasswordView}
+          role="button"
+          tabIndex={0}
+        >
+          {showPassword ? "Hide" : "Show"}
+        </span>
+      </div>
+
       {/* Code must be 4 digits (e.g., "0004") */}
       <input
         id="code"

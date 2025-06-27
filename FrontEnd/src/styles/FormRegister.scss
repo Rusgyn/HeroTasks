@@ -22,6 +22,34 @@ input {
   border-radius: 4px;
 }
 
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    padding: 0.5rem;
+    font-size: 1rem !important;
+    margin-top: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .toggle-password {
+    position: absolute;
+    margin-top: 2rem;
+    right: 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rebeccapurple;
+    user-select: none;
+
+    &:hover {
+      color: darkorange;
+    }
+  }
+}
+
 .form_register__error {
   display: flex;
   flex-direction: column;
