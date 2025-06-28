@@ -219,13 +219,9 @@ app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    //TEMP QUERY HERE DURING THIS TESTING PERIOD. MOVE LATER.
-    const result = await db.query(
-      'SELECT id FROM users WHERE id = $1 AND TRIM(code) = $2 LIMIT 1;',
-      [userId, code.toString().trim()]
-    );
+    const isValid = await userQueries.verifyUserCode(userId, code.toString());
 
-    if (result.rows.length === 0) {
+    if (!isValid) {
       console.log("Code verification failed for user:", userId);
       res.status(401).json({ error: 'Invalid code.' });
       return;
@@ -233,11 +229,9 @@ app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
 
     console.log("Code verification successful.");
     res.status(200).json({ message: 'Code verified.' });
-    return;
   } catch (error) {
     console.error('Server error verifying code: ', error);
     res.status(500).json({ error: 'Internal server error' });
-    return;
   }
 });
 
