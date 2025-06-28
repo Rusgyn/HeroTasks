@@ -165,6 +165,12 @@ const HeroTaskBoard = () => {
           setSuperheroes((prevHeroes) =>
             prevHeroes.map((hero) => (hero.id === heroId ? sortedHero : hero))
           );
+
+          //Clean up modal state to close ConfirmWithCode.
+          setPendingAction(null);
+          setModalPurpose(null);
+          setActiveHeroId(null);
+          
         } catch (error) {
           console.error("HeroTaskBoard. Error Deleting Task: ", error);
         }
