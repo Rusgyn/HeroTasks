@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthSession from "../auth/useAuthSession";
 import Modal from './Modal';
-import Register from "./Register";
 import PasswordReset from "./PasswordReset";
 import FormRegister from "./FormRegister";
 import ContactUsFooter from "./ContactUsFooter";
-import ContactUs from "./ContactUs";
 import '../styles/Session.scss';
 
 const Session = () => {
@@ -28,7 +26,7 @@ const Session = () => {
   }, [isSessionActive, isLoading, navigate]);
 
   if (isLoading) {
-    return null; //spinner component. Shows nothing when cheking is session is active or inactive
+    return null; //spinner component. Shows nothing when checking is session is active or inactive
   }
 
   const togglePasswordView = () => {
@@ -206,11 +204,11 @@ const Session = () => {
 
       <footer>
         <span className="session_footer_a">
-          <a className="session_footer_a_1" href="/register">Sign-up </a> |
+          <a className="session_footer_a_1" href="/register" target="_blank">Sign-up </a> |
           <a className="session_footer_a_2" href="/login"> login </a> | 
-          <a className="session_footer_a_1" href="/forgot-password"> Reset Password </a> | 
-          <a className="session_footer_a_2" href="/help"> Contact us </a> | 
-          <a className="session_footer_a_1" href="http://google.com"> Google</a>
+          <a className="session_footer_a_1" href="/help" target="_blank"> Contact Us </a> | 
+          <a className="session_footer_a_2" href="https://facebook.com" target="_blank"> Facebook </a> | 
+          <a className="session_footer_a_1" href="https://google.com" target="_blank"> Google</a>
         </span>
       </footer>
       
