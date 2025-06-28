@@ -118,7 +118,7 @@ const HeroTaskBoard = () => {
     console.log(`HeroTaskBoard. The heroId is "${heroId}", and the new task is "${task.superpower}". ==== END`);
 
     try {
-      const response = await axios.post(`/HeroTasks/superheroes/${heroId}/add-task`, task);
+      await axios.post(`/HeroTasks/superheroes/${heroId}/add-task`, task);
 
       //Get the updated list of tasks as per superhero
       const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
@@ -204,7 +204,7 @@ const HeroTaskBoard = () => {
   const handleAddSuperhero = async (superhero: { superhero_name: string }) => {
     console.log("handleAddSuperhero is clicked. Sending to backend ....", superhero);
     try {
-      const response = await axios.post('/HeroTasks/superheroes', superhero);
+      await axios.post('/HeroTasks/superheroes', superhero);
       const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
       setSuperheroes(updatedHeroes.data);
       setErrorMessage('');
