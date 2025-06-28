@@ -21,13 +21,14 @@ const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess, onCancel }) 
     try {
       setLoading(true);
       setError('');
-      const response = await axios.post('/HeroTasks/verify-code', { code });
+      const response = await axios.post('/HeroTasks/verify-code', { code }, { withCredentials: true });
 
       if (response.status === 200) {
         onSuccess();
       }
-    } catch (err) {
-      setError('Invalid code. Please try again.');
+    } catch (error: any) {
+      console.error("Code verification failed:", error);
+      setError('Invalid code for this account. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -44,12 +45,14 @@ const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess, onCancel }) 
         onChange={(e) => setCode(e.target.value)}
       />
       {error && <p className="error-msg">{error}</p>}
+
       <div className="confirm-code-actions">
         <button onClick={onCancel}>Cancel</button>
         <button onClick={handleSubmit} disabled={loading}>
           {loading ? 'Validating...' : 'Confirm'}
         </button>
       </div>
+
     </div>
   );
 };
