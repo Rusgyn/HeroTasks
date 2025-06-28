@@ -170,7 +170,7 @@ const HeroTaskBoard = () => {
           setPendingAction(null);
           setModalPurpose(null);
           setActiveHeroId(null);
-          
+
         } catch (error) {
           console.error("HeroTaskBoard. Error Deleting Task: ", error);
         }
@@ -386,8 +386,9 @@ const HeroTaskBoard = () => {
                 <FormTask
                   onSubmit={async (task) => {
                     await handleAddTask(activeHero.id, task);
-                    setModalPurpose(null);
-                    setActiveHeroId(null);
+                    //NOTE: Disable below to ensure we can continue adding more task without re-confirming
+                    // setModalPurpose(null);
+                    // setActiveHeroId(null);
                   }}
                 />
               ) : modalPurpose === 'delete-confirm' && activeHero ? (
