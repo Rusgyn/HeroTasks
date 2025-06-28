@@ -206,6 +206,41 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 
 } )
 
+//Code Verification
+app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
+  const { code } = req.body;
+  const userId = req.session.loggedUser?.id;
+
+  console.log("Verifying code. Session user:", userId, "| Code entered:", code);
+
+  if (!userId) {
+    res.status(401).json({ error: 'Unauthorized: No user logged in.' });
+    return;
+  }
+
+  try {
+    //TEMP QUERY HERE DURING THIS TESTING PERIOD. MOVE LATER.
+    const result = await db.query(
+      'SELECT id FROM users WHERE id = $1 AND TRIM(code) = $2 LIMIT 1;',
+      [userId, code.toString().trim()]
+    );
+
+    if (result.rows.length === 0) {
+      console.log("Code verification failed for user:", userId);
+      res.status(401).json({ error: 'Invalid code.' });
+      return;
+    }
+
+    console.log("Code verification successful.");
+    res.status(200).json({ message: 'Code verified.' });
+    return;
+  } catch (error) {
+    console.error('Server error verifying code: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+    return;
+  }
+});
+
 //New Superhero
 app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
   console.log("==== ADD NEW SUPERHERO =====");
