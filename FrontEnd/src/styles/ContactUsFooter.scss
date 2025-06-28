@@ -63,19 +63,20 @@
   }
 }
 
-.contact_btn__back {
+.contact_home {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top:  2rem;
   padding: 1rem;
-  width: 5rem;
   height: 2rem;
-  color: whitesmoke;
-  background-color: rgb(112, 22, 112);
+  color: rgb(112, 22, 112);
+  background-color: orange;
   border: none;
 
   &:hover {
     transform: translateY(-5px);
     background: linear-gradient(to right, orange, rgb(112, 22, 112));
+    color: whitesmoke;
   }
 }

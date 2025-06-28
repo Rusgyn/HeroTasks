@@ -1,31 +1,96 @@
-.register_notes{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  h2 {
-    display: flex;
-    color: bisque;
-  }
-
-  p {
-    color: bisque;
-  }
-}
-
-.register_btn__back {
+form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem;
-  width: 5rem;
-  height: 2rem;
+  align-items: center;
+  //gap: 0.5rem;
+  margin-top: 3rem;
+
+  .form_register__header {
+    font-size: 1.8rem;
+    color: #ffcba4;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+}
+
+p {
   color: whitesmoke;
-  background-color: rgb(112, 22, 112);
+  font-size: 1rem;
+}
+
+input {
+  padding: 0.5rem;
+  font-size: 1rem !important;
+  margin-top: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    padding: 0.5rem;
+    font-size: 1rem !important;
+    margin-top: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .toggle-password {
+    position: absolute;
+    margin-top: 2rem;
+    right: 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rebeccapurple;
+    user-select: none;
+
+    &:hover {
+      color: darkorange;
+    }
+  }
+}
+
+.form_register__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #df6336;
+  //background-color: rgba(196, 146, 196, 0.224);
+  padding: 15px;
+  border-radius: 5px;
+  //margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.register__btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 2rem;
+}
+
+button[type="submit"],
+button[type="button"] {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color:rgb(218, 162, 32);
+  color: rgb(112, 22, 112);
+  font-weight: bolder;
   border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-start;
 
   &:hover {
     transform: translateY(-5px);
-    background: linear-gradient(to right, orange, rgb(112, 22, 112));
+    background: linear-gradient(to right, rgb(112, 22, 112), orange);
+    color: whitesmoke;
   }
 }

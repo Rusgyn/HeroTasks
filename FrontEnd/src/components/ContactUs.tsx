@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import '../styles/ContactUs.scss';
 
 const ContactUs = () => {
@@ -58,9 +58,8 @@ const ContactUs = () => {
         </p>
       </section>
 
-      <button className="contact_btn__back" type="button" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
+      <button className="contact_home" type="button" onClick={()=>navigate('/login')}>HeroTasks</button>
+
     </div>
   );
 };
