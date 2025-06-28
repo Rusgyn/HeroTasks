@@ -160,7 +160,6 @@ const Register: React.FC = () => {
         <button type="button" onClick={()=>navigate('/login')}>HeroTasks</button>
       </div>
     </form>
-
   );
 };
 
