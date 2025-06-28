@@ -132,19 +132,44 @@ const HeroTaskBoard = () => {
     }
   };
 
-  //Delete Superhero Task
+  //Delete Superhero Task.Delete a single task and update only the affected superhero's tasks
   const handleDeleteTask = async (taskId: number) => {
     requestCodeConfirmation("Enter your 4-digit code to delete this task.",
       async () => {
         try {
+          // Identify which hero owns this task
+          const heroId = superheroes.find((hero) =>
+            hero.tasks.some((task) => task.id === taskId)
+          )?.id;
+
+          if (!heroId) {
+            console.error("HeroTaskBoard. Could not find hero for this task.");
+            return;
+          }
+
+          // Delete the task
           await axios.delete(`/HeroTasks/tasks/${taskId}`);
-          const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
-          setSuperheroes(updatedTasks.data);
+
+          // Fetch updated data for this specific hero
+          const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+
+          // Sort: incomplete tasks first
+          const sortedTasks = [
+            ...updatedHero.data.tasks.filter((t: any) => !t.completed),
+            ...updatedHero.data.tasks.filter((t: any) => t.completed),
+          ];
+
+          const sortedHero = { ...updatedHero.data, tasks: sortedTasks };
+
+          // Replace only the updated hero in state
+          setSuperheroes((prevHeroes) =>
+            prevHeroes.map((hero) => (hero.id === heroId ? sortedHero : hero))
+          );
         } catch (error) {
           console.error("HeroTaskBoard. Error Deleting Task: ", error);
         }
       },
-      null // no next modal here
+      null // No additional modal after
     );
   };
 
@@ -153,8 +178,17 @@ const HeroTaskBoard = () => {
 
     try {
       await axios.delete(`/HeroTasks/superheroes/${heroId}/delete-all-tasks`);
-      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
-      setSuperheroes(updatedTasks.data);
+
+      // Fetch updated data for this specific hero
+      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+      console.log(" The updatedHero data is : => ", updatedHero.data.task)
+
+      const sortedHero = { ...updatedHero.data };
+
+      // Replace only the updated hero in state
+      setSuperheroes((prevHeroes) =>
+        prevHeroes.map((hero) => (hero.id === heroId ? sortedHero : hero))
+      );
     } catch (error) {
       console.error("HeroTaskBoard. Error Deleting All Tasks: ", error);
     }
@@ -252,19 +286,6 @@ const HeroTaskBoard = () => {
                         <span onClick={() => handleTaskToggle(hero.id, task.id)}>
                           {task.superpower}
                         </span>
-                        {/* <span
-                          onClick={() => {
-                            const updatedTasks = hero.tasks.map((t) =>
-                              t.id === task.id ? { ...t, completed: !t.completed } : t
-                            );
-                            setSuperheroes((prev) =>
-                              prev.map((h) => (h.id === hero.id ? { ...h, tasks: updatedTasks } : h))
-                            );
-                            axios.put(`/HeroTasks/tasks/${task.id}/toggle`);
-                          }}
-                        >
-                          {task.superpower}
-                        </span> */}
 
                         <button
                           className="task_delete_btn"
