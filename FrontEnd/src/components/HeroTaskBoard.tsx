@@ -377,10 +377,11 @@ const HeroTaskBoard = () => {
                     if (pendingAction) pendingAction();
                     setPendingAction(null);
                   }}
-                  onCancel={() => {
-                    setModalPurpose(null);
-                    setPendingAction(null);
-                  }}
+                  
+                  // onCancel={() => {
+                  //   setModalPurpose(null);
+                  //   setPendingAction(null);
+                  // }}
                 />
               ) : modalPurpose === 'add-task' && activeHero ? (
                 <FormTask

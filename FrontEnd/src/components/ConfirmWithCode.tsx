@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
+import "../styles/ConfirmWithCode.scss";
 
 interface Props {
   actionLabel: string;
   onSuccess: () => void;
-  onCancel: () => void;
+  //onCancel: () => void;
 }
 
-const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess, onCancel }) => {
+const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess }) => {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,11 @@ const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess, onCancel }) 
     }
   };
 
+  const handleClear =() => {
+    setCode('');
+    setError('');
+  }
+
   return (
     <div className="confirm-code-wrapper">
       <p>{actionLabel}</p>
@@ -46,11 +52,11 @@ const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess, onCancel }) 
       />
       {error && <p className="error-msg">{error}</p>}
 
-      <div className="confirm-code-actions">
-        <button onClick={onCancel}>Cancel</button>
-        <button onClick={handleSubmit} disabled={loading}>
+      <div className="confirm_code__btn">
+        <button className="confirm_code__btn_confirm" onClick={handleSubmit} disabled={loading}>
           {loading ? 'Validating...' : 'Confirm'}
         </button>
+        <button className="confirm_code__btn_cancel"onClick={handleClear}>Clear</button>
       </div>
 
     </div>
