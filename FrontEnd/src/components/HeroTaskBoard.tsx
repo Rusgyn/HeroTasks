@@ -7,7 +7,7 @@ import Modal from './Modal';
 import FormTask from "./FormTask";
 import AddSuperheroForm from "./AddSuperheroForm";
 import DeleteSuperheroForm from "./DeleteSuperheroForm";
-
+import ConfirmWithCode from "./ConfirmWithCode";
 
 const HeroTaskBoard = () => {
 
@@ -15,8 +15,10 @@ const HeroTaskBoard = () => {
   const [superheroes, setSuperheroes] = useState<Superhero[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [modalPurpose, setModalPurpose] = useState<'add-task' | 'delete-confirm' | 'add-superhero' | 'del-superhero' | null>(null);
+  const [modalPurpose, setModalPurpose] = useState<'confirm-code' | 'add-task' | 'delete-confirm' | 'add-superhero' | 'del-superhero' | null>(null);
   const [activeHeroId, setActiveHeroId] = useState<number | null>(null);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+  const [codePromptLabel, setCodePromptLabel] = useState('');
 
   useEffect(() => {
     const fetchHeroesData = async() => {
@@ -29,65 +31,87 @@ const HeroTaskBoard = () => {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchHeroesData();
   }, []);
 
   const handleTaskToggle = async (heroId: number, taskId: number) => {
     try {
+      // Optimistically toggle the task's completed state in local state
       setSuperheroes((prevHeroes) =>
-        prevHeroes.map((hero) =>
-          hero.id === heroId
-            ? {
-                ...hero,
-                tasks: hero.tasks.map((task) =>
-                  task.id === taskId
-                    ? { ...task, completed: !task.completed }
-                    : task
-                ),
-              }
-            : hero
-        )
+        prevHeroes.map((hero) => {
+          if (hero.id !== heroId) return hero;
+
+          const updatedTasks = hero.tasks.map((task) =>
+            task.id === taskId ? { ...task, completed: !task.completed } : task
+          );
+
+          // Sort tasks: incomplete first, completed last
+          const sortedTasks = [
+            ...updatedTasks.filter((taskList) => !taskList.completed),
+            ...updatedTasks.filter((taskList) => taskList.completed),
+          ];
+
+          return { ...hero, tasks: sortedTasks };
+        })
       );
-  
-      // Send PUT request to update task status on server
+
+      // Sync with backend. Send PUT request to update task status on server
       await axios.put(`/HeroTasks/tasks/${taskId}/toggle`);
-      //To update heroes details after successful toggle. Send req to backend.
+
+      // Re-fetch the full data of the hero.
       const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
 
-      //This update the affected hero in state.
-      setSuperheroes((prevHeroes) => 
-        prevHeroes.map((hero) => hero.id === heroId ? updatedHero.data : hero)
-      )
+      // Re-apply sorted tasks to updatedHero before setting in state
+      const sortedTasks = [
+        ...updatedHero.data.tasks.filter((t: any) => !t.completed),
+        ...updatedHero.data.tasks.filter((t: any) => t.completed),
+      ];
 
+      const sortedHero = { ...updatedHero.data, tasks: sortedTasks };
+
+      setSuperheroes((prevHeroes) =>
+        prevHeroes.map((hero) => (hero.id === heroId ? sortedHero : hero))
+      );
     } catch (error) {
       console.error("Dashboard. Failed to toggle task completion:", error);
     }
   };
 
-  const handleLogoutNavigation = async () => {
-    try {
-      console.log("Dashboard. Sending Logout Request");
-      const response = await axios.post('/HeroTasks/logout', {}, {withCredentials: true});
-      // {} the request body, which is empty in this case. Without "withCredentials: true", the browser will not include cookies, and the backend won’t recognize the session.
+  // Updated to open 'confirm-code' modal first, then run action and open real modal
+  const requestCodeConfirmation = (
+      label: string,
+      action: () => void,
+      nextModal: Exclude<typeof modalPurpose, 'confirm-code'> | null
+    ) => {
+      setCodePromptLabel(label);
+      setPendingAction(() => () => {
+        if (nextModal !== null) setModalPurpose(nextModal);
+        action();
+      });
+      setModalPurpose('confirm-code');
+    };
 
-      console.log("Dashboard. Logout response: ", response);
+  const handleLogoutNavigation = () => {
+    requestCodeConfirmation("Enter your 4-digit code to logout.", async () => {
+      try {
+        console.log("Dashboard. Sending Logout Request");
+        const response = await axios.post('/HeroTasks/logout', {}, { withCredentials: true });
+        // {} the request body, which is empty in this case. Without "withCredentials: true", the browser will not include cookies, and the backend won’t recognize the session.
+        
+        if (response.status === 200) navigate('/');
 
-      if (response.status === 200) {
-        navigate('/')
+      } catch (error) {
+        console.error('Error logging out: ', error);
       }
-
-    } catch (error) {
-      console.error('Error logging out: ', error);
-    }
+    },
+      null // No next modal after logout
+    );
   };
 
-  if (loading) return <div className="loading"> Loading ... </div>;
-
-  // Find the active hero object
+  //Find the active hero object
   const activeHero = superheroes.find(hero => hero.id === activeHeroId);
-  console.log("HeroTaskBoard. The activeHero is: => ", activeHero);
 
   //Add new task
   const handleAddTask = async (heroId: number, task: { superpower: string }) => {
@@ -96,63 +120,92 @@ const HeroTaskBoard = () => {
     try {
       const response = await axios.post(`/HeroTasks/superheroes/${heroId}/add-task`, task);
 
-      const newTask = response.data;
-      console.log("HeroTaskBoard. The newTask is: ", newTask);
-
       //Get the updated list of tasks as per superhero
       const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
 
-      setSuperheroes((prevHeroes) => 
-        prevHeroes.map((hero) => hero.id === heroId ? updatedHero.data : hero)
+      setSuperheroes((prevHeroes) =>
+        prevHeroes.map((hero) => (hero.id === heroId ? updatedHero.data : hero))
       );
 
     } catch (error) {
       console.error("HeroTaskBoard. Error Adding Task: ", error);
     }
-
   };
 
-  //Delete Superhero Task
+  //Delete Superhero Task.Delete a single task and update only the affected superhero's tasks
   const handleDeleteTask = async (taskId: number) => {
-    console.log("HeroTaskBoard. the taskId is: ", taskId);
-    try {
-      const response = await axios.delete(`/HeroTasks/tasks/${taskId}`);
-      console.log("Delete Task: ", response.data);
+    requestCodeConfirmation("Enter your 4-digit code to delete this task.",
+      async () => {
+        try {
+          // Identify which hero owns this task
+          const heroId = superheroes.find((hero) =>
+            hero.tasks.some((task) => task.id === taskId)
+          )?.id;
 
-      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
-      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
-      setSuperheroes(updatedTasks.data);
+          if (!heroId) {
+            console.error("HeroTaskBoard. Could not find hero for this task.");
+            return;
+          }
 
-    } catch (error) {
-      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
-    }
+          // Delete the task
+          await axios.delete(`/HeroTasks/tasks/${taskId}`);
+
+          // Fetch updated data for this specific hero
+          const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+
+          // Sort: incomplete tasks first
+          const sortedTasks = [
+            ...updatedHero.data.tasks.filter((t: any) => !t.completed),
+            ...updatedHero.data.tasks.filter((t: any) => t.completed),
+          ];
+
+          const sortedHero = { ...updatedHero.data, tasks: sortedTasks };
+
+          // Replace only the updated hero in state
+          setSuperheroes((prevHeroes) =>
+            prevHeroes.map((hero) => (hero.id === heroId ? sortedHero : hero))
+          );
+
+          //Clean up modal state to close ConfirmWithCode.
+          setPendingAction(null);
+          setModalPurpose(null);
+          setActiveHeroId(null);
+
+        } catch (error) {
+          console.error("HeroTaskBoard. Error Deleting Task: ", error);
+        }
+      },
+      null // No additional modal after
+    );
   };
 
   //Delete Superhero All Tasks
   const handleDeleteAllTask = async (heroId: number) => {
-    
+
     try {
-      const response = await axios.delete(`/HeroTasks/superheroes/${heroId}/delete-all-tasks`);
-      console.log("Delete All Task: ", response.data)
+      await axios.delete(`/HeroTasks/superheroes/${heroId}/delete-all-tasks`);
 
-      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
-      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
-      setSuperheroes(updatedTasks.data);
+      // Fetch updated data for this specific hero
+      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+      console.log(" The updatedHero data is : => ", updatedHero.data.task)
 
+      const sortedHero = { ...updatedHero.data };
+
+      // Replace only the updated hero in state
+      setSuperheroes((prevHeroes) =>
+        prevHeroes.map((hero) => (hero.id === heroId ? sortedHero : hero))
+      );
     } catch (error) {
-      console.error("HeroTaskBoard. Error Deleting Task: ", error);
+      console.error("HeroTaskBoard. Error Deleting All Tasks: ", error);
     }
-  }
+  };
 
   //Add New Superhero
-  const handleAddSuperhero = async ( superhero: { superhero_name: string}) => {
+  const handleAddSuperhero = async (superhero: { superhero_name: string }) => {
     console.log("handleAddSuperhero is clicked. Sending to backend ....", superhero);
     try {
       const response = await axios.post('/HeroTasks/superheroes', superhero);
-      console.log("New Superhero added: ", response.data);
-
       const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
-      
       setSuperheroes(updatedHeroes.data);
       setErrorMessage('');
       return true;
@@ -162,30 +215,23 @@ const HeroTaskBoard = () => {
       } else {
         setErrorMessage('An error occurred. Please try again.');
       }
-
       return false;
-      
-    }
-  }
-
-  const handleDelSuperhero = async (heroId: number) => {
-    console.log("handleDelSuperhero is clicked. Sending to backend now ...", heroId);
-
-    try {
-      const response = await axios.delete(`/HeroTasks/superheroes/${heroId}`);
-      console.log("Delete Superhero: ", response.data);
-
-      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
-      console.log("Hero DashBoard. The Superheroes Data: ", updatedTasks);
-      setSuperheroes(updatedTasks.data);
-
-      return true; // This helps setting my modal purpose to null.
-
-    } catch (error) {
-      console.error("HeroTaskBoard. Error Deleting Task Task: ", error);
-      return false; 
     }
   };
+
+  const handleDelSuperhero = async (heroId: number) => {
+    try {
+      await axios.delete(`/HeroTasks/superheroes/${heroId}`);
+      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
+      setSuperheroes(updatedTasks.data);
+      return true;
+    } catch (error) {
+      console.error("HeroTaskBoard. Error Deleting Superhero: ", error);
+      return false;
+    }
+  };
+
+  if (loading) return <div className="loading">Loading...</div>;
 
   return (
     <div className="board_page">
@@ -193,42 +239,52 @@ const HeroTaskBoard = () => {
         <h1>Hero Task Board</h1>
 
         <div className="board_btn">
-          
-          <button 
+          <button
             className="board_btn__add_superhero"
-            type='button'
-            onClick={() => setModalPurpose('add-superhero')}> Add Superhero
+            type="button"
+            onClick={() =>
+              requestCodeConfirmation(
+                "Enter your 4-digit code to enlist a new superhero.",
+                () => {},
+                'add-superhero'
+              )
+            }
+          >
+            Add Superhero
           </button>
 
           <button
             className="board_btn__del_superhero"
             type="button"
-            onClick ={() => setModalPurpose('del-superhero')}> Eliminate Superhero
+            onClick={() =>
+              requestCodeConfirmation(
+                "Enter your 4-digit code to eliminate a superhero.",
+                () => {},
+                'del-superhero'
+              )
+            }
+          >
+            Eliminate Superhero
           </button>
 
-          <button 
-            className="board_btn__logout"
-            type='button'
-            value="logout"
-            onClick={handleLogoutNavigation}>Logout
+          <button className="board_btn__logout" type="button" onClick={handleLogoutNavigation}>
+            Logout
           </button>
+        </div>
 
-        </div>  
-       
         <div className="board__hero_grid">
           {superheroes.length === 0 ? (
             <p>No superheroes or tasks found.</p>
           ) : (
             superheroes.map((hero) => (
-              
+
               <div key={hero.id} className="board__hero_card">
-                <h2> ✨ {hero.superhero_name} </h2>
-                <p><strong>⭐ Strength:</strong> { hero.strength } ⭐ </p>
+                <h2>✨ {hero.superhero_name}</h2>
+                <p><strong>⭐ Strength:</strong> {hero.strength} ⭐</p>
 
                 {hero.tasks.length > 0 ? (
                   <ul className="board__task_list">
                     {hero.tasks.map((task) => (
-                      
                       <li
                         key={task.id}
                         className={`board__task_item ${task.completed ? 'task-completed' : ''}`}
@@ -242,7 +298,7 @@ const HeroTaskBoard = () => {
                           onClick={() => handleDeleteTask(task.id)}
                           title="Delete task"
                         >
-                         ⓧ
+                          ⓧ
                         </button>
                       </li>
                     ))}
@@ -251,125 +307,139 @@ const HeroTaskBoard = () => {
                   <p className="board__no_task">No tasks assigned.</p>
                 )}
 
-
                 <div className="task_add_delete_btn">
-                  <button 
-                  className="task_add_btn" 
-                  onClick={() => {
-                    setActiveHeroId(hero.id);
-                    setModalPurpose('add-task');
-                  }}>
+                  <button
+                    className="task_add_btn"
+                    onClick={() =>
+                      requestCodeConfirmation(
+                        "Enter your 4-digit code to add a task for this superhero.",
+                        () => {
+                          setActiveHeroId(hero.id);
+                          setModalPurpose('add-task');
+                        },
+                        'add-task'
+                      )
+                    }
+                  >
                     ➕ Add Task
                   </button>
-                  <button 
-                  className="task_del_all_task_btn"
-                  disabled={hero.tasks.length === 0}
-                  onClick={() => {
-                    setActiveHeroId(hero.id);
-                    setModalPurpose('delete-confirm');
-                  }}>
+                  <button
+                    className="task_del_all_task_btn"
+                    disabled={hero.tasks.length === 0}
+                    onClick={() =>
+                      requestCodeConfirmation(
+                        "Enter your 4-digit code to delete all tasks for this superhero.",
+                        async () => {
+                          await handleDeleteAllTask(hero.id);
+                          setModalPurpose(null);
+                          setActiveHeroId(null);
+                        },
+                        null
+                      )
+                    }
+                  >
                     ➖ Del All Tasks
                   </button>
                 </div>
-
               </div>
             ))
           )}
         </div>
 
-        {/* ===== MODAL HERE. Render one modal inside the loop ===== */}
+        {/* ===== MODAL HERE ===== */}
 
         {modalPurpose && (
-          <Modal show={true} onClose={() => {
-            setActiveHeroId(null);
-            setModalPurpose(null);
-          }}>
+          <Modal
+            show={true}
+            onClose={() => {
+              setActiveHeroId(null);
+              setModalPurpose(null);
+              setPendingAction(null);
+            }}
+          >
             <Modal.Header>
               <Modal.Title>
-                {
-                  {
-                    'add-task': `Add Task for Superhero "${activeHero?.superhero_name}"`,
-                    'delete-confirm': `Delete All Tasks for "${activeHero?.superhero_name}"`,
-                    'add-superhero': 'Add New Superhero',
-                    'del-superhero': 'Eliminate Superhero'
-                  } [modalPurpose]
-                }
+                {{
+                  'confirm-code': codePromptLabel,
+                  'add-task': `Add Task for Superhero "${activeHero?.superhero_name}"`,
+                  'delete-confirm': `Delete All Tasks for "${activeHero?.superhero_name}"`,
+                  'add-superhero': 'Add New Superhero',
+                  'del-superhero': 'Eliminate Superhero',
+                }[modalPurpose]}
               </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-              {modalPurpose === 'add-task' && activeHero && (
-                <FormTask
-                  onSubmit={async (task) => {
-                    console.log('New Task for', activeHero.superhero_name, ':', task);
-                    if (!activeHero) return;
-                    await handleAddTask(activeHero.id, task);
-                    setActiveHeroId(null);  //This will close the modal after the task is added
-
+              {modalPurpose === 'confirm-code' ? (
+                <ConfirmWithCode
+                  actionLabel={codePromptLabel}
+                  onSuccess={() => {
+                    if (pendingAction) pendingAction();
+                    setPendingAction(null);
+                  }}
+                  onCancel={() => {
                     setModalPurpose(null);
+                    setPendingAction(null);
                   }}
                 />
-              )}
-
-              {modalPurpose === 'delete-confirm' && activeHero && (<p>{`Click the 'Delete' if you wish to proceed.`}</p>)}
-
-              {modalPurpose === 'add-superhero' && (
-                <AddSuperheroForm 
-                  key={modalPurpose}
-                  onSubmit={async(superhero) => {
-                    console.log("Modal.New Candidate, New Superhero: ", superhero);
-                    
+              ) : modalPurpose === 'add-task' && activeHero ? (
+                <FormTask
+                  onSubmit={async (task) => {
+                    await handleAddTask(activeHero.id, task);
+                    //NOTE: Disable below to ensure we can continue adding more task without re-confirming
+                    // setModalPurpose(null);
+                    // setActiveHeroId(null);
+                  }}
+                />
+              ) : modalPurpose === 'delete-confirm' && activeHero ? (
+                <p>Click the 'Delete' if you wish to proceed.</p>
+              ) : modalPurpose === 'add-superhero' ? (
+                <AddSuperheroForm
+                  onSubmit={async (superhero) => {
                     const success = await handleAddSuperhero(superhero);
-
-                    if (success) {
-                      setModalPurpose(null);
-                    }                    
+                    if (success) setModalPurpose(null);
                   }}
                   errorMessage={errorMessage}
-                />       
-              )}
-
-              {modalPurpose === 'del-superhero' && (
+                />
+              ) : modalPurpose === 'del-superhero' ? (
                 <DeleteSuperheroForm
                   key={modalPurpose}
                   refresh={modalPurpose} //re-run the useEffect
-                  onSubmit={async(heroId) => {
-                    console.log("Deleting Superhero name: ", heroId);
-
+                  onSubmit={async (heroId) => {
                     const success = await handleDelSuperhero(heroId);
-
-                    if(success) {
-                      setModalPurpose(null);
+                    if (success) setModalPurpose(null);
                     }
-
-                  }}
+                  }
                   errorMessage={errorMessage}
                 />
-              )}       
+              ) : null}
             </Modal.Body>
 
             <Modal.Footer>
-              <button onClick={() => {
-                setActiveHeroId(null);
-                setModalPurpose(null);
-              }}>Close</button>
-
-              {modalPurpose === 'delete-confirm' && activeHero && (
-                <button 
-                onClick={async () => {
-                  if (!activeHero) return;
-                  await handleDeleteAllTask(activeHero.id);
+              <button
+                onClick={() => {
                   setActiveHeroId(null);
                   setModalPurpose(null);
-                }}>
+                  setPendingAction(null);
+                }}
+              >
+                Close
+              </button>
+
+              {modalPurpose === 'delete-confirm' && activeHero && (
+                <button
+                  onClick={async () => {
+                    await handleDeleteAllTask(activeHero.id);
+                    setModalPurpose(null);
+                    setActiveHeroId(null);
+                  }}
+                >
                   Delete
                 </button>
               )}
             </Modal.Footer>
           </Modal>
         )}
-
-        {/* ================================ */}
       </div>
     </div>
   );

@@ -61,10 +61,26 @@ const updateUserPassword = async(user: User) : Promise<User> => {
   }
 };
 
+// Verify if code matches the user ID
+const verifyUserCode = async (userId: number, code: string): Promise<boolean> => {
+  try {
+    const result = await db.query(
+      'SELECT id FROM users WHERE id = $1 AND TRIM(code) = $2 LIMIT 1;',
+      [userId, code.trim()]
+    );
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Queries. Error verifying user code: ', error);
+    throw error;
+  }
+};
+
+
 export default {
   getAllUsers,
   getUserByEmail,
   addUser,
   updateUserProfile,
-  updateUserPassword
+  updateUserPassword,
+  verifyUserCode
 };
