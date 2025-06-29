@@ -24,7 +24,6 @@ const HeroTaskBoard = () => {
     const fetchHeroesData = async() => {
       try {
         const response = await axios.get('/HeroTasks/superheroes-with-tasks');
-        console.log("Hero DashBoard. The Superheroes Data: ", response);
         setSuperheroes(response.data);
       } catch (error) {
         console.error("Hero Dashboard. Error fetching data: ", error);
@@ -96,7 +95,6 @@ const HeroTaskBoard = () => {
   const handleLogoutNavigation = () => {
     requestCodeConfirmation("Enter your 4-digit code to logout.", async () => {
       try {
-        console.log("Dashboard. Sending Logout Request");
         const response = await axios.post('/HeroTasks/logout', {}, { withCredentials: true });
         // {} the request body, which is empty in this case. Without "withCredentials: true", the browser will not include cookies, and the backend won’t recognize the session.
         
@@ -115,8 +113,6 @@ const HeroTaskBoard = () => {
 
   //Add new task
   const handleAddTask = async (heroId: number, task: { superpower: string }) => {
-    console.log(`HeroTaskBoard. The heroId is "${heroId}", and the new task is "${task.superpower}". ==== END`);
-
     try {
       await axios.post(`/HeroTasks/superheroes/${heroId}/add-task`, task);
 
@@ -187,7 +183,6 @@ const HeroTaskBoard = () => {
 
       // Fetch updated data for this specific hero
       const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
-      console.log(" The updatedHero data is : => ", updatedHero.data.task)
 
       const sortedHero = { ...updatedHero.data };
 
@@ -202,7 +197,6 @@ const HeroTaskBoard = () => {
 
   //Add New Superhero
   const handleAddSuperhero = async (superhero: { superhero_name: string }) => {
-    console.log("handleAddSuperhero is clicked. Sending to backend ....", superhero);
     try {
       await axios.post('/HeroTasks/superheroes', superhero);
       const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
