@@ -236,40 +236,40 @@ const HeroTaskBoard = () => {
   return (
     <div className="board_page">
       <div className="board">
-        <h1>Hero Task Board</h1>
+        <div className="top_nav">
+          <p className="top_naw__logo">HeroTasks</p>
+          <div className="board_btn">
+            <button
+              className="board_btn__add_superhero"
+              type="button"
+              onClick={() =>
+                requestCodeConfirmation(
+                  "Enter your 4-digit code to enlist a new superhero.",
+                  () => {},
+                  'add-superhero'
+                )
+              }
+            >
+              Add Superhero
+            </button>
+            <button
+              className="board_btn__del_superhero"
+              type="button"
+              onClick={() =>
+                requestCodeConfirmation(
+                  "Enter your 4-digit code to eliminate a superhero.",
+                  () => {},
+                  'del-superhero'
+                )
+              }
+            >
+              Eliminate Superhero
+            </button>
 
-        <div className="board_btn">
-          <button
-            className="board_btn__add_superhero"
-            type="button"
-            onClick={() =>
-              requestCodeConfirmation(
-                "Enter your 4-digit code to enlist a new superhero.",
-                () => {},
-                'add-superhero'
-              )
-            }
-          >
-            Add Superhero
-          </button>
-
-          <button
-            className="board_btn__del_superhero"
-            type="button"
-            onClick={() =>
-              requestCodeConfirmation(
-                "Enter your 4-digit code to eliminate a superhero.",
-                () => {},
-                'del-superhero'
-              )
-            }
-          >
-            Eliminate Superhero
-          </button>
-
-          <button className="board_btn__logout" type="button" onClick={handleLogoutNavigation}>
-            Logout
-          </button>
+            <button className="board_btn__logout" type="button" onClick={handleLogoutNavigation}>
+              LOG ME OUT 🦸‍♀️ 🦸
+            </button>
+          </div>
         </div>
 
         <div className="board__hero_grid">
@@ -344,6 +344,24 @@ const HeroTaskBoard = () => {
               </div>
             ))
           )}
+
+          {/* Like a footer */}
+
+
+
+          {/* == */}
+
+
+        </div>
+
+                          <div className="board__footer">
+          <span className="session_footer_a">
+            <a className="session_footer_a_1" href="/register" target="_blank">New Account</a> |
+            {/* <a className="session_footer_a_2" href="/login"> login </a> |  */}
+            <a className="session_footer_a_2" href="/help" target="_blank"> Contact Us </a> | 
+            <a className="session_footer_a_1" href="https://facebook.com" target="_blank"> Facebook </a> | 
+            <a className="session_footer_a_2" href="https://google.com" target="_blank"> Google</a>
+          </span>
         </div>
 
         {/* ===== MODAL HERE ===== */}
@@ -441,6 +459,7 @@ const HeroTaskBoard = () => {
             </Modal.Footer>
           </Modal>
         )}
+
       </div>
     </div>
   );
