@@ -41,11 +41,11 @@ const Session = () => {
       const response = await axios.post('/HeroTasks/login', 
         { username, password }, { withCredentials: true }
       );
-      console.log("Session Response is: ", response);
 
       if (response.status === 200) {
         navigate('/task-board'); //Heroes Dashboard
       }
+
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
         setErrorMessage(error.response.data.error);
@@ -67,13 +67,11 @@ const Session = () => {
       code: string, 
     } ) => {
 
-    console.log(" Registration. The new user data are: ", user);
-
     try {
       const response = await axios.post(`/HeroTasks/register/`, user);
 
       const newUser = response.data;
-      console.log("Registration. Return new user is: ", newUser);
+      console.log("Registration. New user data: ", newUser);
 
       if (response.status === 201) {
         navigate('/login');
