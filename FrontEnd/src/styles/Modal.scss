@@ -14,8 +14,6 @@
 
 .modal-box {
   background: linear-gradient(to bottom, rgb(16, 15, 15), rgb(83, 11, 129));
-  //padding: 2rem;
-  //border-radius: 8px;
   max-width: 500px;
   width: 90%;
   position: relative;
@@ -27,7 +25,7 @@
 
 .modal-close {
   position: absolute;
-  //top: 8px;
+  // top: 8px;
   right: 12px;
   color: rgb(112, 22, 112);
   font-size: 1.5rem;
@@ -41,20 +39,20 @@
   display: flex;
   flex-direction: row;
   background-color:  rgb(218, 162, 32);
-  //gap: 1rem;
+  // gap: 1rem;
   justify-content: space-between;
   //padding-top: 2rem;
 
   .modal-title {
     text-align: left;
-   // position: absolute;
-    //top: 8px;
+    // position: absolute;
+    // top: 8px;
     color: rgb(112, 22, 112);
     font-size: 1rem bolder;
     //background-color: burlywood;
     border: none;
     padding-left: 2rem;
-    //margin-bottom: 2rem; 
+    // margin-bottom: 2rem; 
   }
 
 }
