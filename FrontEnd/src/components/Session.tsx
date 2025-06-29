@@ -187,7 +187,7 @@ const Session = () => {
                   }}/>
                 
                 )}
-                {modalPurpose === 'forgot-password' && (<PasswordReset />)}
+                {/* {modalPurpose === 'forgot-password' && (<PasswordReset />)} ** For Future. WIP */}
                 {modalPurpose === 'help' && (<ContactUsFooter />)}
               </Modal.Body>
 
