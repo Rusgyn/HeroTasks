@@ -11,11 +11,9 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  //background-color: rgb(178, 127, 255);
   min-width: 98vw;
   border: none;
   border-bottom-color: rgba(255, 255, 255, 0.2);
-  //border-color: #d53f8c;
   border-bottom-style: double;
 
   .top_naw__logo {
@@ -24,7 +22,6 @@
     text-shadow: #fc0 1px 0 5px; /* color | offset-x | offset-y | blur-radius */
     margin-left: 3rem
   }
-
 }
 
 .board {
@@ -77,7 +74,6 @@
         border-color: rgba(204, 123, 209, 0.5);
       }
     }
-
   }
 
   .board__footer {
