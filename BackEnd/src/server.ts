@@ -73,24 +73,18 @@ if (sessionSecret) {
 };
 
 /* Routes */
-app.get('/', (_req, res) => {
-  console.log('You reach the HeroTasks backend');
-  res.send('Hi, HeroTasks API is running!');
-});
 
 /** Session **/
 //Authenticate session
 app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
-  console.log("Server side. Checking session ...");
 
   try { 
     if (isUserLoggedIn(req.session)) {
-      console.log("Server side. The user is logged in: ", req.session);
       return res.json( {loggedIn: true} );
     }
 
-    console.log("Server side. No active session. Redirecting to login page.")
     res.json( {loggedIn: false} );
+
   } catch (error) {
     console.error ('Server side. Error checking the sessions');
     return res.status(500).json( {error: 'Internal Server Error'} );
@@ -100,21 +94,15 @@ app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
 //login
 app.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
-  console.log("Server Side. User login info: ", req.body);
-  console.log("=== END ===");
 
   if (!username || !password) {
     console.log('Server Side. Please fill in your username and password');
     res.status(400).json({ error: 'Please fill in your username and password' });
     return;
   }
-  
-  console.log('Server. Login button clicked');
 
   try {
     const isUserExist = await userQueries.getUserByEmail(username);
-    console.log("Server side. isUserExit data: ", isUserExist);
-    console.log("=== END ===");
 
     if(!isUserExist) {
       console.log('Server Side. User not found with email: ', username);
@@ -133,7 +121,7 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
     if (isUserExist && isPasswordValid) {
       const userId = isUserExist.id;
       const userEmail = isUserExist.email;
-      console.log("Server Side. The password is correct");
+      
       if (userId !== undefined) {
         req.session.loggedUser = { id: userId, username: userEmail };
         res.status(200).json({ message: 'Login successful'})
@@ -151,11 +139,6 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 
 //Logout Route
 app.post('/logout', async (req: Request, res: Response): Promise<any> => {
-  console.log('=== Logout route hit ===');
-  //console.log('Session data:', req.session);
-  console.log(`The loggedUser "${req.session.loggedUser?.username}" with id number "${req.session.loggedUser?.id}" is now LOGOUT`)
-  console.log("====END====")
-
   req.session.destroy((err) => {
     if (err) {
       console.error('Error destroying session:', err);
@@ -169,7 +152,7 @@ app.post('/logout', async (req: Request, res: Response): Promise<any> => {
 
 //Registration route
 app.post('/register', async (req: Request, res: Response): Promise<void> => {
-  console.log("Server Side. Registration. Req Body: ", req.body);
+  
   const { first_name, last_name, email, password, code } = req.body;
 
   try {
@@ -194,7 +177,6 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
     };
 
     const addNewUser = await userQueries.addUser(newUser);
-    console.log("Server side. New user added: ", addNewUser);
     res.status(201).json(addNewUser);
     return;
 
@@ -222,12 +204,10 @@ app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
     const isValid = await userQueries.verifyUserCode(userId, code.toString());
 
     if (!isValid) {
-      console.log("Code verification failed for user:", userId);
       res.status(401).json({ error: 'Invalid code.' });
       return;
     }
 
-    console.log("Code verification successful.");
     res.status(200).json({ message: 'Code verified.' });
   } catch (error) {
     console.error('Server error verifying code: ', error);
@@ -237,15 +217,12 @@ app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
 
 //New Superhero
 app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
-  console.log("==== ADD NEW SUPERHERO =====");
-  console.log(`1. Server Side. New superhero req body is ${req.body.superhero_name}.`);
+
   const { superhero_name } = req.body
 
   try {
-    console.log("2. Data to query is: => ", superhero_name)
     // 1. Get the active user
     const userId = req.session.loggedUser?.id;
-    console.log("3. The active user id is: => ", userId)
 
     if (typeof userId !== 'number') {
       res.status(401).json({ error: 'Unauthorized: No user logged in' });
@@ -253,10 +230,8 @@ app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
     }
     // 2. Validate the superhero name and the active user. To check if it exist.
     const isSuperheroExist = await superheroQueries.getSuperheroByNameAndUserId(superhero_name, userId);
-    console.log("4. isSuperheroExist => ", isSuperheroExist);
 
     if(isSuperheroExist) {
-      console.log('5. Superhero already exists:', superhero_name);
       res.status(400).json({ error: 'Superhero already exists!' });
       return;
     }
@@ -270,10 +245,7 @@ app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
       user_id: userId
     };
 
-    console.log(`5. The newSuperhero info: => ${newSuperhero} ==== END ==== `);
-
     const addNewSuperhero = await superheroQueries.addSuperhero(newSuperhero);
-    console.log("server Side. New SUperhero added: ", addNewSuperhero);
     res.status(201).json(addNewSuperhero);
 
   } catch (error) {
@@ -295,7 +267,6 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
     }
 
     const superheroes = await superheroQueries.getAllSuperheroesByLoggedUser(userId);
-    console.log("Server side. superheroes from db: ", superheroes);
 
     const superheroesWithTasks = await Promise.all(
       superheroes.map(async (hero) => {
@@ -322,10 +293,6 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
 app.post('/superheroes/:heroId/add-task', async (req: Request, res: Response): Promise<void> => {
   const heroId = parseInt(req.params.heroId);
   const { superpower } = req.body;
-
-  console.log("Server Side. Adding new task. Request Body: => ", req.body);
-  console.log("The params is: ", heroId)
-  console.log(`Server side. Add Task route: ${req.body}. ==== END ====`);
   
   // Guard Statement
   if (isNaN(heroId)) {
@@ -350,8 +317,6 @@ app.post('/superheroes/:heroId/add-task', async (req: Request, res: Response): P
     }
 
     const newTask = await taskQueries.addTaskBySuperhero(newTaskInput);
-    console.log("Server side. The new task is: ", newTask);
-
     res.status(201).json(newTask);
     return;
 
@@ -396,7 +361,6 @@ app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<vo
 //Dashboard: Fetch the affected hero data
 app.get('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
   const heroId = parseInt(req.params.id);
-  console.log("Server side. Receive the heroId with number: ", heroId);
   const hero = await superheroQueries.getSuperheroWithTasksAndStrength(heroId); 
   res.json(hero);
 });
@@ -404,7 +368,6 @@ app.get('/superheroes/:id', async (req: Request, res: Response): Promise<void> =
 //Delete Task (individual)
 app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
   const taskId = parseInt(req.params.id);
-  console.log("Server Side. Delete Route. Receive the taskId => ", taskId);
 
   // Guard Statement
   if (isNaN(taskId)) {
@@ -415,7 +378,6 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
   // Use DB queries to delete the task
   try {
     const task = await taskQueries.getTaskById(taskId);
-    console.log("Server Side. Delete. The getTask returns: => ", task);
 
     if (!task) {
       res.status(404).json({ error: 'Task not found' });
@@ -423,7 +385,6 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
     }
 
     const delTask = await taskQueries.deleteTaskById(task);
-    console.log("Server Side. The delTask is => ", delTask);
     res.status(200).json({ message: delTask.message });
     return;
 
@@ -437,8 +398,6 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
 //Delete Superhero All Task
 app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Response): Promise<void> => {
   const heroId = parseInt(req.params.id);
-
-  console.log(`Server Side. Delete All Tasks. Superhero Id: ${heroId} === END ===`)
 
   // Guard Statement
   if (isNaN(heroId)) {
@@ -462,8 +421,6 @@ app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Respon
 app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
   
   const heroId = parseInt(req.params.id);
-  console.log("===== DELETE SUPERHERO ROUTE =====")
-  console.log("Receive the heroId to be deleted, with number: => ", heroId);
 
   // Guard Statement
   if (isNaN(heroId)) {
@@ -472,7 +429,6 @@ app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void
   }
 
   const loggedUserIdByHero = await superheroQueries.getLoggedUserByHeroId(heroId);
-  console.log('The LoggedUser ID by Superhero ID: => ', loggedUserIdByHero);
 
   if (!loggedUserIdByHero) {
     res.status(404).json({ error: 'The user_id by superhero Id was not found'});
@@ -493,7 +449,6 @@ app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void
 
   try {
     const delSuperhero = await superheroQueries.deleteSuperheroById(heroId);
-    console.log("Server Side. The delSuperhero is => ", delSuperhero);
     res.status(200).json({ message: delSuperhero.message });
     return;
 
