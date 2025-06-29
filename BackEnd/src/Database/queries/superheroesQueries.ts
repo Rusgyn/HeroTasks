@@ -114,9 +114,7 @@ const deleteSuperheroByName = async(superheroName: string) : Promise<Superhero> 
 };
 
 // Add new superhero
-const addSuperhero = async (superheroInput: Superhero): Promise<Superhero | undefined> => {
-  console.log("The query received the data: => ", superheroInput);
-  
+const addSuperhero = async (superheroInput: Superhero): Promise<Superhero | undefined> => {  
   try {
     const { superhero_name, user_id } = superheroInput;
 

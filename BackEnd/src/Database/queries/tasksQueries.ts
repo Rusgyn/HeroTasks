@@ -123,8 +123,6 @@ const updateTaskCompletion = async (taskId: number, completed: boolean): Promise
     'UPDATE superheroes SET strength = $1 WHERE id = $2',
     [strength, superheroId]
   );
-
-  console.log(`Task Query. Updated superhero ${superheroId} strength to ${strength}`);
 };
 
 const deleteTaskById = async (task: Task) : Promise< { message: string }> => {
@@ -174,15 +172,10 @@ const deleteTaskById = async (task: Task) : Promise< { message: string }> => {
 };
 
 const deleteAllTasksByHero = async (heroID: number): Promise<{message: string}> => {
-
-  console.log("TaskQueries. DeleteAll Task. Hero ID is: ", heroID);
-
   try {
     const result = await db.query('DELETE FROM tasks WHERE superhero_id = $1;', [heroID]);
 
     await db.query('UPDATE superheroes SET strength = 0 WHERE id = $1;', [heroID]);
-
-    console.log("Delete all DB query result is: ", result);
     
     if (result.rowCount === 0) {
       return { message: `No task with ID# ${heroID} in the tasks db.` };
