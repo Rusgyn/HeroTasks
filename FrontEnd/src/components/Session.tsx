@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthSession from "../auth/useAuthSession";
 import Modal from './Modal';
-import PasswordReset from "./PasswordReset";
 import FormRegister from "./FormRegister";
 import ContactUsFooter from "./ContactUsFooter";
 import '../styles/Session.scss';
@@ -150,12 +149,13 @@ const Session = () => {
               setModalPurpose('register');
             }}> Register here </a>
             <br/>
-            Forgot your password? <a href="#" 
+            {/* For Future. WIP
+            * Forgot your password? <a href="#" 
             onClick={(e) => {
               e.preventDefault();
               setModalPurpose('forgot-password');
             }}>Reset it here</a>
-            <br/>
+            <br/> */}
             Need help? <a href="#" 
             onClick={(e) => {
               e.preventDefault();
