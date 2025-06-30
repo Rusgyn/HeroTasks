@@ -1,32 +1,56 @@
-# HeroTasks
+
+# 🦸‍♀️ HeroTasks
 
 Empower your little heroes to complete tasks, build habits, and grow stronger every day!  
-**HeroTasks** is a task management app designed for families, where parents assign tasks and children complete them as superheroes.
+**HeroTasks** is a fun and interactive task management web app for families. Parents assign tasks to their children (superheroes), and the children earn strength points by completing them — building responsibility, routine, and good habits.
 
 ---
 
 ## ✨ Features
 
-- 👩‍👧‍👦 Parent (Main User) can create multiple superheroes (children)
-- ✅ Superheroes can complete daily tasks and build good habits
-- ❤️ Tasks can include rewards and feedback
-- 🔐 Secure session-based login for authentication
-- 🔄 Real-time task board updates using sessions and guards
-- 🎨 Clean responsive UI styled with SASS
-- 🗃️ PostgreSQL database for persistent storage
+- 👨‍👩‍👧 **Parent Dashboard:** A main user (parent) can add and manage multiple superheroes (children).
+- 💪 **Superhero:** Each superhero can view, complete, and track their assigned tasks.
+- 📝 **Task Management:** Add, edit, or delete superpowers (chores/tasks) for each superhero.
+- 🛡 **Code Confirmation:** Secure 4-digit code confirmation is required to perform sensitive actions like:
+  - Adding or deleting a superhero
+  - Adding or deleting tasks
+  - Logging out of the parent account
+- 🔄 **Real-Time Updates:** The task board reflects changes instantly while maintaining session state.
+- 🔐 **Session-Based Authentication:** Routes are protected and persist securely using sessions.
+- 📱 **Responsive Design:** Clean, mobile-friendly interface styled with modular SASS.
+- 🗃 **Persistent Storage:** All superheroes and tasks are stored in a PostgreSQL database.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
-**Frontend**  
-- React + Vite + TypeScript  
-- React Router DOM  
-- SASS (modular SCSS styling)  
+### Frontend
+- ⚛ React + Vite + TypeScript
+- 🧭 React Router DOM
+- 🎨 SASS (modular SCSS styling)
 
-**Backend**  
-- Node.js + Express.js + TypeScript  
-- PostgreSQL (via pg or an ORM)  
+### Backend
+- 🧠 Node.js + Express.js + TypeScript
+- 🗃 PostgreSQL
+
+---
+
+## 🚀 How It Works
+
+1. **Login & Session Guarding**
+   - Parents and superheroes log in to their respective views.
+   - The app uses a `useAuthSession` hook and `AuthGuard.tsx` to protect routes and redirect unauthorized users.
+
+2. **Superhero Creation & Task Assignment**
+   - Parents create superheroes using a form that requires code confirmation.
+   - Tasks (superpowers) can be created, assigned to a superhero, and deleted — all guarded with the 4-digit code modal.
+
+3. **Superhero Experience**
+   - They can toggle a task as “completed” and watch their strength grow.
+
+4. **Security & Roles**
+   - Parents are the only ones who can manage superheroes and tasks.
+   - Superheroes have limited access — they can view and mark tasks but cannot modify data.
 
 ---
 
@@ -38,15 +62,15 @@ git clone https://github.com/Rusgyn/HeroTasks.git
 cd HeroTasks
 ```
 
-### 2. Setup Backend and start the development server:
+### 2. Setup Backend
 ```bash
 cd BackEnd
 npm install
-# Create a .env file with DB credentials and session secret
+# Create a .env file with your DB credentials and session secret
 npm run dev
 ```
 
-### Setup Frontend and start the development server:
+### 3. Setup Frontend
 ```bash
 cd ../FrontEnd
 npm install
@@ -55,51 +79,72 @@ npm run dev
 
 ---
 
-## 🔐 Authentication
-- Sessions are validated using a useAuthSession custom hook.
-- Routes requiring login are protected using AuthGuard.tsx.
-- If a session is active, the user is redirected to /task-board.
+## 🔐 Authentication & Authorization
+
+- 🔑 Session-based login with middleware protection.
+- 🧩 All routes requiring authentication use guards (`AuthGuard.tsx`).
+- 🧮 Critical actions (e.g., adding/deleting superheroes or tasks) trigger a secure **ConfirmWithCode** modal for verification.
 
 ---
 
-## ✅ Usage
+## 🗂 Project Structure
 
-- Login using a superhero account
-- Complete tasks to earn strength
-- Logout when finished
-
----
-
-## 📁 Project Structure
+```bash
 HeroTasks/
-│
 ├── FrontEnd/
-│   ├── src/
-│   │   ├── auth/          # useAuthSession + AuthGuard
-│   │   ├── components/    # Reusable UI components
-│   │   ├── styles/        # Styling files
-│   │   └── types/         # Typescript custom type definitions
-│   │   └── App.tsx        # App entry and routing
+│   └── src/
+│       ├── auth/          # Auth session hooks & route guards
+│       ├── components/    # Modals, forms, UI components
+│       ├── styles/        # SCSS module styling
+│       ├── types/         # TypeScript interfaces
+│       └── App.tsx        # Routing & main layout
 │
 ├── BackEnd/
-│   ├── src/
-│   │   ├── Database/      # SQL queries, and DB connection
-│   │   │ ├── queries/     # Reusable DB queries
-│   │   │ ├── seeds/       # Pre DB data
-│   │   │ ├── db.ts        # Pool db connection
-│   │   ├── types/         # Typescript custom type definitions
-│   │   └── utils/         # Logic reusable helper functions
-│   ├── .env               # Environment variables
-│   └── server.ts          # Main Express server
+│   └── src/
+│       ├── Database/
+│       │   ├── db.ts       # Database pool connection
+│       │   ├── queries/    # Reusable SQL query functions
+│       │   └── seeds/      # Optional seed data
+│       ├── types/          # Shared types
+│       └── utils/          # Code confirmation, auth helpers
+├── .env                    # Environment variables
+└── server.ts               # Express entry point
+```
+
+---
+
+## 🧪 Example Usage
+
+### Parent Flow
+- Log in to the parent dashboard
+- Add a superhero using the secure 4-digit code
+- Assign superpowers (tasks) for each superhero
+- Delete tasks or superheroes with code confirmation
+
+### Superhero Flow
+- View assigned superpowers
+- Mark completed tasks and earn strength 💪
 
 ---
 
 ## 📄 License
 
-MIT
+MIT License
 
 ---
 
-
 ## 🙋‍♀️ Contributing
-Contributions are welcome! Please fork the repository and open a pull request. For major changes, open an issue first to discuss.
+
+Contributions are welcome!  
+Please fork the repo and submit a pull request. For larger changes, open an issue first to discuss.
+
+---
+
+## 💌 Special Thanks
+
+This app was created with love and purpose — to help families work together and make daily tasks fun, meaningful, and empowering for young kids.
+
+---
+
+## 📸 HeroTasks Images
+
