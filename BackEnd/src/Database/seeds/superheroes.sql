@@ -5,6 +5,8 @@ INSERT INTO superheroes (superhero_name, user_id)
 INSERT INTO superheroes (superhero_name, user_id)
   VALUES('hulk', 1);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('spider_kid', 2);
+  VALUES('obi-wan kenobi', 2);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('storm', 2);
+  VALUES('han solo', 2);
+INSERT INTO superheroes (superhero_name, user_id)
+  VALUES('anakin skywalker', 2);

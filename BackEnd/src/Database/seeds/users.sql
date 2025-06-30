@@ -1,7 +1,7 @@
 INSERT INTO users (first_name, last_name, email, password_digest, code)
-  VALUES('Jane', 'Smith', 'jsmith@test.com', '$2b$10$RkPCY1JG4qo8MtYCX8Rhs.nIW7QljVnmh9WSgIdBSEg3EyEKtrZ26', '0001');
-  -- $2b$10$RkPCY1JG4qo8MtYCX8Rhs.nIW7QljVnmh9WSgIdBSEg3EyEKtrZ26  Welcome.123
+  VALUES('Professor', 'X', 'professor-x@gmail.com', '$2b$10$0hJb0QHBSwn7eKhgXXZMVOoXmJvQM4Bj70Z6PDpf0M79oHwG..6nW', '0101');
+  -- Password is: Xmen.1234
 
 INSERT INTO users (first_name, last_name, email, password_digest, code)
-  VALUES('Bob', 'Builder', 'bob@bob.com', '$2b$10$zCJpFgFcalgrwSGRHwQiWezkUjAuPnzJBlbC/zeVLKZvOgTjFftke', '0120');
-  -- $2b$10$zCJpFgFcalgrwSGRHwQiWezkUjAuPnzJBlbC/zeVLKZvOgTjFftke !QAZ2wsx
+  VALUES('Master', 'Yoda', 'master-yoda@gmail.com', '$2b$10$k2OJQZsF9byuzyVlZkwesucdCqDQMVpUm3xotMAGxh030L5Srvl/K', '0110');
+  -- Password is: Starwars.1234
