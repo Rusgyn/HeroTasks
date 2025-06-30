@@ -4,7 +4,9 @@ INSERT INTO users (first_name, last_name, email, password_digest, code)
 
 INSERT INTO users (first_name, last_name, email, password_digest, code)
   VALUES('Master', 'Yoda', 'master-yoda@gmail.com', '$2b$10$k2OJQZsF9byuzyVlZkwesucdCqDQMVpUm3xotMAGxh030L5Srvl/K', '0110');
-  -- Password is: Starwars.1234INSERT INTO superheroes (superhero_name, user_id)
+  -- Password is: Starwars.1234
+
+INSERT INTO superheroes (superhero_name, user_id)
   VALUES('captain_obvious', 1);
 INSERT INTO superheroes (superhero_name, user_id)
   VALUES('wolverine', 1);
@@ -15,18 +17,18 @@ INSERT INTO superheroes (superhero_name, user_id)
 INSERT INTO superheroes (superhero_name, user_id)
   VALUES('han solo', 2);
 INSERT INTO superheroes (superhero_name, user_id)
-  VALUES('anakin skywalker', 2);INSERT INTO tasks (superpower, superhero_id)
+  VALUES('anakin skywalker', 2);
+  
+INSERT INTO tasks (superpower, superhero_id)
   VALUES('Wash Dishes', 1);
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Vacuum the house', 1);
-
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Scrub the floor', 2);
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Clean the garage', 2);
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Cook lunch', 2);
-
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Bake chocolate cake', 4);
 INSERT INTO tasks (superpower, superhero_id)
@@ -35,7 +37,6 @@ INSERT INTO tasks (superpower, superhero_id)
   VALUES('Fold laundry', 4);
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Wipe the table', 4);
-
 INSERT INTO tasks (superpower, superhero_id)
   VALUES('Take out the thrash', 6);
 INSERT INTO tasks (superpower, superhero_id)
