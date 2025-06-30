@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import "../styles/ConfirmWithCode.scss";
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
 interface Props {
   actionLabel: string;
@@ -22,7 +23,7 @@ const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess }) => {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.post('/HeroTasks/verify-code', { code }, { withCredentials: true });
+      const response = await axios.post(`${backendUrl}/HeroTasks/verify-code`, { code }, { withCredentials: true });
 
       if (response.status === 200) {
         onSuccess();

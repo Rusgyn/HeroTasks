@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Register.scss";
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
 const Register: React.FC = () => {
   const [firstName, setFirstName] = useState('');
@@ -62,7 +63,7 @@ const Register: React.FC = () => {
     };
 
     try {
-      const response = await axios.post('/HeroTasks/register/', newUser);
+      const response = await axios.post(`${backendUrl}/HeroTasks/register/`, newUser);
       console.log("Registration. Return new user is: ", response.data);
 
       if (response.status === 201) {

@@ -24,8 +24,6 @@ import taskQueries from "./Database/queries/tasksQueries";
 //Type imports
 import User from "./types/userTypes";
 import { Superhero, NewSuperheroInput } from "./types/superheroTypes";
-import { Task, NewTaskInput } from "./types/taskTypes";
-import { error } from "console";
 
 //Utilities import
 import isUserLoggedIn from "./utils/sessionUtils";
@@ -63,6 +61,7 @@ if (sessionSecret) {
       cookie: {
         httpOnly: true, //prevent client-side scripts from accessing the cookie
         secure: false, //update to true during production, https
+        sameSite: 'lax',
         maxAge: 1000 * 60 * 60, // 1hr session
       }
     })
@@ -73,13 +72,23 @@ if (sessionSecret) {
 };
 
 /* Routes */
+/** Session . This is for debugging purpose**/
+app.use((req, res, next) => {
+  console.log('🔍 [Session Logger]');
+  console.log('Cookies:', req.headers.cookie);
+  console.log('Session:', req.session);
+  next();
+});
 
-/** Session **/
 //Authenticate session
-app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
+app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise<any> => {
+
+  console.log("SERVER SIDE. Check-session HERE: =>  ", req.session);
+  console.log("=============")
 
   try { 
     if (isUserLoggedIn(req.session)) {
+       console.log("THE USER IN SESSION IS: =>  ", req.session.loggedUser);
       return res.json( {loggedIn: true} );
     }
 
@@ -89,10 +98,11 @@ app.get('/check-session', async (req: Request, res: Response): Promise<any> => {
     console.error ('Server side. Error checking the sessions');
     return res.status(500).json( {error: 'Internal Server Error'} );
   };
+
 });
 
 //login
-app.post('/login', async (req: Request, res: Response): Promise<void> => {
+app.post('/HeroTasks/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -138,7 +148,7 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 });
 
 //Logout Route
-app.post('/logout', async (req: Request, res: Response): Promise<any> => {
+app.post('/HeroTasks/logout', async (req: Request, res: Response): Promise<any> => {
   req.session.destroy((err) => {
     if (err) {
       console.error('Error destroying session:', err);
@@ -151,7 +161,7 @@ app.post('/logout', async (req: Request, res: Response): Promise<any> => {
 });
 
 //Registration route
-app.post('/register', async (req: Request, res: Response): Promise<void> => {
+app.post('/HeroTasks/register', async (req: Request, res: Response): Promise<void> => {
   
   const { first_name, last_name, email, password, code } = req.body;
 
@@ -189,7 +199,7 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 } )
 
 //Code Verification
-app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
+app.post('/HeroTasks/verify-code', async (req: Request, res: Response): Promise<void> => {
   const { code } = req.body;
   const userId = req.session.loggedUser?.id;
 
@@ -216,7 +226,7 @@ app.post('/verify-code', async (req: Request, res: Response): Promise<void> => {
 });
 
 //New Superhero
-app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
+app.post('/HeroTasks/superheroes', async (req: Request, res: Response): Promise<void> => {
 
   const { superhero_name } = req.body
 
@@ -251,16 +261,16 @@ app.post('/superheroes', async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     console.error('Error registering user: ', error);
     res.status(500).json({ error: 'Internal server error' });
-  };
-
-   
+  };  
 }
 );
 
 //Dashboard: Get all superheroes along with their tasks
-app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
+app.get('/HeroTasks/superheroes-with-tasks', async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.session.loggedUser?.id
+    console.log("The userID is : => ", userId);
+
     if (!userId) {
       res.status(401).json({ error: 'Unauthorized: No user logged in' });
       return;
@@ -290,7 +300,7 @@ app.get('/superheroes-with-tasks', async (req: Request, res: Response): Promise<
 });
 
 //Add Task
-app.post('/superheroes/:heroId/add-task', async (req: Request, res: Response): Promise<void> => {
+app.post('/HeroTasks/superheroes/:heroId/add-task', async (req: Request, res: Response): Promise<void> => {
   const heroId = parseInt(req.params.heroId);
   const { superpower } = req.body;
   
@@ -328,7 +338,7 @@ app.post('/superheroes/:heroId/add-task', async (req: Request, res: Response): P
 });
 
 //Dashboard: Update the task completion. Toggle
-app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
+app.put('/HeroTasks/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<void> => {
   const taskId = parseInt(req.params.taskId);
   console.log("Server side. Receive the taskId number: ", taskId);
   if (isNaN(taskId)) {
@@ -359,14 +369,14 @@ app.put('/tasks/:taskId/toggle', async (req: Request, res: Response): Promise<vo
 });
 
 //Dashboard: Fetch the affected hero data
-app.get('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
+app.get('/HeroTasks/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
   const heroId = parseInt(req.params.id);
   const hero = await superheroQueries.getSuperheroWithTasksAndStrength(heroId); 
   res.json(hero);
 });
 
 //Delete Task (individual)
-app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
+app.delete('/HeroTasks/tasks/:id', async (req: Request, res: Response): Promise<void> => {
   const taskId = parseInt(req.params.id);
 
   // Guard Statement
@@ -396,7 +406,7 @@ app.delete('/tasks/:id', async (req: Request, res: Response): Promise<void> => {
 });
 
 //Delete Superhero All Task
-app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Response): Promise<void> => {
+app.delete('/HeroTasks/superheroes/:id/delete-all-tasks', async (req: Request, res: Response): Promise<void> => {
   const heroId = parseInt(req.params.id);
 
   // Guard Statement
@@ -418,7 +428,7 @@ app.delete('/superheroes/:id/delete-all-tasks', async (req: Request, res: Respon
 });
 
 //Delete or Eliminate Superhero
-app.delete('/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
+app.delete('/HeroTasks/superheroes/:id', async (req: Request, res: Response): Promise<void> => {
   
   const heroId = parseInt(req.params.id);
 

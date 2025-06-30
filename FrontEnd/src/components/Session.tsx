@@ -6,6 +6,10 @@ import Modal from './Modal';
 import FormRegister from "./FormRegister";
 import ContactUsFooter from "./ContactUsFooter";
 import '../styles/Session.scss';
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+
+console.log("🔧 BACKEND URL:", backendUrl);
+console.log("🌐 All ENV Vars:", import.meta.env);
 
 const Session = () => {
   const navigate = useNavigate();
@@ -38,7 +42,7 @@ const Session = () => {
     event.preventDefault();
   
     try {
-      const response = await axios.post('/HeroTasks/login', 
+      const response = await axios.post(`${backendUrl}/HeroTasks/login`, 
         { username, password }, { withCredentials: true }
       );
 
@@ -68,7 +72,7 @@ const Session = () => {
     } ) => {
 
     try {
-      const response = await axios.post(`/HeroTasks/register/`, user);
+      const response = await axios.post(`${backendUrl}/HeroTasks/register/`, user);
 
       const newUser = response.data;
       console.log("Registration. New user data: ", newUser);

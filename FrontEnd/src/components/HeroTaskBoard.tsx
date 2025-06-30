@@ -8,6 +8,7 @@ import FormTask from "./FormTask";
 import AddSuperheroForm from "./AddSuperheroForm";
 import DeleteSuperheroForm from "./DeleteSuperheroForm";
 import ConfirmWithCode from "./ConfirmWithCode";
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
 const HeroTaskBoard = () => {
 
@@ -23,7 +24,11 @@ const HeroTaskBoard = () => {
   useEffect(() => {
     const fetchHeroesData = async() => {
       try {
-        const response = await axios.get('/HeroTasks/superheroes-with-tasks');
+        //const response = await axios.get('/HeroTasks/superheroes-with-tasks');
+        const response = await axios.get(`${backendUrl}/HeroTasks/superheroes-with-tasks`, {
+          withCredentials: true,
+        });
+
         setSuperheroes(response.data);
       } catch (error) {
         console.error("Hero Dashboard. Error fetching data: ", error);
@@ -57,10 +62,16 @@ const HeroTaskBoard = () => {
       );
 
       // Sync with backend. Send PUT request to update task status on server
-      await axios.put(`/HeroTasks/tasks/${taskId}/toggle`);
+      await axios.put(`${backendUrl}/HeroTasks/tasks/${taskId}/toggle`, {}, {
+        withCredentials: true
+      });
+
 
       // Re-fetch the full data of the hero.
-      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+      const updatedHero = await axios.get(`${backendUrl}/HeroTasks/superheroes/${heroId}`, {
+        withCredentials: true
+      });
+
 
       // Re-apply sorted tasks to updatedHero before setting in state
       const sortedTasks = [
@@ -95,7 +106,7 @@ const HeroTaskBoard = () => {
   const handleLogoutNavigation = () => {
     requestCodeConfirmation("Enter your 4-digit code to logout.", async () => {
       try {
-        const response = await axios.post('/HeroTasks/logout', {}, { withCredentials: true });
+        const response = await axios.post(`${backendUrl}/HeroTasks/logout`, {}, { withCredentials: true });
         // {} the request body, which is empty in this case. Without "withCredentials: true", the browser will not include cookies, and the backend won’t recognize the session.
         
         if (response.status === 200) navigate('/');
@@ -114,10 +125,15 @@ const HeroTaskBoard = () => {
   //Add new task
   const handleAddTask = async (heroId: number, task: { superpower: string }) => {
     try {
-      await axios.post(`/HeroTasks/superheroes/${heroId}/add-task`, task);
+      await axios.post(`${backendUrl}/HeroTasks/superheroes/${heroId}/add-task`, task, {
+        withCredentials: true
+      });
+
 
       //Get the updated list of tasks as per superhero
-      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+      const updatedHero = await axios.get(`${backendUrl}/HeroTasks/superheroes/${heroId}`, {
+        withCredentials: true
+      });
 
       setSuperheroes((prevHeroes) =>
         prevHeroes.map((hero) => (hero.id === heroId ? updatedHero.data : hero))
@@ -144,10 +160,14 @@ const HeroTaskBoard = () => {
           }
 
           // Delete the task
-          await axios.delete(`/HeroTasks/tasks/${taskId}`);
+          await axios.delete(`${backendUrl}/HeroTasks/tasks/${taskId}`, {
+            withCredentials: true
+          });
 
           // Fetch updated data for this specific hero
-          const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+          const updatedHero = await axios.get(`${backendUrl}/HeroTasks/superheroes/${heroId}`, {
+            withCredentials: true
+          });
 
           // Sort: incomplete tasks first
           const sortedTasks = [
@@ -179,10 +199,14 @@ const HeroTaskBoard = () => {
   const handleDeleteAllTask = async (heroId: number) => {
 
     try {
-      await axios.delete(`/HeroTasks/superheroes/${heroId}/delete-all-tasks`);
+      await axios.delete(`${backendUrl}/HeroTasks/superheroes/${heroId}/delete-all-tasks`, {
+        withCredentials: true
+      });
 
       // Fetch updated data for this specific hero
-      const updatedHero = await axios.get(`/HeroTasks/superheroes/${heroId}`);
+      const updatedHero = await axios.get(`${backendUrl}/HeroTasks/superheroes/${heroId}`, {
+        withCredentials: true
+      });
 
       const sortedHero = { ...updatedHero.data };
 
@@ -198,8 +222,12 @@ const HeroTaskBoard = () => {
   //Add New Superhero
   const handleAddSuperhero = async (superhero: { superhero_name: string }) => {
     try {
-      await axios.post('/HeroTasks/superheroes', superhero);
-      const updatedHeroes = await axios.get('/HeroTasks/superheroes-with-tasks');
+      await axios.post(`${backendUrl}/HeroTasks/superheroes`, superhero, {
+        withCredentials: true
+      });
+      const updatedHeroes = await axios.get(`${backendUrl}/HeroTasks/superheroes-with-tasks`, {
+        withCredentials: true
+      });
       setSuperheroes(updatedHeroes.data);
       setErrorMessage('');
       return true;
@@ -215,8 +243,8 @@ const HeroTaskBoard = () => {
 
   const handleDelSuperhero = async (heroId: number) => {
     try {
-      await axios.delete(`/HeroTasks/superheroes/${heroId}`);
-      const updatedTasks = await axios.get('/HeroTasks/superheroes-with-tasks');
+      await axios.delete(`${backendUrl}/HeroTasks/superheroes/${heroId}`,{ withCredentials: true });
+      const updatedTasks = await axios.get(`${backendUrl}/HeroTasks/superheroes-with-tasks`, { withCredentials: true });
       setSuperheroes(updatedTasks.data);
       return true;
     } catch (error) {
