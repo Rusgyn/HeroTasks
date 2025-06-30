@@ -180,3 +180,7 @@ This app was created with love and purpose — to help families work together an
 ### Eliminate Superhero
 
 ![Eliminate](assets/8-Eliminate_Superhero.png)
+
+### Logout - Upper right side
+
+![HeroTasksBoard](assets/5-HeroTasks_Dashboard.png)
