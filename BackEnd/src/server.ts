@@ -37,7 +37,7 @@ const PORT = 3001;
 /* Middleware */
 //CORS should be added before any other routes or middleware this ensures that the CORS headers are properly set in the response before any other logic 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
