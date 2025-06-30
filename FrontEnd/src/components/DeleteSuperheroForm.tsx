@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Superhero } from '../types/Superhero';
 import '../styles/DeleteSuperheroForm.scss';
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
 interface Props {
   onSubmit: (heroId: number) => Promise<void>;
@@ -17,7 +18,7 @@ const DeleteSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage, refresh 
   useEffect(() => {
     const fetchHeroes = async () => {
       try {
-        const response = await axios.get('/HeroTasks/superheroes-with-tasks');
+        const response = await axios.get(`${backendUrl}/superheroes-with-tasks`);
         setHeroes(response.data);
       } catch (error) {
         console.error("DeleteSuperheroForm. Failed to fetch heroes:", error);
