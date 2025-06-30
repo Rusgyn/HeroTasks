@@ -7,14 +7,16 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173, // Frontend PORT
-    proxy: {
-      '/HeroTasks': {
-        target: 'http://localhost:3001', // Backend URL. PORT: 3001
-        changeOrigin: true,
-        secure: false,
-        //rewrite: (path) => path.replace(/^\/HeroTasks/, '')
-      },
-    }
+    
+    // DEVELOPMENT: Proxy was use instead of .env in FrontEnd
+    // proxy: {
+    //   '/HeroTasks': {
+    //     target: 'http://localhost:3001', // Backend URL. PORT: 3001
+    //     changeOrigin: true,
+    //     secure: false,
+    //     //rewrite: (path) => path.replace(/^\/HeroTasks/, '')
+    //   },
+    // }
   }
 
 });
