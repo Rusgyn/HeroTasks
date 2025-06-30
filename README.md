@@ -91,6 +91,7 @@ npm run dev
 
 ```bash
 HeroTasks/
+├── assets/
 ├── FrontEnd/
 │   └── src/
 │       ├── auth/          # Auth session hooks & route guards
