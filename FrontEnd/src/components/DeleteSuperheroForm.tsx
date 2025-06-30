@@ -18,7 +18,9 @@ const DeleteSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage, refresh 
   useEffect(() => {
     const fetchHeroes = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/superheroes-with-tasks`);
+        const response = await axios.get(`${backendUrl}/HeroTasks/superheroes-with-tasks`, {
+          withCredentials: true,
+        });
         setHeroes(response.data);
       } catch (error) {
         console.error("DeleteSuperheroForm. Failed to fetch heroes:", error);

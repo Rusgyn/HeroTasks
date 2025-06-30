@@ -63,7 +63,7 @@ const Register: React.FC = () => {
     };
 
     try {
-      const response = await axios.post(`${backendUrl}/register/`, newUser);
+      const response = await axios.post(`${backendUrl}/HeroTasks/register/`, newUser);
       console.log("Registration. Return new user is: ", response.data);
 
       if (response.status === 201) {
