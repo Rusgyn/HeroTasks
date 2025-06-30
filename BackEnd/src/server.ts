@@ -60,9 +60,12 @@ if (sessionSecret) {
       saveUninitialized: false, //prevent creating session until stored
       cookie: {
         httpOnly: true, //prevent client-side scripts from accessing the cookie
-        secure: false, //update to true during production, https
-        sameSite: 'lax',
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production (https)
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 1000 * 60 * 60, // 1hr session
+        // DEVELOPMENT 
+        // secure: false, //DEVELOPMENT ONLY. Update to true during production, https
+        // sameSite: 'lax', //DEVELOPMENT ONLY.
       }
     })
   )
