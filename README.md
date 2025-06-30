@@ -148,3 +148,34 @@ This app was created with love and purpose — to help families work together an
 
 ## 📸 HeroTasks Images
 
+### Landing Page
+
+![Landing](assets/1-Landing_page.png)
+
+### Register Page (use Modal)
+
+![Registration](assets/2-Registration.png)
+
+### Register Page with Error
+
+![Registration with Sample error](assets/3-Registration_PW_error.png)
+
+### Login Page
+
+![Login](assets/4-Login.png)
+
+### Dashboard
+
+![HeroTasksBoard](assets/5-HeroTasks_Dashboard.png)
+
+### Code Authentication
+
+![Authentication](assets/6-Code_authentication.png)
+
+### Add Superhero
+
+![Add Superhero](assets/7-Add_Superhero.png)
+
+### Eliminate Superhero
+
+![Eliminate](assets/8-Eliminate_Superhero.png)
