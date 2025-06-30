@@ -23,7 +23,7 @@ const ConfirmWithCode: React.FC<Props> = ({ actionLabel, onSuccess }) => {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.post(`${backendUrl}/verify-code`, { code }, { withCredentials: true });
+      const response = await axios.post(`${backendUrl}/HeroTasks/verify-code`, { code }, { withCredentials: true });
 
       if (response.status === 200) {
         onSuccess();
