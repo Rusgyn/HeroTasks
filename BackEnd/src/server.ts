@@ -12,7 +12,6 @@ import express, { Request, Response } from "express";
 import session from "express-session"; //maintain user state
 import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
-import axios from "axios";
 import bcrypt from 'bcryptjs';
 
 //Internal Modules and DB Queries */
@@ -85,10 +84,6 @@ app.use((req, res, next) => {
 
 //Authenticate session
 app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise<any> => {
-
-  console.log("SERVER SIDE. Check-session HERE: =>  ", req.session);
-  console.log("=============")
-
   try { 
     if (isUserLoggedIn(req.session)) {
        console.log("THE USER IN SESSION IS: =>  ", req.session.loggedUser);
@@ -102,6 +97,7 @@ app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise
     return res.status(500).json( {error: 'Internal Server Error'} );
   };
 
+  console.log("=============")
 });
 
 //login
