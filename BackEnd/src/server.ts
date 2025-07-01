@@ -12,7 +12,6 @@ import express, { Request, Response } from "express";
 import session from "express-session"; //maintain user state
 import morgan from "morgan"; // HTTP request logger
 import cors from "cors";
-import axios from "axios";
 import bcrypt from 'bcryptjs';
 
 //Internal Modules and DB Queries */
@@ -60,9 +59,12 @@ if (sessionSecret) {
       saveUninitialized: false, //prevent creating session until stored
       cookie: {
         httpOnly: true, //prevent client-side scripts from accessing the cookie
-        secure: false, //update to true during production, https
-        sameSite: 'lax',
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production (https)
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 1000 * 60 * 60, // 1hr session
+        // DEVELOPMENT 
+        // secure: false, //DEVELOPMENT ONLY. Update to true during production, https
+        // sameSite: 'lax', //DEVELOPMENT ONLY.
       }
     })
   )
@@ -82,10 +84,6 @@ app.use((req, res, next) => {
 
 //Authenticate session
 app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise<any> => {
-
-  console.log("SERVER SIDE. Check-session HERE: =>  ", req.session);
-  console.log("=============")
-
   try { 
     if (isUserLoggedIn(req.session)) {
        console.log("THE USER IN SESSION IS: =>  ", req.session.loggedUser);
@@ -99,6 +97,7 @@ app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise
     return res.status(500).json( {error: 'Internal Server Error'} );
   };
 
+  console.log("=============")
 });
 
 //login
