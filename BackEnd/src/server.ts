@@ -42,10 +42,13 @@ app.set("trust proxy", 1); //This trust the Railway proxy
 // }));
 
 //Testing this CORS to see what causes the error when deploying
-const allowedOrigins = ["https://hero-tasks.vercel.app", "http://localhost:5173"];
+const allowedOrigins = [
+  "https://hero-tasks.vercel.app",
+  "http://localhost:5173",
+];
 
-app.use(cors({
-  origin: (origin, callback) => {
+const corsOptions = {
+  origin: (origin: string | undefined, callback: any) => {
     console.log("CORS origin:", origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -56,15 +59,14 @@ app.use(cors({
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
-}));
+};
 
+// 🔹 Apply once for all regular requests
+app.use(cors(corsOptions));
 
-//Handle preflight CORS
-app.options("*", cors());
-// app.options("*", cors({
-//   origin: process.env.CLIENT_URL || "http://localhost:5173",
-//   credentials: true,
-// }));
+// 🔹 Apply again for every pre‑flight OPTIONS request
+app.options("*", cors(corsOptions));
+
 
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
