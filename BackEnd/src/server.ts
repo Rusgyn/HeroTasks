@@ -36,26 +36,32 @@ app.set("trust proxy", 1); //This trust the Railway proxy
 /* Middleware */
 //CORS should be added before any other routes or middleware this ensures that the CORS headers are properly set in the response before any other logic 
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: "https://hero-tasks.vercel.app", //process.env.CLIENT_URL || "http://localhost:5173",
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 //Handle preflight CORS
-app.options("*", cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true,
-}));
+app.options("*", cors());
+// app.options("*", cors({
+//   origin: process.env.CLIENT_URL || "http://localhost:5173",
+//   credentials: true,
+// }));
 
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 /* DB Test - Development */
-db.query('SELECT current_database();')
-  .then(response => console.log('✅ Connected to DB:', response.rows[0]))
-  .catch(error => console.error('❌ Error checking current DB:', error));
+// db.query('SELECT current_database();')
+//   .then(response => console.log('✅ Connected to DB:', response.rows[0]))
+//   .catch(error => console.error('❌ Error checking current DB:', error));
+
+//* CORS Testing
+app.get("/cors-test", (req, res) => {
+  res.json({ message: "CORS is working" });
+});
 
 /* Session Configuration */ 
 //**Always place express-session after express.json() and express.urlencoded() middleware for session handling to work properly.
