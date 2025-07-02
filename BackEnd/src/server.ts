@@ -34,12 +34,31 @@ app.set("trust proxy", 1); //This trust the Railway proxy
 
 /* Middleware */
 //CORS should be added before any other routes or middleware this ensures that the CORS headers are properly set in the response before any other logic 
+// app.use(cors({
+//   origin: "https://hero-tasks.vercel.app", //process.env.CLIENT_URL || "http://localhost:5173",
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// }));
+
+//Testing this CORS to see what causes the error when deploying
 app.use(cors({
-  origin: "https://hero-tasks.vercel.app", //process.env.CLIENT_URL || "http://localhost:5173",
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "https://hero-tasks.vercel.app",
+      "http://localhost:5173"
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
 
 //Handle preflight CORS
 app.options("*", cors());
@@ -56,11 +75,6 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 // db.query('SELECT current_database();')
 //   .then(response => console.log('✅ Connected to DB:', response.rows[0]))
 //   .catch(error => console.error('❌ Error checking current DB:', error));
-
-//* CORS Testing
-app.get("/cors-test", (req, res) => {
-  res.json({ message: "CORS is working" });
-});
 
 /* Session Configuration */ 
 //**Always place express-session after express.json() and express.urlencoded() middleware for session handling to work properly.
