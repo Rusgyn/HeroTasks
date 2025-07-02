@@ -31,6 +31,8 @@ import isUserLoggedIn from "./utils/sessionUtils";
 const app = express();
 const PORT = 3001;
 
+app.set("trust proxy", 1); //This trust the Railway proxy
+
 /* Middleware */
 //CORS should be added before any other routes or middleware this ensures that the CORS headers are properly set in the response before any other logic 
 app.use(cors({
