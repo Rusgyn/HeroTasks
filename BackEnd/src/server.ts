@@ -42,12 +42,11 @@ app.set("trust proxy", 1); //This trust the Railway proxy
 // }));
 
 //Testing this CORS to see what causes the error when deploying
+const allowedOrigins = ["https://hero-tasks.vercel.app", "http://localhost:5173"];
+
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      "https://hero-tasks.vercel.app",
-      "http://localhost:5173"
-    ];
+    console.log("CORS origin:", origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -101,14 +100,22 @@ if (sessionSecret) {
   process.exit(1); //Terminate the app.
 };
 
+
 /* Routes */
 /** Session . This is for debugging purpose**/
-app.use((req, res, next) => {
-  console.log('🔍 [Session Logger]');
-  console.log('Cookies:', req.headers.cookie);
-  console.log('Session:', req.session);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('🔍 [Session Logger]');
+//   console.log('Cookies:', req.headers.cookie);
+//   console.log('Session:', req.session);
+//   next();
+// });
+
+app.get('/test-cors', (_, res): Promise<any> => {
+  res.json({ ok: true });
+  return Promise.resolve();
+}
+)
+
 
 //Authenticate session
 app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise<any> => {
