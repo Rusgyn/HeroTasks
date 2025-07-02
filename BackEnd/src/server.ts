@@ -45,7 +45,7 @@ app.use(cors({
 //Handle preflight CORS
 app.options("*", cors({
   origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true
+  credentials: true,
 }));
 
 app.use(morgan('dev')); // HTTP request logger
