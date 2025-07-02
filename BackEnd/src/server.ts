@@ -29,7 +29,6 @@ import isUserLoggedIn from "./utils/sessionUtils";
 
 /* Express Setup */
 const app = express();
-const PORT = 3001;
 
 app.set("trust proxy", 1); //This trust the Railway proxy
 
@@ -486,6 +485,8 @@ app.delete('/HeroTasks/superheroes/:id', async (req: Request, res: Response): Pr
 
 // ===========================
 /* Server Start */
+const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
   console.log(`Thank you for using the App. The Server is running on http://localhost:${PORT}`);
 });
