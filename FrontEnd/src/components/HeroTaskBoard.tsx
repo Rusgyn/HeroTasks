@@ -128,8 +128,6 @@ const HeroTaskBoard = () => {
       await axios.post(`${backendUrl}/HeroTasks/superheroes/${heroId}/add-task`, task, {
         withCredentials: true
       });
-
-
       //Get the updated list of tasks as per superhero
       const updatedHero = await axios.get(`${backendUrl}/HeroTasks/superheroes/${heroId}`, {
         withCredentials: true
