@@ -51,8 +51,9 @@ const FormRegister: React.FC<Props> = ({ onSubmit }) => {
     // Guard Statement, ensure a valid email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(newEmail)) {
-      setFormErrorMessage(`⛔️ Registration Error ⛔️` + `\n` +
-        `The email: "${email}" is not valid. Please enter a valid email address. (e.g. sample@email.com)`);
+      setFormErrorMessage(
+        `⛔️ Registration Error ⛔️\nThe email: "${email}" is not valid. Please enter a valid email address. (e.g. sample@email.com)`
+      );
       return;
     }
 
