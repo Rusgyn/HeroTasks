@@ -41,6 +41,13 @@ app.use(cors({
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+//Handle preflight CORS
+app.options("*", cors({
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  credentials: true
+}));
+
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
