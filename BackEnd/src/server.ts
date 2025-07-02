@@ -67,6 +67,13 @@ app.use(cors(corsOptions));
 // 🔹 Apply again for every pre‑flight OPTIONS request
 app.options("*", cors(corsOptions));
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Or specify your domain
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
