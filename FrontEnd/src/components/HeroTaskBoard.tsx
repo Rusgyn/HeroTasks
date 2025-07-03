@@ -426,8 +426,8 @@ const HeroTaskBoard = () => {
               ) : modalPurpose === 'add-superhero' ? (
                 <AddSuperheroForm
                   onSubmit={async (superhero) => {
-                    const success = await handleAddSuperhero(superhero);
-                    if (success) setModalPurpose(null);
+                    await handleAddSuperhero(superhero);
+                    //if (success) setModalPurpose(null);
                   }}
                   errorMessage={errorMessage}
                 />
@@ -436,8 +436,8 @@ const HeroTaskBoard = () => {
                   key={modalPurpose}
                   refresh={modalPurpose} //re-run the useEffect
                   onSubmit={async (heroId) => {
-                    const success = await handleDelSuperhero(heroId);
-                    if (success) setModalPurpose(null);
+                    await handleDelSuperhero(heroId);
+                    //if (success) setModalPurpose(null);
                     }
                   }
                   errorMessage={errorMessage}
