@@ -40,8 +40,6 @@ app.set("trust proxy", 1); //This trust the Railway proxy
 //   methods: ["GET", "POST", "PUT", "DELETE"],
 //   allowedHeaders: ["Content-Type", "Authorization"],
 // }));
-
-//Testing this CORS to see what causes the error when deploying
 const allowedOrigins = [
   "https://hero-tasks.vercel.app",
   "http://localhost:5173",
@@ -57,9 +55,11 @@ const corsOptions = {
     }
   },
   credentials: true,
-  // methods: ["GET", "POST", "PUT", "DELETE"],
-  // allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204, // Safari Browser
 };
+
 // 🔹 Apply once for all regular requests
 app.use(cors(corsOptions));
 app.use(morgan('dev')); // HTTP request logger
@@ -77,6 +77,7 @@ const sessionSecret = process.env.DB_SESSION_SECRET;
 if (sessionSecret) {
   app.use(
     session({
+      name: "connect.sid",
       secret: sessionSecret,
       resave: false, //avoid saving session if not modified
       saveUninitialized: false, //prevent creating session until stored
@@ -96,23 +97,7 @@ if (sessionSecret) {
   process.exit(1); //Terminate the app.
 };
 
-
 /* Routes */
-/** Session . This is for debugging purpose**/
-// app.use((req, res, next) => {
-//   console.log('🔍 [Session Logger]');
-//   console.log('Cookies:', req.headers.cookie);
-//   console.log('Session:', req.session);
-//   next();
-// });
-
-app.get('/test-cors', (_, res): Promise<any> => {
-  res.json({ ok: true });
-  return Promise.resolve();
-}
-)
-
-
 //Authenticate session
 app.get('/HeroTasks/check-session', async (req: Request, res: Response): Promise<any> => {
   try { 
