@@ -60,18 +60,8 @@ const corsOptions = {
   // methods: ["GET", "POST", "PUT", "DELETE"],
   // allowedHeaders: ["Content-Type", "Authorization"],
 };
-
 // 🔹 Apply once for all regular requests
 app.use(cors(corsOptions));
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://hero-tasks.vercel.app/'); // Or specify your domain
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
-
-
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON payloads.
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
