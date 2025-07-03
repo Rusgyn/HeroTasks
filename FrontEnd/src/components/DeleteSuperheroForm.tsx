@@ -32,10 +32,20 @@ const DeleteSuperheroForm: React.FC<Props> = ({ onSubmit, errorMessage, refresh 
     fetchHeroes();
   }, [refresh]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (selectedHeroId !== null) {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (selectedHeroId === null) return;
+
+    try {
       await onSubmit(selectedHeroId);
+
+      //Remove hero from dropdown after elimination
+      setHeroes((prevHeroes) => prevHeroes.filter((hero) => hero.id !== selectedHeroId));
+
+      //Reset the selected hero
+      setSelectedHeroId(null);
+    } catch (error) {
+      console.error("Failed to eliminate hero:", error);
     }
   };
 
