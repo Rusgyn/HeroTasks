@@ -86,7 +86,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 /* Session Configuration */ 
 //**Always place express-session after express.json() and express.urlencoded() middleware for session handling to work properly.
-const sessionSecret = process.env.DB_SESSION_SECRET
+const sessionSecret = process.env["DB_SESSION_SECRET"];
 if (sessionSecret) {
   app.use(
     session({
@@ -95,8 +95,8 @@ if (sessionSecret) {
       saveUninitialized: false, //prevent creating session until stored
       cookie: {
         httpOnly: true, //prevent client-side scripts from accessing the cookie
-        secure: process.env.NODE_ENV === "production", // Use secure cookies in production (https)
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env["NODE_ENV"] === "production", // Use secure cookies in production (https)
+        sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
         maxAge: 1000 * 60 * 60, // 1hr session
         // DEVELOPMENT 
         // secure: false, //DEVELOPMENT ONLY. Update to true during production, https
@@ -515,7 +515,7 @@ app.delete('/HeroTasks/superheroes/:id', async (req: Request, res: Response): Pr
 
 // ===========================
 /* Server Start */
-const PORT = process.env.PORT || 3001;
+const PORT = process.env["PORT"] || 3001;
 
 app.listen(PORT, () => {
   console.log(`Thank you for using the App. The Server is running on http://localhost:${PORT}`);
