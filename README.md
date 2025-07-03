@@ -1,5 +1,5 @@
 
-# 🦸‍♀️ HeroTasks
+# 🦸‍♀️🦸 HeroTasks
 
 Empower your little heroes to complete tasks, build habits, and grow stronger every day!  
 **HeroTasks** is a fun and interactive task management web app for families. Parents assign tasks to their children (superheroes), and the children earn strength points by completing them — building responsibility, routine, and good habits.
