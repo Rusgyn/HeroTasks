@@ -79,6 +79,22 @@ npm run dev
 
 ---
 
+## 🌐 Live Application
+
+You can access the HeroTasks App through the official deployment:
+
+**🔗 https://hero-tasks.vercel.app**
+
+The app is securely hosted on Vercel, and fully connected to its backend services by Railway, offering a seamless task management experience for families.
+
+---
+
+## 📝 Browser Access
+
+For the best experience using HeroTasks, we recommend accessing the app via **Google Chrome**, which fully supports the session-based login mechanism used by the application. If you are using **Safari**, please note that the app’s frontend and backend are hosted on different domains, which may cause Safari to block session cookies due to its privacy settings. To ensure login works correctly, consider temporarily disabling **“Prevent cross-site tracking”** by navigating to **Safari > Settings > Privacy**. This behavior does not affect Chrome or most modern browsers.
+
+---
+
 ## 🔐 Authentication & Authorization
 
 - 🔑 Session-based login with middleware protection.
