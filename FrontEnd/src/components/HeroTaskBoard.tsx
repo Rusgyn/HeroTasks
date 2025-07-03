@@ -368,8 +368,8 @@ const HeroTaskBoard = () => {
 
         <div className="board__footer">
           <span className="session_footer_a">
-            <a className="session_footer_a_1" href="/register" target="_blank">New Account</a> |
-            <a className="session_footer_a_2" href="/help" target="_blank"> Contact Us </a> | 
+            <a className="session_footer_a_1" href="/register">New Account</a> |
+            <a className="session_footer_a_2" href="/help"> Contact Us </a> | 
             <a className="session_footer_a_1" href="https://facebook.com" target="_blank"> Facebook </a> | 
             <a className="session_footer_a_2" href="https://google.com" target="_blank"> Google</a>
           </span>
@@ -426,8 +426,8 @@ const HeroTaskBoard = () => {
               ) : modalPurpose === 'add-superhero' ? (
                 <AddSuperheroForm
                   onSubmit={async (superhero) => {
-                    const success = await handleAddSuperhero(superhero);
-                    if (success) setModalPurpose(null);
+                    await handleAddSuperhero(superhero);
+                    //if (success) setModalPurpose(null);
                   }}
                   errorMessage={errorMessage}
                 />
@@ -436,8 +436,8 @@ const HeroTaskBoard = () => {
                   key={modalPurpose}
                   refresh={modalPurpose} //re-run the useEffect
                   onSubmit={async (heroId) => {
-                    const success = await handleDelSuperhero(heroId);
-                    if (success) setModalPurpose(null);
+                    await handleDelSuperhero(heroId);
+                    //if (success) setModalPurpose(null);
                     }
                   }
                   errorMessage={errorMessage}
