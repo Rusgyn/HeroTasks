@@ -368,8 +368,8 @@ const HeroTaskBoard = () => {
 
         <div className="board__footer">
           <span className="session_footer_a">
-            <a className="session_footer_a_1" href="/register" target="_blank">New Account</a> |
-            <a className="session_footer_a_2" href="/help" target="_blank"> Contact Us </a> | 
+            <a className="session_footer_a_1" href="/register">New Account</a> |
+            <a className="session_footer_a_2" href="/help"> Contact Us </a> | 
             <a className="session_footer_a_1" href="https://facebook.com" target="_blank"> Facebook </a> | 
             <a className="session_footer_a_2" href="https://google.com" target="_blank"> Google</a>
           </span>
