@@ -57,15 +57,12 @@ const corsOptions = {
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  // methods: ["GET", "POST", "PUT", "DELETE"],
+  // allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 // 🔹 Apply once for all regular requests
 app.use(cors(corsOptions));
-
-// 🔹 Apply again for every pre‑flight OPTIONS request
-app.options("*", cors(corsOptions));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://hero-tasks.vercel.app/'); // Or specify your domain
@@ -86,26 +83,26 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 /* Session Configuration */ 
 //**Always place express-session after express.json() and express.urlencoded() middleware for session handling to work properly.
-const sessionSecret = process.env["DB_SESSION_SECRET"];
+const sessionSecret = process.env.DB_SESSION_SECRET;
 if (sessionSecret) {
   app.use(
     session({
-      secret: sessionSecret as string,
+      secret: sessionSecret,
       resave: false, //avoid saving session if not modified
       saveUninitialized: false, //prevent creating session until stored
       cookie: {
         httpOnly: true, //prevent client-side scripts from accessing the cookie
-        secure: process.env["NODE_ENV"] === "production", // Use secure cookies in production (https)
-        sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production (https)
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 1000 * 60 * 60, // 1hr session
         // DEVELOPMENT 
         // secure: false, //DEVELOPMENT ONLY. Update to true during production, https
         // sameSite: 'lax', //DEVELOPMENT ONLY.
       }
     })
-  )
+  );
 } else {
-  console.log("Server side. DB_SESSION_SECRET is unset in .env");
+  console.error("DB_SESSION_SECRET is unset in .env");
   process.exit(1); //Terminate the app.
 };
 

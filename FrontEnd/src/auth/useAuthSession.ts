@@ -9,8 +9,9 @@ const useAuthSession = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-
-        const response = await axios.get(`${backendUrl}/HeroTasks/check-session`, { withCredentials: true });
+        const response = await axios.get(`${backendUrl}/HeroTasks/check-session`, {
+          withCredentials: true
+        });
 
         console.log("Checking session. Response is: ", response.data);
         setIsSessionActive(response.data.loggedIn); //loggedIn (boolean) from backend
